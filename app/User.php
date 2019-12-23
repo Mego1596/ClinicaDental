@@ -4,12 +4,13 @@ namespace App;
 
 use Caffeinated\Shinobi\Concerns\HasRolesAndPermissions;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Illuminate\Auth\Notifications\ResetPassword;
+use App\Notifications\ResetPasswordNotification;
 class User extends Authenticatable
 {
-    use HasRolesAndPermissions;
-
+    use HasRolesAndPermissions,Notifiable;
     /**
      * The attributes that are mass assignable.
      *
@@ -40,5 +41,10 @@ class User extends Authenticatable
     public function persona()
     {
         return $this->hasOne('App\Persona');
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

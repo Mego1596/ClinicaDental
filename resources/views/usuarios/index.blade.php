@@ -41,17 +41,26 @@
             <thead>
                 <tr>
                     <th style="color: black">Nombre Completo</th>
+                    <th style="color: black">Nombre de Usuario</th>
                     <th style="color: black">Correo Electrónico</th>
-                    <th style="color: black">Número de Teléfono</th>
+                    <th style="color: black">Tipo de Usuario</th>
                     <th style="color: black">Acciones</th>
                 </tr>
             </thead>
             <tbody>
             	@foreach($users as $datos)
 	                <tr>
-	                    <td>{{$datos->primer_nombre.' '.$datos->segundo_nombre.' '.$datos->primer_apellido.' '.$datos->segundo_apellido}}</td>
-	                    <td>{{$datos->email}}</td>
-	                    <td>{{$datos->name}}</td>
+                        @if($datos->roles[0]['slug'] == 'suspendido')
+    	                    <td style="color: red">{{$datos->persona->primer_nombre.' '.$datos->persona->segundo_nombre.' '.$datos->persona->primer_apellido.' '.$datos->persona->segundo_apellido}}</td>
+                            <td style="color: red">{{$datos->name}}</td>
+    	                    <td style="color: red">{{$datos->email}}</td>
+    	                    <td style="color: red">{{$datos->roles[0]['name']}}</td>
+                        @else
+                            <td>{{$datos->persona->primer_nombre.' '.$datos->persona->segundo_nombre.' '.$datos->persona->primer_apellido.' '.$datos->persona->segundo_apellido}}</td>
+                            <td>{{$datos->name}}</td>
+                            <td>{{$datos->email}}</td>
+                            <td>{{$datos->roles[0]['name']}}</td>
+                        @endif
 	                    <td>
 	                        @can('user.show')
 	                            <a href="{{route('users.show',['user'=>$datos->id])}}" class="btn btn-info btn-circle" title="Ver perfil" style="color: white"><i class="fa fa-eye"></i></a>
@@ -76,7 +85,7 @@
 	                                        @csrf
 	                                        <input type="hidden" name="_method" value="DELETE">
 	                                        <div class="modal-body">
-	                                            <h4>Realmente desea eliminar el usuario: <strong>{{$datos->primer_nombre.' '.$datos->segundo_nombre.' '.$datos->primer_apellido.' '.$datos->segundo_apellido}}</strong>?</h4>
+	                                            <h4>Realmente desea eliminar el usuario: <strong>{{$datos->persona->primer_nombre.' '.$datos->persona->segundo_nombre.' '.$datos->persona->primer_apellido.' '.$datos->persona->segundo_apellido}}</strong>?</h4>
 	                                        </div>
 	                                        <div class="modal-footer">
 	                                            <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Cerrar</button>

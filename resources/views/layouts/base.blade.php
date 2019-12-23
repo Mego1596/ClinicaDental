@@ -225,7 +225,7 @@
                 @guest
                     
                 @else
-                    {{Auth::user()->primer_nombre.' '.Auth::user()->segundo_nombre.' '.Auth::user()->primer_apellido.' '.Auth::user()->segundo_apellido}}
+                    {{Auth::user()->persona->primer_nombre.' '.Auth::user()->persona->segundo_nombre.' '.Auth::user()->persona->primer_apellido.' '.Auth::user()->persona->segundo_apellido}}
                 @endguest
                 </span>
                 <img class="img-profile rounded-circle" src="{{asset('css/account.png')}}">

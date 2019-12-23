@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Caffeinated\Shinobi\Models\Role;
-
+use Mail;
+use Carbon\Carbon;
+use DB;
 class UserController extends Controller
 {
 
@@ -50,9 +52,7 @@ class UserController extends Controller
     {
         $request->validate([
             'primer_nombre' => 'required',
-            'segundo_nombre' => 'required',
             'primer_apellido' => 'required',
-            'segundo_apellido' => 'required',
             'email' => 'required|unique:users|regex:/^.+@.+$/i',
             'direccion' => 'required',
             'telefono' => 'required|regex:/^\d{4}-\d{4}$/',
@@ -60,13 +60,48 @@ class UserController extends Controller
         ]);
         $password=substr(md5(microtime()),1,6);
         $user                     = new User();
-        $user->name               = 'Ricardo';
+        //LOGICA PARA CREACION DE NOMBRE USUARIOS
+        //Verificar que el segundo nombre y segundo apellido no esten vacios
+        $anio = Carbon::now()->year;
+        $username = $request->primer_nombre[0];
+        if(!empty($request->segundo_nombre)){
+            $username .= $request->segundo_nombre[0].$request->primer_apellido[0];
+        }else{
+            $username .= $request->primer_nombre[0].$request->primer_apellido[0];
+        }
+        if(!empty($request->segundo_apellido)){
+            $username .= $request->segundo_apellido[0];
+        }else{
+            $username .= $request->primer_apellido[0];
+        }
+        $busquedaUsername = $username.'%'.$anio;
+        $string = "SELECT name FROM users 
+        WHERE name LIKE '".$busquedaUsername."' AND id IN 
+        (SELECT MAX(id) FROM users 
+            WHERE name LIKE '".$busquedaUsername.
+        "')";
+        $query                           = DB::select( DB::raw($string));
+        if($query != NULL)
+        {
+            foreach ($query as $key => $value) {
+                $correlativo = (int)substr($value->expediente,1,3);
+                if( $correlativo <= 9 ){
+                    $user->name = $username."00".strval($correlativo+1)."-".$anio;
+                }elseif ( $correlativo <= 99 ) {
+                    $user->name = $username."0".strval($correlativo+1)."-".$anio;
+                }else{
+                    $user->name = $username.strval($correlativo+1)."-".$anio;
+                }
+            }
+        }else{
+            $user->name = $username."001-".$anio;
+        }
+        //FIN LOGICA PARA CREACION DE NOMBRE DE USUARIOS
         $user->email              = $request->email;
-        $user->password           = bcrypt(1);
+        $user->password           = bcrypt($password);
         $user->save();
         $rol                      = Role::where('slug',$request->role)->get();
         $user->roles()->sync($rol[0]['id']);
-
         $persona                     = new Persona();
         $persona->primer_nombre      = $request->primer_nombre;
         $persona->primer_apellido    = $request->primer_apellido;
@@ -77,7 +112,12 @@ class UserController extends Controller
         $persona->numero_junta       = $request->numero_junta;
         $persona->user_id            = $user->id;
         $persona->save();
-        
+
+        Mail::send('email.user',['user'=> $user,'password'=>$password], function($m) use($user){
+            $m->to($user->email,$user->persona->primer_nombre." ".$user->persona->primer_apellido);
+            $m->subject('Contraseña y nombre de usuario');
+            $m->from('clinicayekixpaki@gmail.com','Sana Dental');
+        });
         return redirect()->route('users.index')->with('success','El Usuario se ingresó correctamente');
     }
 
@@ -89,7 +129,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user   =   User::find($id);
+        $roles  =   Role::where('id','<>',1)->get();
+        return view('usuarios.show_user',compact('roles','user'));
     }
 
     /**
@@ -116,9 +158,7 @@ class UserController extends Controller
     {
         $request->validate([
             'primer_nombre' => 'required',
-            'segundo_nombre' => 'required',
             'primer_apellido' => 'required',
-            'segundo_apellido' => 'required',
             'direccion' => 'required',
             'telefono' => 'required|regex:/^\d{4}-\d{4}$/',
             'role' => 'required'
@@ -165,7 +205,8 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if($user->id != 1){
-            $user->delete();
+            $rol = Role::where('slug','Suspendido')->get();
+            $user->roles()->sync($rol[0]['id']);
             return redirect('users')->with('success','Usuario eliminado con exito');
         }else{
             return redirect()->back()->with('danger','El usuario seleccionado no se puede eliminar');

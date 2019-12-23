@@ -72,7 +72,7 @@
 	    </div>
 	    <label for="email" class="col-sm-2 col-form-label">E-Mail</label>
 	    <div class="col-sm-4">
-	      <input type="email" class="form-control" id="email" name="email" required>
+	      <input type="email" class="form-control" id="email" name="email" value="{{old('email')}}" required>
 	    </div>
 	</div>
 	<div class="form-group row col-sm-12">
