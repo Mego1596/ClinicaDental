@@ -16,13 +16,16 @@ class CreateExpedientesTable extends Migration
         Schema::create('expedientes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('numero_expediente');
-            $table->enum('sexo',array('Masculino','Femenino'));
+            $table->enum('sexo',array('M','F'));
             $table->enum('ocupacion',array('Estudiante','Empleado','Ama de casa','Desempleado','Otros'));
+            $table->datetime('fecha_nacimiento');
             $table->string('direccion_trabajo')->nullable();
             $table->string('responsable')->nullable();
             $table->string('recomendado')->nullable();
             $table->string('historia_odontologica')->nullable();
             $table->string('historia_medica')->nullable();
+            $table->unsignedBigInteger('persona_id')->nullable();
+            $table->foreign('persona_id')->references('id')->on('personas');
             $table->timestamps();
         });
     }

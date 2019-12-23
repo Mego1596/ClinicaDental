@@ -42,6 +42,18 @@ class UserTableSeeder extends Seeder
             'description'    => 'Rol de Suspendido'
         ]);
 
+        Role::create([
+            'name'           => 'Doctor',
+            'slug'           => 'doctor',
+            'description'    => 'Rol de Doctor',
+        ]);
+
+        Role::create([
+            'name'           => 'Paciente',
+            'slug'           => 'paciente',
+            'description'    => 'Rol de Paciente'
+        ]);
+
         $user->roles()->sync(1);
     }
 }

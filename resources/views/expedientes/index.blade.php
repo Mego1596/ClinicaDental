@@ -1,7 +1,7 @@
 @extends('layouts.base')
 
 @section('titulo')
-    Lista de Usuarios
+    Lista de Pacientes
 @endsection
 
 
@@ -21,7 +21,7 @@
     </div>
 @endif
 <div class="panel-title">
-    <h1 align="center" style="color: black">Lista de Usuarios</h1>
+    <h1 align="center" style="color: black">Lista de Pacientes</h1>
 </div>
 <div class="row">
     <div class="col-sm-9">
@@ -29,7 +29,7 @@
     </div>
     <div class="col-sm-3" align="right">
         @can('user.create')
-            <a href="{{route('users.create')}}" class="btn btn-sm btn-success" style="color: black;"><i class="fa fa-fw fa-user-plus"></i> Registrar Usuario</a>
+            <a href="{{route('expedientes.create')}}" class="btn btn-sm btn-success" style="color: black;"><i class="fa fa-fw fa-user-plus"></i> Registrar Paciente</a>
         @endcan
     </div>
 </div>
@@ -41,34 +41,29 @@
             <thead>
                 <tr>
                     <th style="color: black">Nombre Completo</th>
-                    <th style="color: black">Nombre de Usuario</th>
+                    <th style="color: black">Numero de Expediente</th>
                     <th style="color: black">Correo Electrónico</th>
-                    <th style="color: black">Tipo de Usuario</th>
                     <th style="color: black">Acciones</th>
                 </tr>
             </thead>
             <tbody>
-            	@foreach($users as $datos)
+            	@foreach($expedientes as $datos)
 	                <tr>
-                        @if($datos->roles[0]['slug'] == 'suspendido')
-    	                    <td style="color: red">{{$datos->persona->primer_nombre.' '.$datos->persona->segundo_nombre.' '.$datos->persona->primer_apellido.' '.$datos->persona->segundo_apellido}}</td>
-                            <td style="color: red">{{$datos->name}}</td>
-    	                    <td style="color: red">{{$datos->email}}</td>
-    	                    <td style="color: red">{{$datos->roles[0]['name']}}</td>
+                        <td>{{$datos->persona->primer_nombre.' '.$datos->persona->segundo_nombre.' '.$datos->persona->primer_apellido.' '.$datos->persona->segundo_apellido}}</td>
+                        <td>{{$datos->numero_expediente}}</td>
+                        @if(!empty($datos->persona->user->email))
+                            <td>{{$datos->persona->user->email}}</td>
                         @else
-                            <td>{{$datos->persona->primer_nombre.' '.$datos->persona->segundo_nombre.' '.$datos->persona->primer_apellido.' '.$datos->persona->segundo_apellido}}</td>
-                            <td>{{$datos->name}}</td>
-                            <td>{{$datos->email}}</td>
-                            <td>{{$datos->roles[0]['name']}}</td>
+                            <td></td>
                         @endif
 	                    <td>
-	                        @can('user.show')
-	                            <a href="{{route('users.show',['user'=>$datos->id])}}" class="btn btn-info btn-circle" title="Ver perfil" style="color: white"><i class="fa fa-eye"></i></a>
+	                        @can('expediente.show')
+	                            <a href="{{route('expedientes.show',['expediente'=>$datos->id])}}" class="btn btn-info btn-circle" title="Ver perfil" style="color: white"><i class="fa fa-eye"></i></a>
 	                        @endcan
-	                        @can('user.edit')
-	                            <a href="{{route('users.edit',['user'=>$datos->id])}}" class="btn btn-primary btn-circle" title="Registrar Recepción de Vehículo" style="color: white" ><i class="fas fa-pencil-alt"></i></a>
+	                        @can('expediente.edit')
+	                            <a href="{{route('expedientes.edit',['expediente'=>$datos->id])}}" class="btn btn-primary btn-circle" title="Registrar Recepción de Vehículo" style="color: white" ><i class="fas fa-pencil-alt"></i></a>
 	                        @endcan
-	                        @can('user.destroy')
+	                        @can('expediente.destroy')
 	                            <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#modal-default2{{$datos->id}}">
 	                                <i class="fas fa-fw fa-trash-alt"></i>
 	                            </button>
@@ -81,7 +76,7 @@
 	                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	                                        <span aria-hidden="true">&times;</span></button>
 	                                    </div>
-	                                    <form action="{{ route('users.destroy',['user'=>$datos->id]) }}" method="POST">
+	                                    <form action="{{ route('expedientes.destroy',['expediente'=>$datos->id]) }}" method="POST">
 	                                        @csrf
 	                                        <input type="hidden" name="_method" value="DELETE">
 	                                        <div class="modal-body">
@@ -114,7 +109,7 @@
             responsive:true,
             pagingType: "simple",
             "columnDefs": [
-                { "orderable": false, "targets": 4 }
+                { "orderable": false, "targets": 3 }
             ]
         });
     });

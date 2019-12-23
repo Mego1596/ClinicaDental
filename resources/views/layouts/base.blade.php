@@ -83,105 +83,36 @@
           <!-- Divider -->
           <hr class="sidebar-divider">
           <!-- Heading -->
-          <div class="sidebar-heading">
-            Administración de Usuarios
-          </div>
+          @if(Auth::user()->roles[0]['slug'] == 'admin')
+            <div class="sidebar-heading">
+              Administración de Usuarios
+            </div>
+          @endif
           <!-- Nav Item - Pages Collapse Menu -->
           @can('users.index')
-          <li class="nav-item">
-            <a class="nav-link collapsed" href="{{route('users.index')}}">
-              <i class="fas fa-fw fa-group"></i>
-              <span>Listado de Usuarios</span>
-            </a>
-          </li>
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="{{route('users.index')}}">
+                <i class="fas fa-group"></i>
+                <span>Listado de Usuarios</span>
+              </a>
+            </li>
           @endcan
           @can('roles.index')
-          <li class="nav-item">
-            <a class="nav-link collapsed" href="{{route('roles.index')}}">
-              <i class="fas fa-fw fa-group"></i>
-              <span>Listado de Roles</span>
-            </a>
-          </li>
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="{{route('roles.index')}}">
+                <i class="fas fa-list-alt"></i>
+                <span>Listado de Roles</span>
+              </a>
+            </li>
           @endcan
-
-        @can('home.estrategico')
-          <!-- Divider -->
-          <hr class="sidebar-divider">
-        
-          <!-- Heading -->
-          <div class="sidebar-heading">
-            Reportes Estratégicos
-          </div>
-
-          <!-- Nav Item - Pages Collapse Menu -->
-          <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-              <i class="fas fa-fw fa-folder"></i>
-              <span>Reportes Estratégicos</span>
-            </a>
-            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-              <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Reportes Estrategicos:</h6>
-                <div class="collapse-divider"></div>
-                <h6 class="collapse-header">Categorias de Producto</h6>
-                <div class="collapse-divider"></div>
-                  <a class="collapse-item" href="">
-                    <i class="fa fa-file-text">
-                        Reporte de ingresos
-                      <p>
-                        por venta por categoría.
-                      </p>
-                    </i>
-                  </a>
-                  <a class="collapse-item" href="">
-                    <i class="fa fa-file-text">
-                      Reporte de ganancia
-                      <p>
-                        bruta por categoría.
-                      </p>
-                    </i>
-                  </a>
-                <h6 class="collapse-header">Materia Prima</h6>
-                <div class="collapse-divider"></div>
-                  <a class="collapse-item" href="">
-                    <i class="fa fa-file-text">
-                        Reporte de Costos de
-                      <p>
-                        materia prima por
-                      </p>
-                      <p style="margin-top: -10%">
-                        proveedor.
-                      </p>
-                    </i>
-                  </a>
-                <h6 class="collapse-header">Clientes</h6>
-                <div class="collapse-divider"></div>
-                <a class="collapse-item" href="">
-                    <i class="fa fa-file-text">
-                        Reporte de preferencia 
-                      <p>
-                        de pago de los clientes.
-                      </p>
-                    </i>
-                  </a>
-                  <a class="collapse-item" href="">
-                    <i class="fa fa-file-text">
-                        Reporte de ventas
-                        <p>
-                          realizadas en la tienda
-                        </p>
-                        <p style="margin-top: -10%">
-                            en linea agrupados
-                        </p>
-                        <p style="margin-top: -10%">
-                            por género
-                        </p>
-                    </i>
-                  </a>
-              </div>
-            </div>
-          </li>
-        @endcan
+          @can('expedientes.index')
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="{{route('expedientes.index')}}">
+                <i class="fas fa-address-card"></i>
+                <span>Listado de Pacientes</span>
+              </a>
+            </li>
+          @endcan
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>

@@ -22,8 +22,8 @@ class CreatePersonasTable extends Migration
             $table->string('direccion')->nullable();
             $table->string('telefono')->default('N/A');
             $table->string('numero_junta')->nullable();
-            $table->integer('user_id')->nullable()->unsigned();
-            $table->foreign('id')->references('id')->on('users');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

@@ -89,7 +89,7 @@ class RolController extends Controller
         $rol = Role::find($id);
         $rol->update($request->all());
         $rol->permissions()->sync($request->get('permission'));
-        return redirect()->route('roles.index')->with('success','Rol modificado con exito');
+        return redirect()->route('roles.index')->with('success','El rol se actualizó correctamente');
     }
 
     /**

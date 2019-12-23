@@ -21,7 +21,7 @@
 <form autocomplete="off" method="POST" action="{{ route('users.store') }}">
 	@csrf
 	<div class="form-group row col-sm-12">
-	    <label for="primer_nombre" class="col-sm-2 col-form-label">Primer nombre:</label>
+	    <label for="primer_nombre" class="col-sm-2 col-form-label">Primer nombre:<font color="red">*</font></label>
 	    <div class="col-sm-4">
 	      	<input type="text" class="form-control" name="primer_nombre" value="{{ old('primer_nombre') }}" required>
 	      	@if ($errors->has('primer_nombre'))
@@ -41,7 +41,7 @@
 	    </div>
 	</div>
 	<div class="form-group row col-sm-12">
-	    <label for="primer_apellido" class="col-sm-2 col-form-label">Primer apellido:</label>
+	    <label for="primer_apellido" class="col-sm-2 col-form-label">Primer apellido:<font color="red">*</font></label>
 	    <div class="col-sm-4">
 	      	<input type="text" class="form-control" name="primer_apellido" value="{{ old('primer_apellido') }}" required>
 	      	@if ($errors->has('primer_apellido'))
@@ -61,7 +61,7 @@
 	    </div>
 	</div>
 	<div class="form-group row col-sm-12">
-	    <label for="telefono" class="col-sm-2 col-form-label">Número de Teléfono:</label>
+	    <label for="telefono" class="col-sm-2 col-form-label">Número de Teléfono:<font color="red">*</font></label>
 	    <div class="col-sm-4">
 	      	<input id="telefono" type="text" class="form-control" name="telefono" value="{{ old('telefono') }}" required>
 			@if ($errors->has('telefono'))
@@ -70,13 +70,13 @@
 				</span>
 			@endif
 	    </div>
-	    <label for="email" class="col-sm-2 col-form-label">E-Mail</label>
+	    <label for="email" class="col-sm-2 col-form-label">E-Mail:<font color="red">*</font></label>
 	    <div class="col-sm-4">
 	      <input type="email" class="form-control" id="email" name="email" value="{{old('email')}}" required>
 	    </div>
 	</div>
 	<div class="form-group row col-sm-12">
-	    <label for="direccion" class="col-sm-2 col-form-label">Direccion:</label>
+	    <label for="direccion" class="col-sm-2 col-form-label">Direccion:<font color="red">*</font></label>
 	    <div class="col-sm-4">
 	      	<textarea id="direccion" class="form-control" name="direccion" rows="4" required>{{ old('direccion') }}</textarea>
 			@if ($errors->has('direccion'))
@@ -86,7 +86,7 @@
 			@endif
 	    </div>
 
-	    <label for="role" class="col-sm-2" >Tipo de Usuario:</label>
+	    <label for="role" class="col-sm-2" >Tipo de Usuario:<font color="red">*</font></label>
 		<div class="col-sm-4">
 	      	<select required class="form-control" name="role" id="role" style="padding: -100%" required>
 				<option value="" disabled selected>Seleccione el tipo de usuario</option>
@@ -121,6 +121,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#telefono').mask('0000-0000')
+		$('#numero_junta').mask('JVPO-#')
 		$('#telefono').attr('placeholder','####-####')
 		$('#role').change(function(){
 			if($(this).val() == 'doctor'){

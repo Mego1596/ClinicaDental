@@ -38,7 +38,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::where('id','<>',1)->get();
+        $roles = Role::where('slug','<>','admin')->where('slug','<>','paciente')->get();
         return view('usuarios.create_user',compact('roles'));
     }
 
@@ -84,7 +84,7 @@ class UserController extends Controller
         if($query != NULL)
         {
             foreach ($query as $key => $value) {
-                $correlativo = (int)substr($value->expediente,1,3);
+                $correlativo = (int)substr($value->name,1,3);
                 if( $correlativo <= 9 ){
                     $user->name = $username."00".strval($correlativo+1)."-".$anio;
                 }elseif ( $correlativo <= 99 ) {
@@ -118,7 +118,7 @@ class UserController extends Controller
             $m->subject('Contraseña y nombre de usuario');
             $m->from('clinicayekixpaki@gmail.com','Sana Dental');
         });
-        return redirect()->route('users.index')->with('success','El Usuario se ingresó correctamente');
+        return redirect()->route('users.index')->with('success','Usuario se añadido con exito');
     }
 
     /**
@@ -192,7 +192,7 @@ class UserController extends Controller
         
         $persona->save();
         
-        return redirect('users')->with('success','El Usuario se actualizó correctamente');
+        return redirect('users')->with('success','El usuario se actualizó correctamente');
     }
 
     /**

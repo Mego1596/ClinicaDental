@@ -10,4 +10,9 @@ class Persona extends Model
     {
         return $this->belongsTo('App\User','user_id');
     }
+
+    public function expediente()
+    {
+        return $this->hasOne('App\Expediente');
+    }
 }

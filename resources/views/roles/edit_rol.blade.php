@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.base')
 
-@section('nombre')
+@section('titulo')
     Editar Rol
 @endsection
 

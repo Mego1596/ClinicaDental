@@ -37,6 +37,7 @@ class PermissionTableSeeder extends Seeder
             'slug' => 'user.destroy',
             'description' => 'Eliminar usuarios del Sistema'
         ]);
+
         //TABLA ROLES
         Permission::create([
             'name' => 'Permiso de Entrada a lista de Roles',
@@ -63,6 +64,34 @@ class PermissionTableSeeder extends Seeder
             'name' => 'Permiso de Eliminar Roles',
             'slug' => 'rol.destroy',
             'description' => 'Eliminar roles del Sistema'
+        ]);
+
+        //TABLA ROLES
+        Permission::create([
+            'name' => 'Permiso de Entrada a lista de Procedimientos',
+            'slug' => 'procedimiento.index',
+            'description' => 'Lista y Navega todos los procedimientos del Sistema'
+        ]);
+        
+        Permission::create([
+            'name' => 'Permiso de Creacion de Procedimiento',
+            'slug' => 'procedimiento.store',
+            'description' => 'Crear nuevos procedimientos en el Sistema'
+        ]);
+        Permission::create([
+            'name' => 'Permiso de Ver Procedimiento',
+            'slug' => 'procedimiento.show',
+            'description' => 'Ver descripcion de procedimientos en el Sistema'
+        ]);
+        Permission::create([
+            'name' => 'Permiso de Editar Procedimiento',
+            'slug' => 'procedimiento.edit',
+            'description' => 'Editar procedimientos del Sistema'
+        ]);
+        Permission::create([
+            'name' => 'Permiso de Eliminar Procedimiento',
+            'slug' => 'procedimiento.destroy',
+            'description' => 'Eliminar procedimientos del Sistema'
         ]);
     }
 }
