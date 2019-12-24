@@ -18,6 +18,43 @@ class UserController extends Controller
       $this->middleware('auth');
     }
 
+    public static function generadorUsername($request):String
+    {
+        $anio = Carbon::now()->year;
+        $username = $request->primer_nombre[0];
+        if(!empty($request->segundo_nombre)){
+            $username .= $request->segundo_nombre[0].$request->primer_apellido[0];
+        }else{
+            $username .= $request->primer_nombre[0].$request->primer_apellido[0];
+        }
+        if(!empty($request->segundo_apellido)){
+            $username .= $request->segundo_apellido[0];
+        }else{
+            $username .= $request->primer_apellido[0];
+        }
+        $busquedaUsername = $username.'%'.$anio;
+        $string = "SELECT name FROM users 
+        WHERE name LIKE '".$busquedaUsername."' AND id IN 
+        (SELECT MAX(id) FROM users 
+            WHERE name LIKE '".$busquedaUsername.
+        "')";
+        $query                           = DB::select( DB::raw($string));
+        if($query != NULL)
+        {
+            foreach ($query as $key => $value) {
+                $correlativo = (int)substr($value->name,1,3);
+                if( $correlativo <= 9 ){
+                    return $username."00".strval($correlativo+1)."-".$anio;
+                }elseif ( $correlativo <= 99 ) {
+                    return $username."0".strval($correlativo+1)."-".$anio;
+                }else{
+                    return $username.strval($correlativo+1)."-".$anio;
+                }
+            }
+        }else{
+            return $username."001-".$anio;
+        }
+    }
     /**
      * Display a listing of the resource.
      *
@@ -50,52 +87,20 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $regex = ['required', 'regex:/^(2|7|6)+\d{3}-\d{4}$/'];
         $request->validate([
-            'primer_nombre' => 'required',
-            'primer_apellido' => 'required',
-            'email' => 'required|unique:users|regex:/^.+@.+$/i',
-            'direccion' => 'required',
-            'telefono' => 'required|regex:/^\d{4}-\d{4}$/',
-            'role' => 'required'
+            'primer_nombre'     => 'required',
+            'primer_apellido'   => 'required',
+            'email'             => 'required|unique:users|regex:/^.+@.+$/i',
+            'direccion'         => 'required',
+            'telefono'          => $regex,
+            'role'              => 'required'
         ]);
         $password=substr(md5(microtime()),1,6);
         $user                     = new User();
         //LOGICA PARA CREACION DE NOMBRE USUARIOS
         //Verificar que el segundo nombre y segundo apellido no esten vacios
-        $anio = Carbon::now()->year;
-        $username = $request->primer_nombre[0];
-        if(!empty($request->segundo_nombre)){
-            $username .= $request->segundo_nombre[0].$request->primer_apellido[0];
-        }else{
-            $username .= $request->primer_nombre[0].$request->primer_apellido[0];
-        }
-        if(!empty($request->segundo_apellido)){
-            $username .= $request->segundo_apellido[0];
-        }else{
-            $username .= $request->primer_apellido[0];
-        }
-        $busquedaUsername = $username.'%'.$anio;
-        $string = "SELECT name FROM users 
-        WHERE name LIKE '".$busquedaUsername."' AND id IN 
-        (SELECT MAX(id) FROM users 
-            WHERE name LIKE '".$busquedaUsername.
-        "')";
-        $query                           = DB::select( DB::raw($string));
-        if($query != NULL)
-        {
-            foreach ($query as $key => $value) {
-                $correlativo = (int)substr($value->name,1,3);
-                if( $correlativo <= 9 ){
-                    $user->name = $username."00".strval($correlativo+1)."-".$anio;
-                }elseif ( $correlativo <= 99 ) {
-                    $user->name = $username."0".strval($correlativo+1)."-".$anio;
-                }else{
-                    $user->name = $username.strval($correlativo+1)."-".$anio;
-                }
-            }
-        }else{
-            $user->name = $username."001-".$anio;
-        }
+        $user->name = $this->generadorUsername($request);
         //FIN LOGICA PARA CREACION DE NOMBRE DE USUARIOS
         $user->email              = $request->email;
         $user->password           = bcrypt($password);
@@ -156,12 +161,13 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $regex = ['required', 'regex:/^(2|7|6)+\d{3}-\d{4}$/'];
         $request->validate([
-            'primer_nombre' => 'required',
-            'primer_apellido' => 'required',
-            'direccion' => 'required',
-            'telefono' => 'required|regex:/^\d{4}-\d{4}$/',
-            'role' => 'required'
+            'primer_nombre'     => 'required',
+            'primer_apellido'   => 'required',
+            'direccion'         => 'required',
+            'telefono'          => $regex,
+            'role'              => 'required'
         ]);
 
         $user                     = User::find($id);
@@ -213,4 +219,5 @@ class UserController extends Controller
         }
         
     }
+
 }

@@ -120,7 +120,7 @@
 @section('JS')
 <script type="text/javascript">
 	$(document).ready(function(){
-		$('#telefono').mask('0000-0000')
+		$('#telefono').mask('X000-0000',{ translation: { 'X': { pattern: /(2|7|6)/, optional: false } } })
 		$('#numero_junta').mask('JVPO-#')
 		$('#telefono').attr('placeholder','####-####')
 		$('#role').change(function(){

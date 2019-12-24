@@ -49,54 +49,56 @@
             </thead>
             <tbody>
             	@foreach($users as $datos)
-	                <tr>
-                        @if($datos->roles[0]['slug'] == 'suspendido')
-    	                    <td style="color: red">{{$datos->persona->primer_nombre.' '.$datos->persona->segundo_nombre.' '.$datos->persona->primer_apellido.' '.$datos->persona->segundo_apellido}}</td>
-                            <td style="color: red">{{$datos->name}}</td>
-    	                    <td style="color: red">{{$datos->email}}</td>
-    	                    <td style="color: red">{{$datos->roles[0]['name']}}</td>
-                        @else
-                            <td>{{$datos->persona->primer_nombre.' '.$datos->persona->segundo_nombre.' '.$datos->persona->primer_apellido.' '.$datos->persona->segundo_apellido}}</td>
-                            <td>{{$datos->name}}</td>
-                            <td>{{$datos->email}}</td>
-                            <td>{{$datos->roles[0]['name']}}</td>
-                        @endif
-	                    <td>
-	                        @can('user.show')
-	                            <a href="{{route('users.show',['user'=>$datos->id])}}" class="btn btn-info btn-circle" title="Ver perfil" style="color: white"><i class="fa fa-eye"></i></a>
-	                        @endcan
-	                        @can('user.edit')
-	                            <a href="{{route('users.edit',['user'=>$datos->id])}}" class="btn btn-primary btn-circle" title="Registrar Recepción de Vehículo" style="color: white" ><i class="fas fa-pencil-alt"></i></a>
-	                        @endcan
-	                        @can('user.destroy')
-	                            <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#modal-default2{{$datos->id}}">
-	                                <i class="fas fa-fw fa-trash-alt"></i>
-	                            </button>
-	                        @endcan
-	                        <div class="modal fade" id="modal-default2{{$datos->id}}">
-	                            <div class="modal-dialog">
-	                                <div class="modal-content">
-	                                    <div class="modal-header">
-	                                        <h4>Eliminar Usuario</h4>
-	                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                                        <span aria-hidden="true">&times;</span></button>
-	                                    </div>
-	                                    <form action="{{ route('users.destroy',['user'=>$datos->id]) }}" method="POST">
-	                                        @csrf
-	                                        <input type="hidden" name="_method" value="DELETE">
-	                                        <div class="modal-body">
-	                                            <h4>Realmente desea eliminar el usuario: <strong>{{$datos->persona->primer_nombre.' '.$datos->persona->segundo_nombre.' '.$datos->persona->primer_apellido.' '.$datos->persona->segundo_apellido}}</strong>?</h4>
-	                                        </div>
-	                                        <div class="modal-footer">
-	                                            <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Cerrar</button>
-	                                            <button type="submit" class="btn btn-danger">Si</button>
-	                                        </div>
-	                                    </form>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </td>
-	                </tr>
+	                @if($datos->roles[0]['slug'] != 'paciente')
+                        <tr>
+                            @if($datos->roles[0]['slug'] == 'suspendido')
+        	                    <td style="color: red">{{$datos->persona->primer_nombre.' '.$datos->persona->segundo_nombre.' '.$datos->persona->primer_apellido.' '.$datos->persona->segundo_apellido}}</td>
+                                <td style="color: red">{{$datos->name}}</td>
+        	                    <td style="color: red">{{$datos->email}}</td>
+        	                    <td style="color: red">{{$datos->roles[0]['name']}}</td>
+                            @else
+                                <td>{{$datos->persona->primer_nombre.' '.$datos->persona->segundo_nombre.' '.$datos->persona->primer_apellido.' '.$datos->persona->segundo_apellido}}</td>
+                                <td>{{$datos->name}}</td>
+                                <td>{{$datos->email}}</td>
+                                <td>{{$datos->roles[0]['name']}}</td>
+                            @endif
+    	                    <td>
+    	                        @can('user.show')
+    	                            <a href="{{route('users.show',['user'=>$datos->id])}}" class="btn btn-info btn-circle" title="Ver perfil" style="color: white"><i class="fa fa-eye"></i></a>
+    	                        @endcan
+    	                        @can('user.edit')
+    	                            <a href="{{route('users.edit',['user'=>$datos->id])}}" class="btn btn-primary btn-circle" title="Registrar Recepción de Vehículo" style="color: white" ><i class="fas fa-pencil-alt"></i></a>
+    	                        @endcan
+    	                        @can('user.destroy')
+    	                            <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#modal-default2{{$datos->id}}">
+    	                                <i class="fas fa-fw fa-trash-alt"></i>
+    	                            </button>
+    	                        @endcan
+    	                        <div class="modal fade" id="modal-default2{{$datos->id}}">
+    	                            <div class="modal-dialog">
+    	                                <div class="modal-content">
+    	                                    <div class="modal-header">
+    	                                        <h4>Eliminar Usuario</h4>
+    	                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    	                                        <span aria-hidden="true">&times;</span></button>
+    	                                    </div>
+    	                                    <form action="{{ route('users.destroy',['user'=>$datos->id]) }}" method="POST">
+    	                                        @csrf
+    	                                        <input type="hidden" name="_method" value="DELETE">
+    	                                        <div class="modal-body">
+    	                                            <h4>Realmente desea eliminar el usuario: <strong>{{$datos->persona->primer_nombre.' '.$datos->persona->segundo_nombre.' '.$datos->persona->primer_apellido.' '.$datos->persona->segundo_apellido}}</strong>?</h4>
+    	                                        </div>
+    	                                        <div class="modal-footer">
+    	                                            <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Cerrar</button>
+    	                                            <button type="submit" class="btn btn-danger">Si</button>
+    	                                        </div>
+    	                                    </form>
+    	                                </div>
+    	                            </div>
+    	                        </div>
+    	                    </td>
+    	                </tr>
+                    @endif
                 @endforeach
             </tbody>
         </table>
