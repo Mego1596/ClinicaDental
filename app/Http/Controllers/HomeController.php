@@ -37,19 +37,27 @@ class HomeController extends Controller
         );
 
         $calendar = Calendar::addEvents($event_list)->setOptions([
-            'firstDay' => 1,
-            'editable' => false,
-            'themeSystem'=>'bootstrap4',
-            'locale' => 'es',
+            'firstDay'      => 1,
+            'editable'      => false,
+            'themeSystem'   =>'bootstrap4',
+            'locale'        => 'es',
+
+            'customButtons' => [
+                'myCustomButton' => [
+                  'text' => 'custom!',
+                ]
+            ],
             'buttonText'=> array(
                 'today'=> 'Hoy',
                 'month'=> 'Mes',
                 'week' => 'Semana',
                 'day' => 'Día'
             ),
+
+
             'defaultView' => 'month',
             'header' => array(
-                'left' => 'prev,next today', 
+                'left' => 'prev,next today myCustomButton', 
                 'center' => 'title', 
                 'right' => 'month,agendaWeek,agendaDay'
                 )
