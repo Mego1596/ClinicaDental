@@ -144,9 +144,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="sexo" class="col-sm-6 col-form-label">Procedimiento:<font color="red">*</font></label>
+                            <label for="procedimiento" class="col-sm-6 col-form-label">Procedimiento:<font color="red">*</font></label>
                             <div class="col-sm-6">
-                              <select class="form-control" name="sexo" required>
+                              <select class="form-control" name="procedimiento" required>
                                 <option value="" selected disabled>Seleccione</option>
                                 @foreach($procedimientos as $procedimiento)
                                     <option value="{{$procedimiento->id}}">{{$procedimiento->nombre}}</option>
