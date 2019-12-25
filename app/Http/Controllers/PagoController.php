@@ -25,7 +25,20 @@ class PagoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $pago = new Pago();
+        $pago->total_cita = $request->total_cita;
+        $pago->abono = $request->abono;
+        $pago->diferencia = $request->total_cita - $request->abono;
+        $pago->cita_id = $request->cita;
+
+        if ($pago->save()) {
+            $msj_type = 'success';
+            $msj = "pago registrado exitosamente";
+        }else{
+            $msj_type = 'danger';
+            $msj = "el pago no pudo registrarse algo salió mal";            
+        }
+        return redirect()->action('CitaController@show',['cita' => $request->cita])->with($msj_type,$msj);
     }
 
     /**
