@@ -193,6 +193,14 @@
     });
     function crearCita(numero){
         $('#numero_expediente').val(numero);
+        $('#fecha_hora_fin').attr('disabled',true)
+        $('#fecha_hora_inicio').change(function(){
+            if($('#fecha_hora_inicio').val() != ""){
+                $('#fecha_hora_fin').attr('disabled',false).attr('min',$(this).val()).val($(this).val());
+            }else{
+                $('#fecha_hora_fin').attr('disabled',true).attr('min',$(this).val()).val("")
+            }
+        })
     }
 </script>
 @endsection
