@@ -57,6 +57,11 @@
                             <td></td>
                         @endif
 	                    <td>
+                            @can('cita.create')
+                                <button onclick="crearCita('{{$datos->numero_expediente}}')" id="modal_cita" type="button" class="btn btn-dark btn-circle" data-toggle="modal" data-target="#antiguo_paciente">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            @endcan
 	                        @can('expediente.show')
 	                            <a href="{{route('expedientes.show',['expediente'=>$datos->id])}}" class="btn btn-info btn-circle" title="Ver perfil" style="color: white"><i class="fa fa-eye"></i></a>
 	                        @endcan
@@ -97,6 +102,78 @@
         </table>
     </div>
 </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="antiguo_paciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Reservación de Cita</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form autocomplete="off" method="POST" action="">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <input type="hidden" class="form-control" id="numero_expediente" name="numero_expediente" value="0" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="fecha_hora_inicio" class="col-sm-6 col-form-label">Fecha y hora de inicio:<font color="red">*</font></label>
+                            <div class="col-sm-6">
+                                <input id="fecha_hora_inicio" type='datetime-local' class="form-control" name="fecha_hora_inicio" value="{{ old('fecha_hora_inicio') }}" required />
+                                @if ($errors->has('fecha_hora_inicio'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('fecha_hora_inicio') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="fecha_hora_fin" class="col-sm-6 col-form-label">Fecha y hora de finalización:<font color="red">*</font></label>
+                            <div class="col-sm-6">
+                                <input id="fecha_hora_fin" type="datetime-local" class="form-control" name="fecha_hora_fin" value="{{ old('fecha_hora_fin') }}">
+                                @if ($errors->has('fecha_hora_fin'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('fecha_hora_fin') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="sexo" class="col-sm-6 col-form-label">Procedimiento:<font color="red">*</font></label>
+                            <div class="col-sm-6">
+                              <select class="form-control" name="sexo" required>
+                                <option value="" selected disabled>Seleccione</option>
+                                @foreach($procedimientos as $procedimiento)
+                                    <option value="{{$procedimiento->id}}">{{$procedimiento->nombre}}</option>
+                                @endforeach
+                              </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="descripcion" class="col-sm-6 col-form-label">Descripción:</label>
+                            <div class="col-sm-6">
+                                <textarea id="descripcion"  class="form-control" name="descripcion">{{ old('descripcion') }}</textarea>
+                                @if ($errors->has('descripcion'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('descripcion') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('JS')
@@ -112,6 +189,10 @@
                 { "orderable": false, "targets": 3 }
             ]
         });
+        
     });
+    function crearCita(numero){
+        $('#numero_expediente').val(numero);
+    }
 </script>
 @endsection

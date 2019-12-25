@@ -28,7 +28,7 @@
         <a class="btn btn-sm btn-danger" href="{{route('home')}}"><i class="fas fa-arrow-circle-left"></i> Regresar</a> 
     </div>
     <div class="col-sm-3" align="right">
-        @can('user.create')
+        @can('usuario.create')
             <a href="{{route('users.create')}}" class="btn btn-sm btn-success" style="color: black;"><i class="fa fa-fw fa-user-plus"></i> Registrar Usuario</a>
         @endcan
     </div>
@@ -63,13 +63,13 @@
                                 <td>{{$datos->roles[0]['name']}}</td>
                             @endif
     	                    <td>
-    	                        @can('user.show')
+    	                        @can('usuario.show')
     	                            <a href="{{route('users.show',['user'=>$datos->id])}}" class="btn btn-info btn-circle" title="Ver perfil" style="color: white"><i class="fa fa-eye"></i></a>
     	                        @endcan
-    	                        @can('user.edit')
+    	                        @can('usuario.edit')
     	                            <a href="{{route('users.edit',['user'=>$datos->id])}}" class="btn btn-primary btn-circle" title="Registrar Recepción de Vehículo" style="color: white" ><i class="fas fa-pencil-alt"></i></a>
     	                        @endcan
-    	                        @can('user.destroy')
+    	                        @can('usuario.destroy')
     	                            <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#modal-default2{{$datos->id}}">
     	                                <i class="fas fa-fw fa-trash-alt"></i>
     	                            </button>

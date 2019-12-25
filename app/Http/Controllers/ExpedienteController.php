@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Expediente;
+use App\Procedimiento;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
@@ -50,7 +51,8 @@ class ExpedienteController extends Controller
     public function index()
     {
         $expedientes = Expediente::all();
-        return view('expedientes.index',compact('expedientes'));
+        $procedimientos = Procedimiento::all();
+        return view('expedientes.index',compact('expedientes','procedimientos'));
     }
 
     /**

@@ -20,9 +20,21 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware(['auth'])->group(function(){
+	
+	//USUARIOS
 	Route::resource('users','UserController');
+	
+	//ROLES
 	Route::resource('roles','RolController');
+	
+	//PROCEDIMIENTOS
 	Route::resource('procedimientos','ProcedimientoController');
+	
+	//EXPEDIENTE
 	Route::resource('expedientes','ExpedienteController');
 	Route::get('expediente_create_especial','ExpedienteController@expediente_especial')->name('expedientes.especial');
+
+	//CITAS
+	Route::get('citas/create','CitaController@create')->name('citas.create');
+	Route::post('citas/','CitaController@store')->name('citas.store');
 });

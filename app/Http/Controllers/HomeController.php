@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Calendar;
+use App\Procedimiento;
 class HomeController extends Controller
 {
     /**
@@ -65,6 +66,7 @@ class HomeController extends Controller
                 'right' => 'month,agendaWeek,agendaDay'
                 )
             ]);
-        return view('home',compact('calendar'));
+        $procedimientos = Procedimiento::all();
+        return view('home',compact('calendar','procedimientos'));
     }
 }

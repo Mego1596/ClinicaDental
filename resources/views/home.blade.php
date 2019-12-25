@@ -10,7 +10,7 @@
 
 	<!-- Modal -->
 	<div class="modal fade" id="nuevo_paciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-md" role="document">
+		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Reservación de Cita</h5>
@@ -51,6 +51,50 @@
 								<input type="text" class="form-control" id="telefono" name="telefono" required>
 							</div>
 						</div>
+						<div class="form-group row">
+						    <label for="fecha_hora_inicio" class="col-sm-6 col-form-label">Fecha y hora de inicio:<font color="red">*</font></label>
+						    <div class="col-sm-6">
+					            <input id="fecha_hora_inicio" type='datetime-local' class="form-control" name="fecha_hora_inicio" value="{{ old('fecha_hora_inicio') }}" required />
+						      	@if ($errors->has('fecha_hora_inicio'))
+									<span class="help-block">
+										<strong>{{ $errors->first('fecha_hora_inicio') }}</strong>
+									</span>
+								@endif
+						    </div>
+						</div>
+						<div class="form-group row">
+						    <label for="fecha_hora_fin" class="col-sm-6 col-form-label">Fecha y hora de finalización:<font color="red">*</font></label>
+						    <div class="col-sm-6">
+						      	<input id="fecha_hora_fin" type="datetime-local" class="form-control" name="fecha_hora_fin" value="{{ old('fecha_hora_fin') }}">
+						      	@if ($errors->has('fecha_hora_fin'))
+									<span class="help-block">
+										<strong>{{ $errors->first('fecha_hora_fin') }}</strong>
+									</span>
+								@endif
+						    </div>
+						</div>
+						<div class="form-group row">
+						    <label for="sexo" class="col-sm-6 col-form-label">Procedimiento:<font color="red">*</font></label>
+						    <div class="col-sm-6">
+						      <select class="form-control" name="sexo" required>
+						      	<option value="" selected disabled>Seleccione</option>
+						      	@foreach($procedimientos as $procedimiento)
+						      		<option value="{{$procedimiento->id}}">{{$procedimiento->nombre}}</option>
+						      	@endforeach
+						      </select>
+						    </div>
+						</div>
+						<div class="form-group row">
+						    <label for="descripcion" class="col-sm-6 col-form-label">Descripción:</label>
+						    <div class="col-sm-6">
+						      	<textarea id="descripcion"  class="form-control" name="descripcion">{{ old('descripcion') }}</textarea>
+								@if ($errors->has('descripcion'))
+									<span class="help-block">
+										<strong>{{ $errors->first('descripcion') }}</strong>
+									</span>
+								@endif
+						    </div>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -63,7 +107,7 @@
 
 	<!-- Modal -->
 	<div class="modal fade" id="antiguo_paciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-md" role="document">
+		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Reservación de Cita</h5>
@@ -80,10 +124,54 @@
 								<input type="text" class="form-control" id="numero_expediente" name="numero_expediente" required>
 							</div>
 						</div>
+						<div class="form-group row">
+						    <label for="fecha_hora_inicio" class="col-sm-6 col-form-label">Fecha y hora de inicio:<font color="red">*</font></label>
+						    <div class="col-sm-6">
+					            <input id="fecha_hora_inicio" type='datetime-local' class="form-control" name="fecha_hora_inicio" value="{{ old('fecha_hora_inicio') }}" required />
+						      	@if ($errors->has('fecha_hora_inicio'))
+									<span class="help-block">
+										<strong>{{ $errors->first('fecha_hora_inicio') }}</strong>
+									</span>
+								@endif
+						    </div>
+						</div>
+						<div class="form-group row">
+						    <label for="fecha_hora_fin" class="col-sm-6 col-form-label">Fecha y hora de finalización:<font color="red">*</font></label>
+						    <div class="col-sm-6">
+						      	<input id="fecha_hora_fin" type="datetime-local" class="form-control" name="fecha_hora_fin" value="{{ old('fecha_hora_fin') }}">
+						      	@if ($errors->has('fecha_hora_fin'))
+									<span class="help-block">
+										<strong>{{ $errors->first('fecha_hora_fin') }}</strong>
+									</span>
+								@endif
+						    </div>
+						</div>
+						<div class="form-group row">
+						    <label for="sexo" class="col-sm-6 col-form-label">Procedimiento:<font color="red">*</font></label>
+						    <div class="col-sm-6">
+						      <select class="form-control" name="sexo" required>
+						      	<option value="" selected disabled>Seleccione</option>
+						      	@foreach($procedimientos as $procedimiento)
+						      		<option value="{{$procedimiento->id}}">{{$procedimiento->nombre}}</option>
+						      	@endforeach
+						      </select>
+						    </div>
+						</div>
+						<div class="form-group row">
+						    <label for="descripcion" class="col-sm-6 col-form-label">Descripción:</label>
+						    <div class="col-sm-6">
+						      	<textarea id="descripcion"  class="form-control" name="descripcion">{{ old('descripcion') }}</textarea>
+								@if ($errors->has('descripcion'))
+									<span class="help-block">
+										<strong>{{ $errors->first('descripcion') }}</strong>
+									</span>
+								@endif
+						    </div>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-						<button type="submit" class="btn btn-success"><i class="fa fa-arrow-circle-right"></i> Continuar</button>
+						<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
 					</div>
 				</form>
 			</div>

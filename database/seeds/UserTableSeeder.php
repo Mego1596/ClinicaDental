@@ -39,7 +39,8 @@ class UserTableSeeder extends Seeder
         Role::create([
             'name'           => 'Suspendido',
             'slug'           => 'suspendido',
-            'description'    => 'Rol de Suspendido'
+            'description'    => 'Rol de Suspendido',
+            'special'        => 'no-access'
         ]);
 
         Role::create([
@@ -52,6 +53,12 @@ class UserTableSeeder extends Seeder
             'name'           => 'Paciente',
             'slug'           => 'paciente',
             'description'    => 'Rol de Paciente'
+        ]);
+
+        Role::create([
+            'name'           => 'Asistente',
+            'slug'           => 'asistente',
+            'description'    => 'Rol de Asistente'
         ]);
 
         $user->roles()->sync(1);

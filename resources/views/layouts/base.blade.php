@@ -89,7 +89,7 @@
             </div>
           @endif
           <!-- Nav Item - Pages Collapse Menu -->
-          @can('users.index')
+          @can('usuario.index')
             <li class="nav-item">
               <a class="nav-link collapsed" href="{{route('users.index')}}">
                 <i class="fas fa-group"></i>
@@ -97,7 +97,7 @@
               </a>
             </li>
           @endcan
-          @can('roles.index')
+          @can('rol.index')
             <li class="nav-item">
               <a class="nav-link collapsed" href="{{route('roles.index')}}">
                 <i class="fas fa-list-alt"></i>
@@ -105,11 +105,23 @@
               </a>
             </li>
           @endcan
-          @can('expedientes.index')
+          @can('expediente.index')
             <li class="nav-item">
               <a class="nav-link collapsed" href="{{route('expedientes.index')}}">
                 <i class="fas fa-address-card"></i>
                 <span>Listado de Pacientes</span>
+              </a>
+            </li>
+          @endcan
+          <div class="sidebar-heading">
+              Procedimientos
+          </div>
+          <hr class="sidebar-divider">
+          @can('procedimiento.index')
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="{{route('procedimientos.index')}}">
+                <i class="fas fa-list"></i>
+                <span>Listado de Procedimientos</span>
               </a>
             </li>
           @endcan

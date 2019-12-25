@@ -123,11 +123,24 @@
 		$('#telefono').mask('X000-0000',{ translation: { 'X': { pattern: /(2|7|6)/, optional: false } } })
 		$('#numero_junta').mask('JVPO-#')
 		$('#telefono').attr('placeholder','####-####')
+		if($('#role').val() == 'doctor' || $('#role').val() == 'asistente'){
+			$('#label_junta').css('display','block');
+			$('#div_junta').css('display','block');
+			$('#numero_junta').attr('required',true);
+		}else{
+			$('#label_junta').css('display','none');
+			$('#div_junta').css('display','none');
+			$('#numero_junta').attr('required',false);
+		}
 		$('#role').change(function(){
-			if($(this).val() == 'doctor'){
+			if($(this).val() == 'doctor' || $('#role').val() == 'asistente'){
 				$('#label_junta').css('display','block');
 				$('#div_junta').css('display','block');
-				$('#numero_junta').attr('required',true);
+				if($('#role').val() == 'asistente'){
+					$('#numero_junta').attr('required',false);
+				}else{
+					$('#numero_junta').attr('required',true);
+				}
 			}else{
 				$('#label_junta').css('display','none');
 				$('#div_junta').css('display','none');

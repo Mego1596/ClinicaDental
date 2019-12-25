@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Cita;
 use Illuminate\Http\Request;
 use App\Persona;
-
+use App\Procedimiento;
+use Calendar;
 class CitaController extends Controller
 {
- 
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -16,7 +18,8 @@ class CitaController extends Controller
      */
     public function create()
     {
-        return view('citas.create_cita');
+        $procedimientos = Procedimiento::all();
+        return view('citas.create_cita',compact('procedimientos'));
     }
 
     /**
@@ -25,7 +28,7 @@ class CitaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Persona $persona)
+    public function store(Request $request)
     {
         $request->validate([
             'fecha_hora_inicio'     => 'required|after:'.Carbon::now()->subDays(1)->format('d-m-Y'),

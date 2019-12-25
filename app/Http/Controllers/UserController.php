@@ -114,7 +114,14 @@ class UserController extends Controller
         $persona->segundo_apellido   = $request->segundo_apellido;
         $persona->direccion          = $request->direccion;
         $persona->telefono           = $request->telefono;
-        $persona->numero_junta       = $request->numero_junta;
+        if(!is_null($request->numero_junta)){
+            if(preg_match('/^JVPO-+\d([0-9])+$/', $request->numero_junta)){
+                $persona->numero_junta       = $request->numero_junta;
+            }else{
+                $user->dele();
+                return back()->with('danger','Error, el campo numero de junta es incorrecto');
+            }
+        }
         $persona->user_id            = $user->id;
         $persona->save();
 
@@ -135,7 +142,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user   =   User::find($id);
-        $roles  =   Role::where('id','<>',1)->get();
+        $roles  =   Role::where('slug','<>','admin')->where('slug','<>','paciente')->get();
         return view('usuarios.show_user',compact('roles','user'));
     }
 
@@ -148,7 +155,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user   =   User::find($id);
-        $roles  =   Role::where('id','<>',1)->get();
+        $roles  =   Role::where('slug','<>','admin')->where('slug','<>','paciente')->get();
         return view('usuarios.edit_user',compact('roles','user'));
     }
 
@@ -190,10 +197,18 @@ class UserController extends Controller
         $persona->segundo_apellido   = $request->segundo_apellido;
         $persona->direccion          = $request->direccion;
         $persona->telefono           = $request->telefono;
-        if($rol[0]['slug'] != 'doctor'){
+        if($rol[0]['slug'] != 'doctor' && $rol[0]['slug'] != 'asistente'){
             $persona->numero_junta       = null;
         }else{
-            $persona->numero_junta       = $request->numero_junta;
+            if(!is_null($request->numero_junta)){
+                if(preg_match('/^JVPO-+\d([0-9])+$/', $request->numero_junta)){
+                    $persona->numero_junta       = $request->numero_junta;
+                }else{
+                    return back()->with('danger','Error, el campo numero de junta es incorrecto');
+                }
+            }else{
+                $persona->numero_junta       = null;
+            }
         }
         
         $persona->save();
