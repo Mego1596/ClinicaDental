@@ -113,7 +113,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form autocomplete="off" method="POST" action="">
+                <form autocomplete="off" method="POST" action="{{route('citas.store')}}">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group row">

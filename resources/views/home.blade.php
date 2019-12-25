@@ -6,6 +6,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css"/>
 @endsection
 @section('content')
+@if (\Session::has('success'))
+    <div class="alert alert-success">
+        <ul>
+            <li>{!! \Session::get('success') !!}</li>
+        </ul>
+    </div>
+@endif
+@if (\Session::has('danger'))
+    <div class="alert alert-danger">
+        <ul>
+            <li>{!! \Session::get('danger') !!}</li>
+        </ul>
+    </div>
+@endif
+
+
     {!! $calendar->calendar() !!}
 
 	<!-- Modal -->
@@ -18,7 +34,7 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form autocomplete="off" method="POST">
+				<form autocomplete="off" method="POST" action="{{route('personas.store')}}">
 					@csrf
 					<div class="modal-body">
 						<div class="form-group row">
@@ -76,7 +92,7 @@
 						<div class="form-group row">
 						    <label for="sexo" class="col-sm-6 col-form-label">Procedimiento:<font color="red">*</font></label>
 						    <div class="col-sm-6">
-						      <select class="form-control" name="sexo" required>
+						      <select class="form-control" name="procedimiento" required>
 						      	<option value="" selected disabled>Seleccione</option>
 						      	@foreach($procedimientos as $procedimiento)
 						      		<option value="{{$procedimiento->id}}">{{$procedimiento->nombre}}</option>
@@ -115,7 +131,7 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form autocomplete="off" method="POST" action="">
+				<form autocomplete="off" method="POST" action="{{route('citas.store')}}">
 					@csrf
 					<div class="modal-body">
 						<div class="form-group row">
@@ -149,7 +165,7 @@
 						<div class="form-group row">
 						    <label for="sexo" class="col-sm-6 col-form-label">Procedimiento:<font color="red">*</font></label>
 						    <div class="col-sm-6">
-						      <select class="form-control" name="sexo" required>
+						      <select class="form-control" name="procedimiento" required>
 						      	<option value="" selected disabled>Seleccione</option>
 						      	@foreach($procedimientos as $procedimiento)
 						      		<option value="{{$procedimiento->id}}">{{$procedimiento->nombre}}</option>

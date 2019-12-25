@@ -37,4 +37,6 @@ Route::middleware(['auth'])->group(function(){
 	//CITAS
 	Route::get('citas/create','CitaController@create')->name('citas.create');
 	Route::post('citas/','CitaController@store')->name('citas.store');
+
+	Route::resource('personas','PersonaController');
 });
