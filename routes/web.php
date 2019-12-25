@@ -24,4 +24,5 @@ Route::middleware(['auth'])->group(function(){
 	Route::resource('roles','RolController');
 	Route::resource('procedimientos','ProcedimientoController');
 	Route::resource('expedientes','ExpedienteController');
+	Route::get('expediente_create_especial','ExpedienteController@expediente_especial')->name('expedientes.especial');
 });

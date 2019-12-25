@@ -20,57 +20,9 @@
 @endif
 <form autocomplete="off" method="POST" action="{{ route('expedientes.store') }}">
 	@csrf
-	<input type="hidden" name="especial" id="especial" value="no especial">
+	<input type="hidden" name="especial" id="especial" value="especial">
+	<input type="hidden" name="persona" id="persona" value="2">
 	<div class="form-group row col-sm-12">
-	    <label for="primer_nombre" class="col-sm-2 col-form-label">Primer nombre:<font color="red">*</font></label>
-	    <div class="col-sm-4">
-	      	<input type="text" class="form-control" name="primer_nombre" value="{{ old('primer_nombre') }}" required>
-	      	@if ($errors->has('primer_nombre'))
-				<span class="help-block">
-					<strong>{{ $errors->first('primer_nombre') }}</strong>
-				</span>
-			@endif
-	    </div>
-	    <label for="segundo_nombre" class="col-sm-2 col-form-label">Segundo nombre:</label>
-	    <div class="col-sm-4">
-	      	<input type="text" class="form-control" name="segundo_nombre" value="{{ old('segundo_nombre') }}">
-	      	@if ($errors->has('segundo_nombre'))
-				<span class="help-block">
-					<strong>{{ $errors->first('segundo_nombre') }}</strong>
-				</span>
-			@endif
-	    </div>
-	</div>
-	<div class="form-group row col-sm-12">
-	    <label for="primer_apellido" class="col-sm-2 col-form-label">Primer apellido:<font color="red">*</font></label>
-	    <div class="col-sm-4">
-	      	<input type="text" class="form-control" name="primer_apellido" value="{{ old('primer_apellido') }}" required>
-	      	@if ($errors->has('primer_apellido'))
-				<span class="help-block">
-					<strong>{{ $errors->first('primer_apellido') }}</strong>
-				</span>
-			@endif
-	    </div>
-	    <label for="segundo_apellido" class="col-sm-2 col-form-label">Segundo apellido:</label>
-	    <div class="col-sm-4">
-	      	<input type="text" class="form-control" name="segundo_apellido" value="{{ old('segundo_apellido') }}">
-	      	@if ($errors->has('segundo_apellido'))
-				<span class="help-block">
-					<strong>{{ $errors->first('segundo_apellido') }}</strong>
-				</span>
-			@endif
-	    </div>
-	</div>
-	<div class="form-group row col-sm-12">
-	    <label for="telefono" class="col-sm-2 col-form-label">Número de Teléfono<font color="red">*</font></label>
-	    <div class="col-sm-4">
-	      	<input id="telefono" type="text" class="form-control" name="telefono" value="{{ old('telefono') }}" required>
-			@if ($errors->has('telefono'))
-				<span class="help-block">
-					<strong>{{ $errors->first('telefono') }}</strong>
-				</span>
-			@endif
-	    </div>
 	    <label for="email" class="col-sm-2 col-form-label">E-Mail:</label>
 	    <div class="col-sm-4">
 	      <input type="email" class="form-control" id="email" name="email" value="{{old('email')}}">

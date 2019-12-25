@@ -31,7 +31,7 @@ class HomeController extends Controller
             '2019-12-14', //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg), yyyy-mm-dd
             1, //optional event ID
             [
-                'url' => 'http://fullcalendar.io',
+                'url'   => 'http://fullcalendar.io',
                 //any other full-calendar supported parameters
             ]
         );
@@ -43,9 +43,12 @@ class HomeController extends Controller
             'locale'        => 'es',
 
             'customButtons' => [
-                'myCustomButton' => [
-                  'text' => 'custom!',
-                ]
+                'paciente_nuevo' => [
+                  'text' => 'Nuevo Paciente',
+                ],
+                'paciente_antiguo' => [
+                  'text' => 'Antiguo Paciente',
+                ],
             ],
             'buttonText'=> array(
                 'today'=> 'Hoy',
@@ -57,7 +60,7 @@ class HomeController extends Controller
 
             'defaultView' => 'month',
             'header' => array(
-                'left' => 'prev,next today myCustomButton', 
+                'left' => 'prev,next today paciente_nuevo paciente_antiguo', 
                 'center' => 'title', 
                 'right' => 'month,agendaWeek,agendaDay'
                 )

@@ -71,39 +71,59 @@ class ExpedienteController extends Controller
      */
     public function store(Request $request)
     {
-        $regex = ['required', 'regex:/^(2|7|6)+\d{3}-\d{4}$/'];
-        $request->validate([
-            'primer_nombre'     =>  'required',
-            'primer_apellido'   =>  'required',
-            'direccion'         =>  'required',
-            'telefono'          =>   $regex,
-            'fecha_nacimiento'  =>  'required|date|before:'.Carbon::now()->subYears(1)->format('d-m-Y'),
-            'sexo'              =>  'required|string',
-            'ocupacion'         =>  'required|string',
-        ]);
-
-
-        
         $password=substr(md5(microtime()),1,6);
         $user = null;
-        $numero = $this->generadorExpediente($request);
-        if(!empty($request->email)){
-            $user = new User;
-            $user->name     = $numero;
-            $user->email    = $request->email;
-            $user->password = bcrypt($password);
-            $user->save();
-            $rol            = Role::where('slug','paciente')->get();
-            $user->roles()->sync($rol[0]['id']);
+        $regex = ['required', 'regex:/^(2|7|6)+\d{3}-\d{4}$/'];
+        if($request->especial == 'especial'){
+            $request->validate([
+                'direccion'         =>  'required',
+                'fecha_nacimiento'  =>  'required|date|before:'.Carbon::now()->subYears(1)->format('d-m-Y'),
+                'sexo'              =>  'required|string',
+                'ocupacion'         =>  'required|string',
+            ]); 
+            $persona                = Persona::find($request->persona);
+            $persona->direccion     = $request->direccion;
+            $request->request->add(['primer_apellido' => $persona->primer_apellido ]);
+            $numero = $this->generadorExpediente($request);
+            if(!empty($request->email)){
+                $user = new User;
+                $user->name     = $numero;
+                $user->email    = $request->email;
+                $user->password = bcrypt($password);
+                $user->save();
+                $rol            = Role::where('slug','paciente')->get();
+                $user->roles()->sync($rol[0]['id']);
+            }
+            
+        }else{
+            $request->validate([
+                'primer_nombre'     =>  'required',
+                'primer_apellido'   =>  'required',
+                'direccion'         =>  'required',
+                'telefono'          =>   $regex,
+                'fecha_nacimiento'  =>  'required|date|before:'.Carbon::now()->subYears(1)->format('d-m-Y'),
+                'sexo'              =>  'required|string',
+                'ocupacion'         =>  'required|string',
+            ]); 
+            $numero = $this->generadorExpediente($request);
+            if(!empty($request->email)){
+                $user = new User;
+                $user->name     = $numero;
+                $user->email    = $request->email;
+                $user->password = bcrypt($password);
+                $user->save();
+                $rol            = Role::where('slug','paciente')->get();
+                $user->roles()->sync($rol[0]['id']);
+            }
+            $persona = new Persona;
+            $persona->primer_nombre      = $request->primer_nombre;
+            $persona->primer_apellido    = $request->primer_apellido;
+            $persona->segundo_nombre     = $request->segundo_nombre;
+            $persona->segundo_apellido   = $request->segundo_apellido;
+            $persona->direccion          = $request->direccion;
+            $persona->telefono           = $request->telefono;
         }
-        
-        $persona = new Persona;
-        $persona->primer_nombre      = $request->primer_nombre;
-        $persona->primer_apellido    = $request->primer_apellido;
-        $persona->segundo_nombre     = $request->segundo_nombre;
-        $persona->segundo_apellido   = $request->segundo_apellido;
-        $persona->direccion          = $request->direccion;
-        $persona->telefono           = $request->telefono;
+        $persona->save();
         if(!is_null($user)){
             $persona->user_id        = $user->id;
             Mail::send('email.user',['user'=> $user,'password'=>$password], function($m) use($user,$persona){
@@ -114,6 +134,7 @@ class ExpedienteController extends Controller
         }else{
             $persona->user_id        = $user;      
         }
+
         $persona->save();
         $expediente = new Expediente;
         $expediente->numero_expediente      =   $numero;
@@ -127,6 +148,7 @@ class ExpedienteController extends Controller
         $expediente->historia_medica        =   $request->historia_medica;
         $expediente->persona_id             =   $persona->id;
         $expediente->save();
+        
         return redirect()->route('expedientes.index')->with('success','Paciente añadido con exito');
     }
 
@@ -257,5 +279,9 @@ class ExpedienteController extends Controller
         $expediente->persona->user->delete();
         $expediente->persona->delete();
         return back()->with('success','Paciente eliminado con exito');
+    }
+
+    public function expediente_especial(){
+        return view('create_expediente_especial');
     }
 }
