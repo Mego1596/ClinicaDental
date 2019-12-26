@@ -2,6 +2,7 @@
 
 namespace App;
 use DateTime;
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Cita extends Model
@@ -58,12 +59,12 @@ class Cita extends Model
         if( $duracion_minima || $horario_fuera || $traslapa_almuerzo || $contiene_almuerzo || !$mismo_dia){
              return $mensaje;
         }
-    
+
         //validacion cita no choca con otras que ya están registradas
-       $revision = Cita::whereRaw("(fecha_hora_inicio > '$cita->fecha_hora_inicio' AND fecha_hora_inicio < '$cita->fecha_hora_fin')")
-       ->orWhereRaw("(fecha_hora_fin > '$cita->fecha_hora_inicio' AND fecha_hora_fin < '$cita->fecha_hora_fin')")
-       ->orWhereRaw("(fecha_hora_inicio <= '$cita->fecha_hora_inicio'  AND fecha_hora_fin >= '$cita->fecha_hora_fin')")->first();
-       
+       $revision = Cita::whereRaw("(fecha_hora_inicio > '$cita->fecha_hora_inicio' AND fecha_hora_inicio < '$cita->fecha_hora_fin' AND reprogramado = false)")
+       ->orWhereRaw("(fecha_hora_fin > '$cita->fecha_hora_inicio' AND fecha_hora_fin < '$cita->fecha_hora_fin' AND reprogramado = false)")
+       ->orWhereRaw("(fecha_hora_inicio <= '$cita->fecha_hora_inicio'  AND fecha_hora_fin >= '$cita->fecha_hora_fin' AND reprogramado = false)")->first();
+
        if(isset($revision)){
            return $mensaje."<li>La cita choca con otras que ya se registraron previamente</li>";
        }else{
