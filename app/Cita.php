@@ -11,6 +11,16 @@ class Cita extends Model
     {
         return $this->hasOne('App\Pago');
     }
+    
+    public function persona()
+    {
+        return $this->belongsTo('App\Persona','persona_id');
+    }
+
+    public function procedimiento()
+    {
+        return $this->belongsTo('App\Procedimiento','procedimiento_id');
+    }
 
     public static function esValida (Cita $cita){
         $mensaje = "La cita ha presentado los siguientes problemas: \n";
