@@ -77,6 +77,7 @@ class ExpedienteController extends Controller
         $user = null;
         $regex = ['required', 'regex:/^(2|7|6)+\d{3}-\d{4}$/'];
         if($request->especial == 'especial'){
+            $ruta = "home";
             $request->validate([
                 'direccion'         =>  'required',
                 'fecha_nacimiento'  =>  'required|date|before:'.Carbon::now()->subYears(1)->format('d-m-Y'),
@@ -98,6 +99,7 @@ class ExpedienteController extends Controller
             }
             
         }else{
+            $ruta = "expedientes.index";
             $request->validate([
                 'primer_nombre'     =>  'required',
                 'primer_apellido'   =>  'required',
@@ -150,8 +152,9 @@ class ExpedienteController extends Controller
         $expediente->historia_medica        =   $request->historia_medica;
         $expediente->persona_id             =   $persona->id;
         $expediente->save();
+
+        return redirect()->route($ruta)->with('success','Paciente añadido con exito');
         
-        return redirect()->route('expedientes.index')->with('success','Paciente añadido con exito');
     }
 
     /**
@@ -283,7 +286,7 @@ class ExpedienteController extends Controller
         return back()->with('success','Paciente eliminado con exito');
     }
 
-    public function expediente_especial(){
-        return view('create_expediente_especial');
+    public function expediente_especial(Persona $persona){
+        return view('create_expediente_especial',compact('persona'));
     }
 }

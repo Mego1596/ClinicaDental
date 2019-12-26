@@ -90,7 +90,7 @@
 						    </div>
 						</div>
 						<div class="form-group row">
-						    <label for="sexo" class="col-sm-6 col-form-label">Procedimiento:<font color="red">*</font></label>
+						    <label for="procedimiento" class="col-sm-6 col-form-label">Procedimiento:<font color="red">*</font></label>
 						    <div class="col-sm-6">
 						      <select class="form-control" name="procedimiento" required>
 						      	<option value="" selected disabled>Seleccione</option>
@@ -101,9 +101,9 @@
 						    </div>
 						</div>
 						<div class="form-group row">
-						    <label for="descripcion" class="col-sm-6 col-form-label">Descripción:</label>
+						    <label for="descripcion_1" class="col-sm-6 col-form-label">Descripción:</label>
 						    <div class="col-sm-6">
-						      	<textarea id="descripcion"  class="form-control" name="descripcion">{{ old('descripcion') }}</textarea>
+						      	<textarea id="descripcion_1"  class="form-control" name="descripcion">{{ old('descripcion') }}</textarea>
 								@if ($errors->has('descripcion'))
 									<span class="help-block">
 										<strong>{{ $errors->first('descripcion') }}</strong>
@@ -163,7 +163,7 @@
 						    </div>
 						</div>
 						<div class="form-group row">
-						    <label for="sexo" class="col-sm-6 col-form-label">Procedimiento:<font color="red">*</font></label>
+						    <label class="col-sm-6 col-form-label">Procedimiento:<font color="red">*</font></label>
 						    <div class="col-sm-6">
 						      <select class="form-control" name="procedimiento" required>
 						      	<option value="" selected disabled>Seleccione</option>
@@ -174,9 +174,9 @@
 						    </div>
 						</div>
 						<div class="form-group row">
-						    <label for="descripcion" class="col-sm-6 col-form-label">Descripción:</label>
+						    <label for="descripcion_2" class="col-sm-6 col-form-label">Descripción:</label>
 						    <div class="col-sm-6">
-						      	<textarea id="descripcion"  class="form-control" name="descripcion">{{ old('descripcion') }}</textarea>
+						      	<textarea id="descripcion_2"  class="form-control" name="descripcion">{{ old('descripcion') }}</textarea>
 								@if ($errors->has('descripcion'))
 									<span class="help-block">
 										<strong>{{ $errors->first('descripcion') }}</strong>
@@ -188,6 +188,58 @@
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 						<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="showCita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Detalles de Cita</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form>
+					<div class="modal-body">
+						<input type="hidden" name="cita" value="" readonly disabled>
+						<div class="form-group row">
+						    <label for="nombre_completo" class="col-sm-6 col-form-label">Paciente:</label>
+						    <div class="col-sm-6">
+					            <input id="nombre_completo" type='text' class="form-control" name="nombre_completo" value="" readonly disabled />
+						    </div>
+						</div>
+						<div class="form-group row">
+						    <label for="fecha_hora_inicio_3" class="col-sm-6 col-form-label">Fecha y hora de inicio:</label>
+						    <div class="col-sm-6">
+					            <input id="fecha_hora_inicio_3" type='datetime-local' class="form-control" name="fecha_hora_inicio" value="" readonly disabled />
+						    </div>
+						</div>
+						<div class="form-group row">
+						    <label for="fecha_hora_fin_3" class="col-sm-6 col-form-label">Fecha y hora de finalización:</label>
+						    <div class="col-sm-6">
+						      	<input id="fecha_hora_fin_3" type="datetime-local" class="form-control" name="fecha_hora_fin" value="" readonly disabled>
+						    </div>
+						</div>
+						<div class="form-group row">
+						    <label for="procedimiento" class="col-sm-6 col-form-label">Procedimiento:</label>
+						    <div class="col-sm-6">
+						    	<input id="procedimiento" type="text" class="form-control" value="" readonly disabled>
+						    </div>
+						</div>
+						<div class="form-group row">
+						    <label for="descripcion_3" class="col-sm-6 col-form-label">Descripción:</label>
+						    <div class="col-sm-6">
+						      	<textarea id="descripcion_3"  class="form-control" readonly disabled></textarea>
+						    </div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+						<div id="botones" class="btn-group"></div>
 					</div>
 				</form>
 			</div>

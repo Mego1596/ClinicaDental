@@ -24,7 +24,7 @@ class CreateCitasTable extends Migration
             $table->boolean('reprogramado')->default(0);
             $table->unsignedBigInteger('persona_id');
             $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
-            $table->unsignedBigInteger('cita_id');
+            $table->unsignedBigInteger('cita_id')->nullable();
             $table->foreign('cita_id')->references('id')->on('citas');
             $table->timestamps();
         });

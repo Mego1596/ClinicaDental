@@ -21,7 +21,7 @@
 <form autocomplete="off" method="POST" action="{{ route('expedientes.store') }}">
 	@csrf
 	<input type="hidden" name="especial" id="especial" value="especial">
-	<input type="hidden" name="persona" id="persona" value="2">
+	<input type="hidden" name="persona" id="persona" value="{{$persona->id}}">
 	<div class="form-group row col-sm-12">
 	    <label for="email" class="col-sm-2 col-form-label">E-Mail:</label>
 	    <div class="col-sm-4">

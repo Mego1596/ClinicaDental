@@ -32,11 +32,10 @@ Route::middleware(['auth'])->group(function(){
 	
 	//EXPEDIENTE
 	Route::resource('expedientes','ExpedienteController');
-	Route::get('expediente_create_especial','ExpedienteController@expediente_especial')->name('expedientes.especial');
+	Route::get('expediente_create_especial/{persona}','ExpedienteController@expediente_especial')->name('expedientes.especial');
 
 	//CITAS
-	Route::get('citas/create','CitaController@create')->name('citas.create');
-	Route::post('citas/','CitaController@store')->name('citas.store');
+	Route::resource('citas','CitaController');
 
 	Route::resource('personas','PersonaController');
 });
