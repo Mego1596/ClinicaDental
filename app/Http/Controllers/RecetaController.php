@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Pago;
+use App\Receta;
 use App\Cita;
 use Illuminate\Http\Request;
 
-class PagoController extends Controller
+class RecetaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,9 @@ class PagoController extends Controller
      */
     public function index(Cita $cita)
     {
-        return view('pagos.index');
+        return view('recetas.index');
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -24,7 +25,7 @@ class PagoController extends Controller
      */
     public function create(Cita $cita)
     {
-        return view('pagos.create_pago',compact('cita'));
+        //
     }
 
     /**
@@ -35,52 +36,39 @@ class PagoController extends Controller
      */
     public function store(Request $request,Cita $cita)
     {
-        $pago = new Pago();
-        $pago->total_cita = $request->total_cita;
-        $pago->abono = $request->abono;
-        $pago->diferencia = $request->total_cita - $request->abono;
-        $pago->cita_id = $cita->id;
-
-        if ($pago->save()) {
-            $msj_type = 'success';
-            $msj = "pago registrado exitosamente";
-        }else{
-            $msj_type = 'danger';
-            $msj = "el pago no pudo registrarse algo salió mal";            
-        }
-        return redirect()->action('CitaController@show',['cita' => $request->cita])->with($msj_type,$msj);
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Pago  $pago
+     * @param  \App\Receta  $receta
      * @return \Illuminate\Http\Response
      */
-    public function show(Pago $pago)
+    public function show(Receta $receta)
     {
-        return view('pagos.show_pago',compact('pago'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Pago  $pago
+     * @param  \App\Receta  $receta
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pago $pago)
+    public function edit(Receta $receta)
     {
-        return view('pagos.edit_pago',compact('pago'));
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Pago  $pago
+     * @param  \App\Receta  $receta
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pago $pago)
+    public function update(Request $request, Receta $receta)
     {
         //
     }
@@ -88,10 +76,10 @@ class PagoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Pago  $pago
+     * @param  \App\Receta  $receta
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pago $pago)
+    public function destroy(Receta $receta)
     {
         //
     }

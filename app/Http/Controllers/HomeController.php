@@ -27,23 +27,21 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $event_list = [];
-        $fecha_actual = new Datetime('now');
-        $fecha_actual=$fecha_actual->format('Y-m-d');
-
-        $citas = Cita::where('reprogramado',false)->whereRaw("fecha_hora_inicio >= '$fecha_actual'")->get();
-        
-
-        $persona = Auth::user()->persona;
-        $es_paciente = Auth::user()->hasRole('paciente');
-
+        $event_list         =   [];
+        $fecha_actual       =   new Datetime('now');
+        $fecha_actual       =   $fecha_actual->format('Y-m-d');
+        $citas              =   Cita::where('reprogramado',false)->whereRaw("fecha_hora_inicio >= '$fecha_actual'")->get();
+        $persona            =   Auth::user()->persona;
+        $es_paciente        =   Auth::user()->hasRole('paciente');
+        $ruta_pago          =   "";
+        $ruta_receta        =   "";
+        $ruta_expediente    =   "";
 
         foreach($citas as $cita){
-
-            $nombre_completo    = $cita->persona->primer_nombre." ".$cita->persona->segundo_nombre." ".$cita->persona->primer_apellido." ".$cita->persona->segundo_apellido;
+            $nombre_completo    = $cita->persona->primer_nombre." ".$cita->persona->segundo_nombre." "
+                                 .$cita->persona->primer_apellido." ".$cita->persona->segundo_apellido;
             $procedimiento      = $cita->procedimiento->nombre;
             $descripcion        = $cita->descripcion;
-            $persona_id         = 0;
             if($es_paciente){
                 if($persona->id != $cita->persona->id){
                     $color              = '#414FEF';
@@ -54,21 +52,19 @@ class HomeController extends Controller
                 }else{
                     $color  = '#000000';
                     $titulo = $cita->persona->expediente->numero_expediente." ".$cita->persona->primer_nombre." ".$cita->persona->primer_apellido;
-
                 }
-
             }else{
-
                 if(is_null($cita->persona->expediente)){
-                    $color              = '#414FEF';
-                    $titulo             = $cita->persona->primer_nombre." ".$cita->persona->primer_apellido;
-                    $persona_id         = $cita->persona->id;
-
+                    $color              =   '#414FEF';
+                    $titulo             =   $cita->persona->primer_nombre." ".$cita->persona->primer_apellido;
+                    $ruta_expediente    =   route('expedientes.especial',['persona' => $cita->persona->id]);
                 }else{
-                    $color  = '#000000';
-                    $titulo = $cita->persona->expediente->numero_expediente." ".$cita->persona->primer_nombre." ".$cita->persona->primer_apellido;
+                    $color          =   '#000000';
+                    $titulo         =   $cita->persona->expediente->numero_expediente." ".
+                                        $cita->persona->primer_nombre." ".$cita->persona->primer_apellido;
+                    $ruta_pago      =   route('citas.pagos.index',['cita' => $cita->id]);
+                    $ruta_receta    =   route('citas.recetas.index',['cita' => $cita->id]);
                 }
-
             }
 
             $event_list[] = Calendar::event(
@@ -83,7 +79,9 @@ class HomeController extends Controller
                     'descripcion'       =>  $descripcion,
                     'durationEditable'  =>  false,
                     'procedimiento'     =>  $procedimiento,
-                    'persona_id'  =>  $persona_id,
+                    'pagos'             =>  $ruta_pago,
+                    'recetas'           =>  $ruta_receta,
+                    'expedientes'       =>  $ruta_expediente,
                 ]
             );            
         }
@@ -129,18 +127,22 @@ class HomeController extends Controller
                     $("#procedimiento").val(calEvent.procedimiento)
                     $("#descripcion_3").val(calEvent.descripcion)
                     $("#botones").empty()
-                    if(calEvent.persona_id != 0){
+                    if(calEvent.expedientes != ""){
                         $("#botones").html(
-                             "<a id=1 class=\"btn btn-primary\">Crear Expediente</a>"
-                        );
-                        $("#1").attr("href","expediente_create_especial/"+calEvent.persona_id).css("border-radius","5px")
+                            "<a id=1 class=\"btn btn-outline-primary\">Crear Expediente</a>"+
+                            "<a id=2 class=\"btn btn-outline-info\">Reprogramar Cita</a>"
+                        )
+                        $("#1").attr("href",calEvent.expedientes).css("margin","6px").css("border-radius","5px")
+                        $("#2").attr("href",calEvent.recetas).css("margin","6px").css("border-radius","5px")
                     }else{
                         $("#botones").html(
-                             "<a id=1 class=\"btn btn-primary\">Gestionar Pago</a>"+
-                             "<a id=2 class=\"btn btn-primary\">Gestionar Receta</a>"
+                             "<a id=1 class=\"btn btn-outline-primary\">Gestionar Pago</a>"+
+                             "<a id=2 class=\"btn btn-outline-primary\">Gestionar Receta</a>"+
+                             "<a id=3 class=\"btn btn-outline-info\">Reprogramar Cita</a>"
                         );
-                        $("#1").attr("href","pagos/"+calEvent.id).css("margin","2px").css("border-radius","5px")
-                        $("#2").attr("href","pagos/"+calEvent.id).css("margin","2px").css("border-radius","5px")
+                        $("#1").attr("href",calEvent.pagos).css("margin","6px").css("border-radius","5px")
+                        $("#2").attr("href",calEvent.recetas).css("margin","6px").css("border-radius","5px")
+                        $("#3").attr("href",calEvent.recetas).css("margin","6px").css("border-radius","5px")
                     }
                     $("#showCita").modal()
                 }',

@@ -37,5 +37,13 @@ Route::middleware(['auth'])->group(function(){
 	//CITAS
 	Route::resource('citas','CitaController');
 
+	//PERSONAS
 	Route::resource('personas','PersonaController');
+
+	//PAGOS
+	Route::resource('citas.pagos','PagoController');
+
+	//RECETAS
+	Route::resource('citas.recetas','RecetaController');
+
 });

@@ -238,7 +238,7 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+						<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
 						<div id="botones" class="btn-group"></div>
 					</div>
 				</form>
