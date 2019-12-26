@@ -15,7 +15,7 @@ class RecetaController extends Controller
      */
     public function index(Cita $cita)
     {
-        return view('recetas.index');
+        return view('recetas.index',compact('cita'));
     }
 
     /**

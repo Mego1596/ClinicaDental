@@ -237,9 +237,17 @@
 						    </div>
 						</div>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
-						<div id="botones" class="btn-group"></div>
+					<div class="table-responsive">
+						<table width="100%">
+							<tr>
+								<td>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar Detalles</button>
+										<div id="botones" class="btn-group"></div>
+									</div>	
+								</td>		
+							</tr>
+						</table>
 					</div>
 				</form>
 			</div>

@@ -126,7 +126,7 @@ class HomeController extends Controller
                     $("#fecha_hora_fin_3").val(fin_string)
                     $("#procedimiento").val(calEvent.procedimiento)
                     $("#descripcion_3").val(calEvent.descripcion)
-                    $("#botones").empty()
+                    $("#botones").empty()                        
                     if(calEvent.expedientes != ""){
                         $("#botones").html(
                             "<a id=1 class=\"btn btn-outline-primary\">Crear Expediente</a>"+
@@ -136,9 +136,9 @@ class HomeController extends Controller
                         $("#2").attr("href",calEvent.recetas).css("margin","6px").css("border-radius","5px")
                     }else{
                         $("#botones").html(
-                             "<a id=1 class=\"btn btn-outline-primary\">Gestionar Pago</a>"+
-                             "<a id=2 class=\"btn btn-outline-primary\">Gestionar Receta</a>"+
-                             "<a id=3 class=\"btn btn-outline-info\">Reprogramar Cita</a>"
+                            "<a id=1 class=\"btn btn-outline-primary\">Gestionar Pago</a>"+
+                            "<a id=2 class=\"btn btn-outline-primary\">Gestionar Receta</a>"+
+                            "<a id=3 class=\"btn btn-outline-info\">Reprogramar Cita</a>"
                         );
                         $("#1").attr("href",calEvent.pagos).css("margin","6px").css("border-radius","5px")
                         $("#2").attr("href",calEvent.recetas).css("margin","6px").css("border-radius","5px")

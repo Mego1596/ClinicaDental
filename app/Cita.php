@@ -22,6 +22,11 @@ class Cita extends Model
         return $this->belongsTo('App\Procedimiento','procedimiento_id');
     }
 
+    public function receta()
+    {
+        return $this->hasOne('App\Receta');
+    }
+
     public static function esValida (Cita $cita){
         $mensaje = "La cita ha presentado los siguientes problemas: \n";
 

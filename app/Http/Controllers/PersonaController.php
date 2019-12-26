@@ -55,16 +55,15 @@ class PersonaController extends Controller
         $persona->telefono           = $request->telefono;
 
         $cita = new Cita();
-        $cita->fecha_hora_inicio = $request->fecha_hora_inicio;
-        $cita->fecha_hora_fin = $request->fecha_hora_fin;
-        $cita->procedimiento_id = $request->procedimiento;
-        $cita->descripcion = $request->descripcion;
+        $cita->fecha_hora_inicio    = $request->fecha_hora_inicio;
+        $cita->fecha_hora_fin       = $request->fecha_hora_fin;
+        $cita->procedimiento_id     = $request->procedimiento;
+        $cita->descripcion          = $request->descripcion;
             
         $msj = Cita::esValida($cita); 
         if($msj == null){
             if($persona->save()){
                 $cita->persona_id = $persona->id;
-                
                 if($cita->save()){
                     return redirect()->route('home')->with('success','La cita se registró exitosamente');
                 }else{
@@ -72,18 +71,9 @@ class PersonaController extends Controller
                 }
             }
         }else{
-        $msj_type='danger';     
-        }    
-
-         
-            
-            return redirect()->route('home')->with($msj_type,$msj);
-        
-       
-            
-        
-
-        
+            $msj_type = 'danger';     
+        }     
+        return redirect()->route('home')->with($msj_type,$msj);
     }
 
     /**

@@ -15,6 +15,9 @@ class CreateRecetasTable extends Migration
     {
         Schema::create('recetas', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->float('peso');
+            $table->unsignedBigInteger('cita_id')->nullable();
+            $table->foreign('cita_id')->references('id')->on('citas');
             $table->timestamps();
         });
     }
