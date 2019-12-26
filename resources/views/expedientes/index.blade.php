@@ -30,9 +30,9 @@
                     <a class="btn btn-sm btn-danger" href="{{route('home')}}""><i class="fas fa-arrow-circle-left"></i> Regresar</a> 
             </td>
             <td width="10%">
-                @can('user.create')
+                @can('expediente.create')
                     <a href="{{route('expedientes.create')}}" class="btn btn-sm btn-success" style="color: black;"><i class="fa fa-fw fa-user-plus"></i> Registrar Paciente</a>
-                @endcann
+                @endcan
             </td>
         </tr>
     </table>
