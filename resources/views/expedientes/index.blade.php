@@ -26,10 +26,10 @@
 <div class="table-responsive">
     <table width="100%">
         <tr>
-            <td width="90%">
+            <td width="80%">
                     <a class="btn btn-sm btn-danger" href="{{route('home')}}""><i class="fas fa-arrow-circle-left"></i> Regresar</a> 
             </td>
-            <td width="10%">
+            <td width="20%" align="right">
                 @can('expediente.create')
                     <a href="{{route('expedientes.create')}}" class="btn btn-sm btn-success" style="color: black;"><i class="fa fa-fw fa-user-plus"></i> Registrar Paciente</a>
                 @endcan

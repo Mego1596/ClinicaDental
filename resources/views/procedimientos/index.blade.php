@@ -26,10 +26,10 @@
 <div class="table-responsive">
     <table width="100%">
         <tr>
-            <td width="90%">
+            <td width="80%">
                     <a class="btn btn-sm btn-danger" href="{{route('home')}}""><i class="fas fa-arrow-circle-left"></i> Regresar</a> 
             </td>
-            <td width="10%">
+            <td width="20%" align="right">
                 @can('procedimiento.create')
                     <a class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalProcedimiento" style="color: black"><i class="fas fa-clipboard-list"></i> Registrar Procedimiento</a>
                 @endcan

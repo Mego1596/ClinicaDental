@@ -41,28 +41,28 @@ class PermissionTableSeeder extends Seeder
         //TABLA ROLES
         Permission::create([
             'name'          => 'Permiso de Entrada a lista de Roles',
-            'slug'          => 'rol.index',
+            'slug'          => 'role.index',
             'description'   => 'Lista y Navega todos los roles del Sistema'
         ]);
         
         Permission::create([
             'name'          => 'Permiso de Creacion de Roles',
-            'slug'          => 'rol.store',
+            'slug'          => 'role.store',
             'description'   => 'Crear nuevos roles en el Sistema'
         ]);
         Permission::create([
             'name'          => 'Permiso de Ver Roles',
-            'slug'          => 'rol.show',
+            'slug'          => 'role.show',
             'description'   => 'Ver descripcion de roles en el Sistema'
         ]);
         Permission::create([
             'name'          => 'Permiso de Editar Roles',
-            'slug'          => 'rol.edit',
+            'slug'          => 'role.edit',
             'description'   => 'Editar roles del Sistema'
         ]);
         Permission::create([
             'name'          => 'Permiso de Eliminar Roles',
-            'slug'          => 'rol.destroy',
+            'slug'          => 'role.destroy',
             'description'   => 'Eliminar roles del Sistema'
         ]);
 
@@ -150,5 +150,63 @@ class PermissionTableSeeder extends Seeder
             'slug'          => 'cita.destroy',
             'description'   => 'Eliminar citas del Sistema'
         ]);
+
+        //TABLA Receta
+        Permission::create([
+            'name'          => 'Permiso de Entrada a lista de Recetas',
+            'slug'          => 'receta.index',
+            'description'   => 'Lista y Navega todos los recetas del Sistema'
+        ]);
+        
+        Permission::create([
+            'name'          => 'Permiso de Creacion de Recetas',
+            'slug'          => 'receta.store',
+            'description'   => 'Crear nuevos recetas en el Sistema'
+        ]);
+        Permission::create([
+            'name'          => 'Permiso de Ver Recetas',
+            'slug'          => 'receta.show',
+            'description'   => 'Ver descripcion de recetas en el Sistema'
+        ]);
+        Permission::create([
+            'name'          => 'Permiso de Editar Recetas',
+            'slug'          => 'receta.edit',
+            'description'   => 'Editar recetas del Sistema'
+        ]);
+        Permission::create([
+            'name'          => 'Permiso de Eliminar Recetas',
+            'slug'          => 'receta.destroy',
+            'description'   => 'Eliminar recetas del Sistema'
+        ]);
+
+        //TABLA Pago
+        Permission::create([
+            'name'          => 'Permiso de Entrada a lista de Pagos',
+            'slug'          => 'pago.index',
+            'description'   => 'Lista y Navega todos los pagos del Sistema'
+        ]);
+        
+        Permission::create([
+            'name'          => 'Permiso de Creacion de Pagos',
+            'slug'          => 'pago.store',
+            'description'   => 'Crear nuevos pagos en el Sistema'
+        ]);
+        Permission::create([
+            'name'          => 'Permiso de Ver Pagos',
+            'slug'          => 'pago.show',
+            'description'   => 'Ver descripcion de pagos en el Sistema'
+        ]);
+        Permission::create([
+            'name'          => 'Permiso de Editar Pagos',
+            'slug'          => 'pago.edit',
+            'description'   => 'Editar pagos del Sistema'
+        ]);
+        Permission::create([
+            'name'          => 'Permiso de Eliminar Pagos',
+            'slug'          => 'pago.destroy',
+            'description'   => 'Eliminar pagos del Sistema'
+        ]);
+
+        
     }
 }
