@@ -36,7 +36,7 @@ class HomeController extends Controller
         $ruta_pago          =   "";
         $ruta_receta        =   "";
         $ruta_expediente    =   "";
-
+        $botones            =   !$es_paciente?"prev,next today paciente_nuevo paciente_antiguo":"prev,next today";
         foreach($citas as $cita){
             $nombre_completo    = $cita->persona->primer_nombre." ".$cita->persona->segundo_nombre." "
                                  .$cita->persona->primer_apellido." ".$cita->persona->segundo_apellido;
@@ -100,17 +100,18 @@ class HomeController extends Controller
                 ],
             ],
             'buttonText'=> array(
-                'today'=> 'Hoy',
-                'month'=> 'Mes',
-                'week' => 'Semana',
-                'day' => 'Día'
+                'today'     => 'Hoy',
+                'month'     => 'Mes',
+                'week'      => 'Semana',
+                'day'       => 'Día'
             ),
-            'defaultView' => 'month',
-            'header' => array(
-                'left' => 'prev,next today paciente_nuevo paciente_antiguo', 
-                'center' => 'title', 
-                'right' => 'month,agendaWeek,agendaDay'
-                )
+            'defaultView'   => 'month',
+            'header'        => array(
+                'left'          => $botones, 
+                'center'        => 'title', 
+                'right'         => 'month,agendaWeek,agendaDay'
+            )
+            
             ])->setCallbacks([
                 'eventClick' => 'function(calEvent,jsEvent,view){
                     $("#nombre_completo").val(calEvent.nombre_completo)

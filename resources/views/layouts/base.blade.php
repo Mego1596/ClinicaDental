@@ -113,11 +113,11 @@
               </a>
             </li>
           @endcan
+          @can('procedimiento.index')
           <div class="sidebar-heading">
               Procedimientos
           </div>
           <hr class="sidebar-divider">
-          @can('procedimiento.index')
             <li class="nav-item">
               <a class="nav-link collapsed" href="{{route('procedimientos.index')}}">
                 <i class="fas fa-list"></i>
