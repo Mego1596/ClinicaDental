@@ -23,17 +23,20 @@
 <div class="panel-title">
     <h1 align="center" style="color: black">Lista de Procedimientos</h1>
 </div>
-<div class="row">
-    <div class="col-sm-9">
-        <a class="btn btn-sm btn-danger" href="{{route('home')}}"><i class="fas fa-arrow-circle-left"></i> Regresar</a> 
-    </div>
-    <div class="col-sm-3" align="right">
-        @can('procedimiento.create')
-            <a class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalProcedimiento" style="color: black"><i class="fas fa-clipboard-list"></i> Registrar Procedimiento</a>
-        @endcan
-    </div>
+<div class="table-responsive">
+    <table width="100%">
+        <tr>
+            <td width="90%">
+                    <a class="btn btn-sm btn-danger" href="{{route('home')}}""><i class="fas fa-arrow-circle-left"></i> Regresar</a> 
+            </td>
+            <td width="10%">
+                @can('procedimiento.create')
+                    <a class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalProcedimiento" style="color: black"><i class="fas fa-clipboard-list"></i> Registrar Procedimiento</a>
+                @endcan
+            </td>
+        </tr>
+    </table>
 </div>
-
 <br/>
 <br/>
 <div class="pull-bottom">

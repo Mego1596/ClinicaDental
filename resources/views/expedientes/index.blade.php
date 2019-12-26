@@ -23,15 +23,19 @@
 <div class="panel-title">
     <h1 align="center" style="color: black">Lista de Pacientes</h1>
 </div>
-<div class="row">
-    <div class="col-sm-9">
-        <a class="btn btn-sm btn-danger" href="{{route('home')}}"><i class="fas fa-arrow-circle-left"></i> Regresar</a> 
-    </div>
-    <div class="col-sm-3" align="right">
-        @can('user.create')
-            <a href="{{route('expedientes.create')}}" class="btn btn-sm btn-success" style="color: black;"><i class="fa fa-fw fa-user-plus"></i> Registrar Paciente</a>
-        @endcan
-    </div>
+<div class="table-responsive">
+    <table width="100%">
+        <tr>
+            <td width="90%">
+                    <a class="btn btn-sm btn-danger" href="{{route('home')}}""><i class="fas fa-arrow-circle-left"></i> Regresar</a> 
+            </td>
+            <td width="10%">
+                @can('user.create')
+                    <a href="{{route('expedientes.create')}}" class="btn btn-sm btn-success" style="color: black;"><i class="fa fa-fw fa-user-plus"></i> Registrar Paciente</a>
+                @endcann
+            </td>
+        </tr>
+    </table>
 </div>
 <br/>
 <br/>

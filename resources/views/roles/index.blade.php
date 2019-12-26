@@ -22,17 +22,20 @@
 <div class="panel-title">
     <h1 align="center" style="color: black">Lista de Roles</h1>
 </div>
-<div class="row">
-    <div class="col-sm-9">
-        <a class="btn btn-sm btn-danger" href="{{route('home')}}"><i class="fas fa-arrow-circle-left"></i> Regresar</a> 
-    </div>
-    <div class="col-sm-3" align="right">
-        @can('role.create')
-            <a href="{{route('roles.create')}}" class="btn btn-sm btn-success"  style="color: black"><i class="fas fa-fw fa-clipboard-list"></i> Registrar Rol</a>
-        @endcan
-    </div>
+<div class="table-responsive">
+    <table width="100%">
+        <tr>
+            <td width="90%">
+                    <a class="btn btn-sm btn-danger" href="{{route('home')}}""><i class="fas fa-arrow-circle-left"></i> Regresar</a> 
+            </td>
+            <td width="10%">
+                @can('role.create')
+                    <a href="{{route('roles.create')}}" class="btn btn-sm btn-success"  style="color: black"><i class="fas fa-fw fa-clipboard-list"></i> Registrar Rol</a>
+                @endcan
+            </td>
+        </tr>
+    </table>
 </div>
-
 <br/>
 <br/>
 <div class="pull-bottom">
