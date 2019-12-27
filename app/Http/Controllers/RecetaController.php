@@ -19,16 +19,6 @@ class RecetaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Cita $cita)
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -36,7 +26,14 @@ class RecetaController extends Controller
      */
     public function store(Request $request,Cita $cita)
     {
-        //
+        $request->validate([
+            'peso'     => 'required|numeric',
+        ]);
+        $receta             =   new Receta;
+        $receta->peso       =   $request->peso;
+        $receta->cita_id    =   $cita->id;
+        $receta->save();
+        return redirect()->back()->with('success','Receta añadida con exito');
     }
 
     /**
@@ -50,16 +47,6 @@ class RecetaController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Receta  $receta
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Receta $receta)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -68,9 +55,19 @@ class RecetaController extends Controller
      * @param  \App\Receta  $receta
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Receta $receta)
+    public function update(Request $request,Cita $cita, Receta $receta)
     {
-        //
+        if($cita->receta->id == $receta->id){
+            $request->validate([
+                'peso'     => 'required|numeric',
+            ]);
+            $receta->peso       =   $request->peso;
+            $receta->save();
+            return redirect()->back()->with('success','La receta se actulizó con exito'); 
+        }else{
+            return redirect()->back()->with('danger','Error esta receta no corresponde a la cita actual');
+        }
+        
     }
 
     /**
@@ -79,8 +76,13 @@ class RecetaController extends Controller
      * @param  \App\Receta  $receta
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Receta $receta)
+    public function destroy(Cita $cita,Receta $receta)
     {
-        //
+        if($cita->receta->id == $receta->id){
+            $receta->delete();
+            return back()->with('success','Receta eliminada con exito');
+        }else{
+            return back()->with('danger','Error, La receta no pertenece a la cita actual');
+        }
     }
 }

@@ -46,4 +46,7 @@ Route::middleware(['auth'])->group(function(){
 	//RECETAS
 	Route::resource('citas.recetas','RecetaController');
 
+	//DETALLE_RECETAS
+	Route::resource('recetas.detalles','DetalleRecetaController');
+
 });

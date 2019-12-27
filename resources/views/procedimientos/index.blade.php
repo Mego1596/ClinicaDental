@@ -122,7 +122,7 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group row {{ $errors->has('email') ? ' has-error' : '' }}">
+                    <div class="form-group row {{ $errors->has('descripcion') ? ' has-error' : '' }}">
                         <label for="descripcion_edit" class="col-sm-4 col-form-label">Descripción:</label>
                         <div class="col-sm-8">
                             <textarea id="descripcion_edit" name= "descripcion" class="form-control" rows="5" required>{{ old('descripcion') }}</textarea>

@@ -10,4 +10,9 @@ class Receta extends Model
     {
         return $this->belongsTo('App\Cita','cita_id');
     }
+
+    public function detalle_receta()
+    {
+    	return $this->hasMany('App\DetalleReceta');
+    }
 }
