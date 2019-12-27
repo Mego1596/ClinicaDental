@@ -229,7 +229,7 @@
 								<td>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar Detalles</button>
-										<button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#editCita" data-dismiss="modal">Editar Cita</button>
+										<button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#editCita">Editar Cita</button>
 										<div id="botones" class="btn-group"></div>
 										<button type="button" class="btn btn-outline-danger" data-dismiss="modal">Eliminar Cita</button>
 									</div>	
@@ -241,17 +241,18 @@
 			</div>
 		</div>
 	</div>
-	<!-- Modal editar una cita -->
-	<div class="modal fade" id="editCita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-xl" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Editar Cita</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<form id="form_editar" method="POST" onsubmit="enviarForm('#form_antiguo ')" action="">
+
+	<!-- Modal -->
+	<div class="modal fade" id="editCita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-xl" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <form id="form_editar" method="POST" onsubmit="enviarForm('#form_antiguo ')" action="">
 					@csrf
 					{{method_field('PUT')}}
 					<div class="modal-body">
@@ -285,17 +286,18 @@
 							<tr>
 								<td>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-										<button type="submit" class="btn btn-success">Guardar Cita</button>
+										<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancelar</button>
+										<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
 									</div>	
 								</td>		
 							</tr>
 						</table>
 					</div>
 				</form>
-			</div>
-		</div>
+	    </div>
+	  </div>
 	</div>
+
 @endsection
 @section('JS')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
