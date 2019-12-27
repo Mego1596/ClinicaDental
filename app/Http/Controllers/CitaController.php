@@ -37,7 +37,6 @@ class CitaController extends Controller
             'numero_expediente'     =>'required',
             'fecha_hora_inicio'     => 'required|after:'.Carbon::now()->subDays(1)->format('d-m-Y'),
             'fecha_hora_fin'        => 'required|after:fecha_hora_inicio',
-            'procedimiento'         => 'required'
         ]);
         
 
@@ -48,14 +47,16 @@ class CitaController extends Controller
             $cita                       = new Cita();
             $cita->fecha_hora_inicio    = $request->fecha_hora_inicio;
             $cita->fecha_hora_fin       = $request->fecha_hora_fin;
-            $cita->procedimiento_id     = $request->procedimiento;
             $cita->descripcion          = $request->descripcion;
             $cita->persona_id           = $persona->id;
 
             $msj = Cita::esValida($cita);
-
+            
             if($msj == null){
                 if ($cita->save()){
+                    foreach (array_unique($request->procedimiento) as $procedimiento) {
+                       $cita->procedimientos()->attach($procedimiento);
+                    }
                     $msj_type   = 'success';
                     $msj        = 'La cita ha sido guardada exitosamente';
                
@@ -106,7 +107,7 @@ class CitaController extends Controller
      */
     public function update(Request $request, Cita $cita)
     {
-        //
+        dd('hola soy update');
     }
 
     /**

@@ -17,9 +17,9 @@ class Cita extends Model
         return $this->belongsTo('App\Persona','persona_id');
     }
 
-    public function procedimiento()
+    public function procedimientos()
     {
-        return $this->belongsTo('App\Procedimiento','procedimiento_id');
+        return $this->belongsToMany('App\Procedimiento','procedimiento_citas','cita_id', 'procedimiento_id');
     }
 
     public function receta()

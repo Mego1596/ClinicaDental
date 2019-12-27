@@ -43,7 +43,6 @@ class PersonaController extends Controller
             'telefono'          =>   $telefono_regex,
             'fecha_hora_inicio'     => 'required|after:'.Carbon::now()->subDays(1)->format('d-m-Y'),
             'fecha_hora_fin'        => 'required|after:fecha_hora_inicio',
-            'procedimiento'         => 'required'
         ]);
 
 
@@ -57,7 +56,6 @@ class PersonaController extends Controller
         $cita = new Cita();
         $cita->fecha_hora_inicio    = $request->fecha_hora_inicio;
         $cita->fecha_hora_fin       = $request->fecha_hora_fin;
-        $cita->procedimiento_id     = $request->procedimiento;
         $cita->descripcion          = $request->descripcion;
             
         $msj = Cita::esValida($cita); 
@@ -65,6 +63,9 @@ class PersonaController extends Controller
             if($persona->save()){
                 $cita->persona_id = $persona->id;
                 if($cita->save()){
+                    foreach (array_unique($request->procedimiento) as $procedimiento) {
+                       $cita->procedimientos()->attach($procedimiento);
+                    }
                     return redirect()->route('home')->with('success','La cita se registró exitosamente');
                 }else{
                     return redirect()->route('home')->with('danger','La persona no pudo ser registrada');

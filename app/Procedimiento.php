@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Procedimiento extends Model
 {
-    public function cita(){
-        return $this->hasOne('App\Cita');
+	public function citas()
+    {
+        return $this->belongsToMany('App\Cita');
     }
 }

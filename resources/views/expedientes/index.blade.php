@@ -117,7 +117,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form autocomplete="off" method="POST" action="{{route('citas.store')}}">
+                <form id="form_antiguo" autocomplete="off" method="POST" action="{{route('citas.store')}}" onsubmit="enviarForm('#form_antiguo ')">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group row">
@@ -148,16 +148,11 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="procedimiento" class="col-sm-6 col-form-label">Procedimiento:<font color="red">*</font></label>
-                            <div class="col-sm-6">
-                              <select class="form-control" name="procedimiento" required>
-                                <option value="" selected disabled>Seleccione</option>
-                                @foreach($procedimientos as $procedimiento)
-                                    <option value="{{$procedimiento->id}}">{{$procedimiento->nombre}}</option>
-                                @endforeach
-                              </select>
+                            <div class="col-sm-12" align="center" style="display: block">
+                                <button type="button" class="btn btn-outline-success" onclick="addProcedimiento({{$procedimientos}},1)" style="width: 100%">Añadir procedimiento</button>
                             </div>
                         </div>
+                        <div id="procedimientos_create"></div>
                         <div class="form-group row">
                             <label for="descripcion" class="col-sm-6 col-form-label">Descripción:</label>
                             <div class="col-sm-6">
@@ -207,4 +202,5 @@
         })
     }
 </script>
+<script src="{{asset('js/modales/GestionProcedimientoCita.js')}}"></script>
 @endsection
