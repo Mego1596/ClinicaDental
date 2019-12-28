@@ -252,22 +252,10 @@
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
-	      <form id="form_editar" method="POST" onsubmit="enviarForm('#form_antiguo ')" action="">
+	      <form id="form_editar" method="POST" onsubmit="enviarForm('#form_editar ')" action="">
 					@csrf
 					{{method_field('PUT')}}
 					<div class="modal-body">
-						<div class="form-group row">
-						    <label for="edit_fecha_hora_inicio" class="col-sm-6 col-form-label">Fecha y hora de inicio:</label>
-						    <div class="col-sm-6">
-					            <input id="edit_fecha_hora_inicio" type='datetime-local' class="form-control" name="fecha_hora_inicio" value=""/>
-						    </div>
-						</div>
-						<div class="form-group row">
-						    <label for="edit_fecha_hora_fin" class="col-sm-6 col-form-label">Fecha y hora de finalización:</label>
-						    <div class="col-sm-6">
-						      	<input id="edit_fecha_hora_fin" type="datetime-local" class="form-control" name="fecha_hora_fin" value="">
-						    </div>
-						</div>
 						<div class="form-group row">
 							<div class="col-sm-12" align="center" style="display: block">
 								<button type="button" class="btn btn-outline-success" onclick="addProcedimiento({{$procedimientos}},2)" style="width: 100%">Añadir procedimiento</button>
@@ -277,7 +265,7 @@
 						<div class="form-group row">
 						    <label for="edit_descripcion" class="col-sm-6 col-form-label">Descripción:</label>
 						    <div class="col-sm-6">
-						      	<textarea id="edit_descripcion"  class="form-control"></textarea>
+						      	<textarea id="edit_descripcion"  class="form-control" name="descripcion"></textarea>
 						    </div>
 						</div>
 					</div>

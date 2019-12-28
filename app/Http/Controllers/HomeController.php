@@ -40,7 +40,7 @@ class HomeController extends Controller
         $array_procedimientos       =   [];
         $listado_procedimientos     =   Procedimiento::all();
         foreach($citas as $cita){
-            $procedimientos             = $cita->procedimientos()->select()->get();
+            $procedimientos             = $cita->procedimientos()->where('cita_id',$cita->id)->get();
             foreach ($procedimientos as $key => $procedimiento_parcial) {
                 $array_procedimientos[] = $procedimiento_parcial;
             }
@@ -90,6 +90,7 @@ class HomeController extends Controller
                     'edicion'                   =>  route('citas.update',['cita' => $cita->id] ),
                 ]
             );            
+            unset($array_procedimientos);
         }
         $calendar = Calendar::addEvents($event_list)->setOptions([
             'firstDay'      => 1,
@@ -140,76 +141,77 @@ class HomeController extends Controller
                     let numero_select   = [];
                     var count = Object.keys(calEvent.procedimiento).length
                     $("#form_editar #procedimientos_create").empty()
-                    $.each(calEvent.procedimiento, function(i,atributos){
-
-                        html_code = html_code
-                        +"<div class=\"form-group row\">"
-                            +"<label for=\"procedimiento_"+(i+1)+"\" class=\"col-sm-6 col-form-label\">Procedimiento:</label>"
-                            +"<div class=\"col-sm-6\">"
-                                +"<input id=\"procedimiento_"+(i+1)+"\" type=\"text\" class=\"form-control\" value=\""+atributos["nombre"]+"\" readonly disabled>"
+                    $("#showCita form#procedimientos_create").empty()
+                    if(calEvent.procedimiento != ""){
+                        $.each(calEvent.procedimiento, function(i,atributos){
+                            html_code = html_code
+                            +"<div class=\"form-group row\">"
+                                +"<label for=\"procedimiento_"+(i+1)+"\" class=\"col-sm-6 col-form-label\">Procedimiento:</label>"
+                                +"<div class=\"col-sm-6\">"
+                                    +"<input id=\"procedimiento_"+(i+1)+"\" type=\"text\" class=\"form-control\" value=\""+atributos["nombre"]+"\" readonly disabled>"
+                                +"</div>"
                             +"</div>"
-                        +"</div>"
 
-                        let html_code2      = ""
-                        html_code2 = html_code2
-                            +"<div class=\"form-group row\" id=\"procedimiento_select_antiguo_"+(i+1)+"\">"
-                                +"<label for=\"procedimiento_select_antiguo_"+(i+1)+"\" class=\"col-sm-6 col-form-label\">Procedimiento:</label>" 
-                                +"<div class=\"col-sm-5\">"
-                        if(i == count -1){
+                            let html_code2      = ""
                             html_code2 = html_code2
-                            +"<select class=\"form-control\" id=\"select_"+(i+1)+"\" name=\"procedimiento[]\" >"
-                                        +"<option value=\"\" selected disabled>Seleccione</option>"
-                        }else{
-                            html_code2 = html_code2
-                            +"<select class=\"form-control\" id=\"select_"+(i+1)+"\" name=\"procedimiento[]\" readonly disabled>"
-                                        +"<option value=\"\" selected disabled>Seleccione</option>"
-                        }
-                                    
-                        $.each(calEvent.listado, function(iteration,value){
-                            if( i == 0 ){
-                                if(atributos["procedimiento_id"] == value["id"]){
-                                    html_code2 = html_code2
-                                        +"<option id=\"procedimiento_"+value["id"]+"\" value=\""+value["id"]+"\" selected>"+value["nombre"]+"</option>"
-                                }else{
-                                    html_code2 = html_code2
-                                        +"<option id=\"procedimiento_"+value["id"]+"\" value=\""+value["id"]+"\">"+value["nombre"]+"</option>"
-                                }
+                                +"<div class=\"form-group row\" id=\"procedimiento_select_antiguo_"+(i+1)+"\">"
+                                    +"<label for=\"procedimiento_select_antiguo_"+(i+1)+"\" class=\"col-sm-6 col-form-label\">Procedimiento:</label>" 
+                                    +"<div class=\"col-sm-5\">"
+                            if(i == count - 1){
+                                html_code2 = html_code2
+                                +"<select class=\"form-control\" id=\"select_"+(i+1)+"\" name=\"procedimiento[]\" >"
+                                            +"<option value=\"\" selected disabled>Seleccione</option>"
                             }else{
-                                if(!numero_select.includes(value["id"])){
-                                    if(atributos["procedimiento_id"] == value["id"]){
+                                html_code2 = html_code2
+                                +"<select class=\"form-control\" id=\"select_"+(i+1)+"\" name=\"procedimiento[]\" readonly disabled>"
+                                            +"<option value=\"\" selected disabled>Seleccione</option>"
+                            }
+                                        
+                            $.each(calEvent.listado, function(iteration,value){
+                                if( i == 0 ){
+                                    if(atributos["pivot"]["procedimiento_id"] == value["id"]){
                                         html_code2 = html_code2
-                                        +"<option id=\"procedimiento_"+value["id"]+"\" value=\""+value["id"]+"\" selected>"+value["nombre"]+"</option>"
+                                            +"<option id=\"procedimiento_"+value["id"]+"\" value=\""+value["id"]+"\" selected>"+value["nombre"]+"</option>"
                                     }else{
                                         html_code2 = html_code2
-                                        +"<option id=\"procedimiento_"+value["id"]+"\" value=\""+value["id"]+"\">"+value["nombre"]+"</option>"
+                                            +"<option id=\"procedimiento_"+value["id"]+"\" value=\""+value["id"]+"\">"+value["nombre"]+"</option>"
                                     }
+                                }else{
+                                    if(!numero_select.includes(value["id"])){
+                                        if(atributos["pivot"]["procedimiento_id"] == value["id"]){
+                                            html_code2 = html_code2
+                                            +"<option id=\"procedimiento_"+value["id"]+"\" value=\""+value["id"]+"\" selected>"+value["nombre"]+"</option>"
+                                        }else{
+                                            html_code2 = html_code2
+                                            +"<option id=\"procedimiento_"+value["id"]+"\" value=\""+value["id"]+"\">"+value["nombre"]+"</option>"
+                                        }
+                                    }
+
                                 }
-
+                                
+                            });
+                            numero_select.push(atributos["pivot"]["procedimiento_id"])
+                            if( i == count-1){
+                                html_code2 = html_code2
+                                        +"</select>"
+                                    +"</div>"
+                                    +"<div class=\"col-sm-1\" id=\"remove_div_"+(i+1)+"\">"
+                                        +"<i class=\" btn far fa-times-circle\" style=\"color:red\" onclick=\"removeProcedimiento("+(i+1)+",2)\" id=\"remove_"+(i+1)+"\"></i>"
+                                    +"</div>"
+                                +"</div>"  
+                            }else{
+                                html_code2 = html_code2
+                                        +"</select>"
+                                    +"</div>"
+                                    +"<div class=\"col-sm-1\" id=\"remove_div_"+(i+1)+"\"></div>"
+                                +"</div>"
                             }
-                            
-                        });
-                        numero_select.push(atributos["procedimiento_id"])
-                        if( i == count-1){
-                            html_code2 = html_code2
-                                    +"</select>"
-                                +"</div>"
-                                +"<div class=\"col-sm-1\" id=\"remove_div_"+(i+1)+"\">"
-                                    +"<i class=\" btn far fa-times-circle\" style=\"color:red\" onclick=\"removeProcedimiento("+(i+1)+",2)\" id=\"remove_"+(i+1)+"\"></i>"
-                                +"</div>"
-                            +"</div>"  
-                        }else{
-                            html_code2 = html_code2
-                                    +"</select>"
-                                +"</div>"
-                                +"<div class=\"col-sm-1\" id=\"remove_div_"+(i+1)+"\"></div>"
-                            +"</div>"
-                        }
-                        
-                        $("#form_editar #procedimientos_create").append(html_code2)
+                            $("#form_editar #procedimientos_create").append(html_code2)
+                        })
                         $("#form_editar").attr("action",calEvent.edicion)
-                    })
-
-                    $("#div_procedimientos").html(html_code)
+                        $("#div_procedimientos").html(html_code)
+                    }
+                    
                     $("#botones").empty()                        
                     if(calEvent.expedientes != ""){
                         $("#botones").html(

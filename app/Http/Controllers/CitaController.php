@@ -58,7 +58,7 @@ class CitaController extends Controller
                        $cita->procedimientos()->attach($procedimiento);
                     }
                     $msj_type   = 'success';
-                    $msj        = 'La cita ha sido guardada exitosamente';
+                    $msj        = 'La cita ha sido añadida exitosamente';
                
                 }else{ 
                     $msj_type   = 'danger';
@@ -107,7 +107,20 @@ class CitaController extends Controller
      */
     public function update(Request $request, Cita $cita)
     {
-        dd('hola soy update');
+        $cita->descripcion          = $request->descripcion;
+        if ($cita->save()){
+            if(!is_null($cita->procedimiento)){
+                $cita->procedimientos()->where('cita_id',$cita->id)->sync(array_unique($request->procedimiento)); 
+            }else{
+                $cita->procedimientos()->where('cita_id',$cita->id)->sync($request->procedimiento); 
+            }
+            $msj_type   = 'success';
+            $msj        = 'La cita se actualizó exitosamente';
+        }else{
+            $msj_type   = 'danger';
+            $msj        = 'La cita no se pudo actualizar';
+        }
+        return redirect()->route('home')->with($msj_type,$msj);
     }
 
     /**
