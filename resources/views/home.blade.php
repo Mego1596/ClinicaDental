@@ -24,6 +24,7 @@
 
     {!! $calendar->calendar() !!}
 
+    @can('cita.create')
 	<!-- Modal para crear citas a pacientes nuevos-->
 	<div class="modal fade" id="nuevo_paciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
@@ -91,7 +92,7 @@
 						</div>
 						<div class="form-group row">
 							<div class="col-sm-12" align="center" style="display: block">
-								<button type="button" class="btn btn-outline-success" onclick="addProcedimiento({{$procedimientos}})" style="width: 100%">Añadir procedimiento</button>
+								<button type="button" class="btn btn-outline-success" onclick="addProcedimiento({{$listado_procedimientos}})" style="width: 100%">Añadir procedimiento</button>
 							</div>
 						</div>
 						<div id="procedimientos_create"></div>
@@ -115,7 +116,7 @@
 			</div>
 		</div>
 	</div>
-
+	
 	<!-- Modal crear cita a pacientes antiguos-->
 	<div class="modal fade" id="antiguo_paciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
@@ -160,7 +161,7 @@
 						
 						<div class="form-group row">
 							<div class="col-sm-12" align="center" style="display: block">
-								<button type="button" class="btn btn-outline-success" onclick="addProcedimiento({{$procedimientos}},1)" style="width: 100%">Añadir procedimiento</button>
+								<button type="button" class="btn btn-outline-success" onclick="addProcedimiento({{$listado_procedimientos}},1)" style="width: 100%">Añadir procedimiento</button>
 							</div>
 						</div>
 						<div id="procedimientos_create"></div>
@@ -184,6 +185,9 @@
 			</div>
 		</div>
 	</div>
+	@endcan
+
+	@can('cita.show')
 	<!-- Modal Detalles de cita -->
 	<div class="modal fade" id="showCita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-xl" role="document">
@@ -228,10 +232,25 @@
 							<tr>
 								<td>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" data-toggle="modal" onclick="$('#showCita').on('hidden.bs.modal',function(e){ $('#showCita').modal('hide');$('#page-top').removeClass('modal-open') });">Cerrar Detalles</button>
-										<button type="button" class="btn btn-outline-success"   onclick="$('#editCita').modal('show').on('shown.bs.modal',function(e){  });">Editar Cita</button>
+										<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" data-toggle="modal" onclick="$('#showCita').on('hidden.bs.modal',function(e){ $('#showCita').modal('hide');$('#page-top').removeClass('modal-open') });">
+											<i class="far fa-times-circle"></i> Cerrar Detalles
+										</button>
+										@can('cita.edit')
+											<button type="button" class="btn btn-outline-success"   onclick="$('#editCita').modal('show').on('shown.bs.modal',function(e){  });">
+												<i class="fas fa-pencil-alt"></i> Editar Cita
+											</button>
+										@endcan
 										<div id="botones" class="btn-group"></div>
-										<button type="button" class="btn btn-outline-danger" data-dismiss="modal">Eliminar Cita</button>
+										@can('cita.edit')
+											<button type="button" class="btn btn-outline-info"   onclick="$('#reprogramarCita').modal('show').on('shown.bs.modal',function(e){  });">
+												<i class="fas fa-calendar-times"></i> Reprogramar Cita
+											</button>
+										@endcan
+										@can('cita.destroy')
+											<button type="button" class="btn btn-outline-danger" onclick="$('#eliminarCita').modal('show').on('shown.bs.modal',function(e){  });">
+												<i class="fas fa-trash-alt"></i> Eliminar Cita
+											</button>
+										@endcan
 									</div>	
 								</td>		
 							</tr>
@@ -241,50 +260,131 @@
 			</div>
 		</div>
 	</div>
+	@endcan
 
-	<!-- Modal -->
-	<div class="modal fade" id="editCita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-	  <div class="modal-dialog modal-xl" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <form id="form_editar" method="POST" onsubmit="enviarForm('#form_editar ')" action="">
-					@csrf
-					{{method_field('PUT')}}
-					<div class="modal-body">
-						<div class="form-group row">
-							<div class="col-sm-12" align="center" style="display: block">
-								<button type="button" class="btn btn-outline-success" onclick="addProcedimiento({{$procedimientos}},2)" style="width: 100%">Añadir procedimiento</button>
+	@can('cita.edit')
+		<!-- Modal -->
+		<div class="modal fade" id="editCita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+			<div class="modal-dialog modal-xl" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form id="form_editar" method="POST" onsubmit="enviarForm('#form_editar ')" action="">
+						@csrf
+						{{method_field('PUT')}}
+						<div class="modal-body">
+							<div class="form-group row">
+								<div class="col-sm-12" align="center" style="display: block">
+									<button type="button" class="btn btn-outline-success" onclick="addProcedimiento({{$listado_procedimientos}},2)" style="width: 100%">Añadir procedimiento</button>
+								</div>
+							</div>
+							<div id="procedimientos_create"></div>
+							<div class="form-group row">
+								<label for="edit_descripcion" class="col-sm-6 col-form-label">Descripción:</label>
+								<div class="col-sm-6">
+									<textarea id="edit_descripcion"  class="form-control" name="descripcion"></textarea>
+								</div>
 							</div>
 						</div>
-						<div id="procedimientos_create"></div>
-						<div class="form-group row">
-						    <label for="edit_descripcion" class="col-sm-6 col-form-label">Descripción:</label>
-						    <div class="col-sm-6">
-						      	<textarea id="edit_descripcion"  class="form-control" name="descripcion"></textarea>
-						    </div>
+						<div class="table-responsive">
+							<table width="100%">
+								<tr>
+									<td>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-danger" onclick="$('#editCita').modal('hide').on('hidden.bs.modal',function(e){ $('#page-top').addClass('modal-open') });">
+												<i class="far fa-times-circle"></i> Cancelar
+											</button>
+											<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+										</div>	
+									</td>		
+								</tr>
+							</table>
 						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!-- Modal para eliminar una cita -->
+		<div class="modal fade" id="reprogramarCita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Reprogramar Cita</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
 					</div>
-					<div class="table-responsive">
-						<table width="100%">
-							<tr>
-								<td>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-danger" onclick="$('#editCita').modal('hide').on('hidden.bs.modal',function(e){ $('#page-top').addClass('modal-open') });"><i class="far fa-times-circle"></i> Cancelar</button>
-										<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
-									</div>	
-								</td>		
-							</tr>
-						</table>
+					<form id="form_reprogramar" method="POST" action="">
+						@csrf
+						{{method_field('PUT')}}
+						<div class="modal-body">
+							<div class="form-group row">
+							    <label for="edit_fecha_hora_inicio" class="col-sm-6 col-form-label">Fecha y hora de inicio:</label>
+							    <div class="col-sm-6">
+						            <input id="edit_fecha_hora_inicio" type='datetime-local' class="form-control" name="fecha_hora_inicio" value=""/>
+							    </div>
+							</div>
+							<div class="form-group row">
+							    <label for="edit_fecha_hora_fin" class="col-sm-6 col-form-label">Fecha y hora de finalización:</label>
+							    <div class="col-sm-6">
+							      	<input id="edit_fecha_hora_fin" type="datetime-local" class="form-control" name="fecha_hora_fin" value="">
+							    </div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" onclick="$('#reprogramarCita').modal('hide').on('hidden.bs.modal',function(e){ $('#page-top').addClass('modal-open') });">
+								<i class="far fa-times-circle"></i> Cancelar
+							</button>
+							<button type="submit" class="btn btn-success"><i class="fas fa-calendar-check"></i> Reprogramar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	@endcan
+	@can('cita.destroy')
+		<!-- Modal para eliminar una cita -->
+		<div class="modal fade" id="eliminarCita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Eliminar Cita</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
 					</div>
-				</form>
-	   		 </div>
-	  	</div>
-	</div>
+					<div class="modal-body">
+						<p>
+							Realmente desea eliminar la cita del paciente: 
+						</p>
+						<p>
+							<strong><label id="label_paciente"></label></strong>
+						</p>
+						<p>
+							hora de inicio: <strong><label id="label_hora_inicio"></label></strong>
+						</p>
+						<p>
+							hora de fin: <strong><label id="label_hora_fin"></label></strong>
+						</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" onclick="$('#eliminarCita').modal('hide').on('hidden.bs.modal',function(e){ $('#page-top').addClass('modal-open') });">
+							<i class="far fa-times-circle"></i> Cancelar
+						</button>
+						<form id="form_eliminar" method="POST" action="">
+							@csrf
+							{{method_field('DELETE')}}
+							<button type="submit" class="btn btn-success"><i class="fas fa-trash-alt"></i> Eliminar</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	@endcan
 
 @endsection
 @section('JS')

@@ -36,6 +36,7 @@ Route::middleware(['auth'])->group(function(){
 
 	//CITAS
 	Route::resource('citas','CitaController');
+	Route::put('citas/reprogramar/{cita}','CitaController@reprogramar')->name('citas.reprogramar');
 
 	//PERSONAS
 	Route::resource('personas','PersonaController');

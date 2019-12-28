@@ -54,8 +54,12 @@ class CitaController extends Controller
             
             if($msj == null){
                 if ($cita->save()){
-                    foreach (array_unique($request->procedimiento) as $procedimiento) {
-                       $cita->procedimientos()->attach($procedimiento);
+                    if(!is_null($cita->procedimiento)){
+                        foreach (array_unique($request->procedimiento) as $procedimiento) {
+                           $cita->procedimientos()->attach($procedimiento);
+                        }
+                    }else{
+                        $cita->procedimientos()->where('cita_id',$cita->id)->sync($request->procedimiento); 
                     }
                     $msj_type   = 'success';
                     $msj        = 'La cita ha sido añadida exitosamente';
@@ -131,6 +135,17 @@ class CitaController extends Controller
      */
     public function destroy(Cita $cita)
     {
-        //
+        $now    =   date_create();
+        dd($now);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Cita  $cita
+     * @return \Illuminate\Http\Response
+     */
+    public function reprogramar(Cita $cita){
+        dd('hola soy reprogramar');
     }
 }

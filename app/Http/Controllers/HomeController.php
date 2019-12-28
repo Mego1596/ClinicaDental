@@ -29,17 +29,18 @@ class HomeController extends Controller
     {
         $event_list                 =   [];
         $fecha_actual               =   new Datetime('now');
-        $fecha_actual               =   $fecha_actual->format('Y-m-d');
-        $citas                      =   Cita::where('reprogramado',false)->whereRaw("fecha_hora_inicio >= '$fecha_actual'")->get();
+        $fecha_actual_completa      =   $fecha_actual->format('Y-m-d');
+        $fecha_actual_mes           =   $fecha_actual->format('m');
+        $citas                      =   Cita::where('reprogramado',false)->whereRaw("fecha_hora_inicio >= '$fecha_actual_completa' OR MONTH(fecha_hora_inicio) >= '$fecha_actual_mes' ")->get();
         $persona                    =   Auth::user()->persona;
         $es_paciente                =   Auth::user()->hasRole('paciente');
         $ruta_pago                  =   "";
         $ruta_receta                =   "";
         $ruta_expediente            =   "";
         $botones                    =   !$es_paciente?"prev,next today paciente_nuevo paciente_antiguo":"prev,next today";
-        $array_procedimientos       =   [];
         $listado_procedimientos     =   Procedimiento::all();
         foreach($citas as $cita){
+            $array_procedimientos       =   [];
             $procedimientos             = $cita->procedimientos()->where('cita_id',$cita->id)->get();
             foreach ($procedimientos as $key => $procedimiento_parcial) {
                 $array_procedimientos[] = $procedimiento_parcial;
@@ -88,6 +89,8 @@ class HomeController extends Controller
                     'expedientes'               =>  $ruta_expediente,
                     'listado'                   =>  $listado_procedimientos,
                     'edicion'                   =>  route('citas.update',['cita' => $cita->id] ),
+                    'eliminar'                  =>  route('citas.destroy',['cita' => $cita->id]),
+                    'reprogramar'               =>  route('citas.reprogramar',['cita' => $cita->id])
                 ]
             );            
             unset($array_procedimientos);
@@ -123,25 +126,43 @@ class HomeController extends Controller
                 'eventClick' => 'function(calEvent,jsEvent,view){
                     $("#nombre_completo").val(calEvent.nombre_completo)
                     let fecha_inicio    =  new Date(calEvent.start)
+                    
+                    //texto para enviar al modal de eliminar cita
+                    inicio_eliminar     =  fecha_inicio.getDate()+"/"+(fecha_inicio.getMonth()+1)+"/"+fecha_inicio.getFullYear()+" "
+                    inicio_eliminar    +=  fecha_inicio.getHours() < 10? "0"+fecha_inicio.getHours()+":":fecha_inicio.getHours()+":"
+                    inicio_eliminar    +=  fecha_inicio.getMinutes() < 10? "0"+fecha_inicio.getMinutes():fecha_inicio.getMinutes()
+
+                    //texto para setear el campo datetime en los detalles de la cita
                     inicio_string       =  fecha_inicio.getFullYear()+"-"+(fecha_inicio.getMonth()+1)+"-"+fecha_inicio.getDate()+"T"
                     inicio_string      +=  fecha_inicio.getHours() < 10? "0"+fecha_inicio.getHours()+":":fecha_inicio.getHours()+":"
                     inicio_string      +=  fecha_inicio.getMinutes() < 10? "0"+fecha_inicio.getMinutes():fecha_inicio.getMinutes()
+
                     let fecha_fin       =  new Date(calEvent.end)
+                    
+                    //texto para enviar al modal de eliminar cita
+                    fin_eliminar        =  fecha_fin.getDate()+"/"+(fecha_fin.getMonth()+1)+"/"+fecha_fin.getFullYear()+" "
+                    fin_eliminar       +=  fecha_fin.getHours() < 10? "0"+fecha_fin.getHours()+":":fecha_fin.getHours()+":"
+                    fin_eliminar       +=  fecha_fin.getMinutes() < 10? "0"+fecha_fin.getMinutes():fecha_fin.getMinutes()
+
+                    //texto para setear el campo datetime en los detalles de la cita
                     fin_string          =  fecha_fin.getFullYear()+"-"+(fecha_fin.getMonth()+1)+"-"+fecha_fin.getDate()+"T"
                     fin_string         +=  fecha_fin.getHours() < 10? "0"+fecha_fin.getHours()+":":fecha_fin.getHours()+":"
                     fin_string         +=  fecha_fin.getMinutes() < 10? "0"+fecha_fin.getMinutes():fecha_fin.getMinutes()
+
                     $("#fecha_hora_inicio_3").val(inicio_string)
                     $("#fecha_hora_fin_3").val(fin_string)
                     $("#descripcion_3").val(calEvent.descripcion)
                     $("#edit_fecha_hora_inicio").val(inicio_string)
                     $("#edit_fecha_hora_fin").val(fin_string)
                     $("#edit_descripcion").val(calEvent.descripcion)
+                    $("#label_paciente").text(calEvent.nombre_completo)
+                    $("#label_hora_inicio").text(inicio_eliminar)
+                    $("#label_hora_fin").text(fin_eliminar)
                     $("#div_procedimientos").empty()
                     let html_code       = ""
                     let numero_select   = [];
                     var count = Object.keys(calEvent.procedimiento).length
                     $("#form_editar #procedimientos_create").empty()
-                    $("#showCita form#procedimientos_create").empty()
                     if(calEvent.procedimiento != ""){
                         $.each(calEvent.procedimiento, function(i,atributos){
                             html_code = html_code
@@ -211,29 +232,26 @@ class HomeController extends Controller
                         $("#form_editar").attr("action",calEvent.edicion)
                         $("#div_procedimientos").html(html_code)
                     }
-                    
+                    $("#form_eliminar").attr("action",calEvent.eliminar)
+                    $("#form_reprogramar").attr("action",calEvent.reprogramar)
                     $("#botones").empty()                        
                     if(calEvent.expedientes != ""){
                         $("#botones").html(
-                            "<a id=1 class=\"btn btn-outline-primary\">Crear Expediente</a>"+
-                            "<a id=2 class=\"btn btn-outline-info\">Reprogramar Cita</a>"
+                            "<a id=1 class=\"btn btn-outline-primary\"><i class=\"fas fa-money-check-alt\"></i> Crear Expediente</a>"
                         )
                         $("#1").attr("href",calEvent.expedientes).css("margin","6px").css("border-radius","5px")
                         $("#2").attr("href",calEvent.recetas).css("margin","6px").css("border-radius","5px")
                     }else{
                         $("#botones").html(
-                            "<a id=1 class=\"btn btn-outline-primary\">Gestionar Pago</a>"+
-                            "<a id=2 class=\"btn btn-outline-primary\">Gestionar Receta</a>"+
-                            "<a id=3 class=\"btn btn-outline-info\">Reprogramar Cita</a>"
+                            "<a id=1 class=\"btn btn-outline-primary\"><i class=\"fas fa-money-check-alt\"></i> Gestionar Pago</a>"+
+                            "<a id=2 class=\"btn btn-outline-primary\"><i class=\"fas fa-notes-medical\"></i> Gestionar Receta</a>"
                         );
                         $("#1").attr("href",calEvent.pagos).css("margin","6px").css("border-radius","5px")
                         $("#2").attr("href",calEvent.recetas).css("margin","6px").css("border-radius","5px")
-                        $("#3").attr("href",calEvent.recetas).css("margin","6px").css("border-radius","5px")
                     }
                     $("#showCita").modal()
                 }',
             ]);
-        $procedimientos = Procedimiento::all();
-        return view('home',compact('calendar','procedimientos'));
+        return view('home',compact('calendar','listado_procedimientos'));
     }
 }

@@ -23,12 +23,6 @@
 	<input type="hidden" name="especial" id="especial" value="especial">
 	<input type="hidden" name="persona" id="persona" value="{{$persona->id}}">
 	<div class="form-group row col-sm-12">
-	    <label for="email" class="col-sm-2 col-form-label">E-Mail:</label>
-	    <div class="col-sm-4">
-	      <input type="email" class="form-control" id="email" name="email" value="{{old('email')}}">
-	    </div>
-	</div>
-	<div class="form-group row col-sm-12">
 	    <label for="fecha_nacimiento" class="col-sm-2 col-form-label">Fecha de nacimiento:<font color="red">*</font></label>
 	    <div class="col-sm-4">
 	      	<input id="fecha_nacimiento" type="date" class="form-control" max="{{Carbon\Carbon::now()->subYears(1)->format('Y-m-d')}}" name="fecha_nacimiento" value="{{ old('fecha_nacimiento') }}" required>
@@ -118,6 +112,10 @@
 					<strong>{{ $errors->first('recomendado') }}</strong>
 				</span>
 			@endif
+	    </div>
+	    <label for="email" class="col-sm-2 col-form-label">E-Mail:</label>
+	    <div class="col-sm-4">
+	    	<input type="email" class="form-control" id="email" name="email" value="{{old('email')}}">
 	    </div>
 	</div>
 	<div class="d-flex justify-content-center">
