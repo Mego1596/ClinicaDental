@@ -31,7 +31,7 @@ class HomeController extends Controller
         $fecha_actual               =   new Datetime('now');
         $fecha_actual_completa      =   $fecha_actual->format('Y-m-d');
         $fecha_actual_mes           =   $fecha_actual->format('m');
-        $citas                      =   Cita::where('reprogramado',false)->whereRaw("fecha_hora_inicio >= '$fecha_actual_completa' OR MONTH(fecha_hora_inicio) >= '$fecha_actual_mes' ")->get();
+        $citas                      =   Cita::whereRaw("reprogramado = 0 AND fecha_hora_inicio >= '$fecha_actual_completa' OR MONTH(fecha_hora_inicio) >= '$fecha_actual_mes' ")->get();
         $persona                    =   Auth::user()->persona;
         $es_paciente                =   Auth::user()->hasRole('paciente');
         $botones                    =   !$es_paciente?"prev,next today paciente_nuevo paciente_antiguo":"prev,next today";

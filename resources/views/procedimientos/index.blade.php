@@ -112,7 +112,7 @@
                     @csrf
                     {{method_field('PUT')}}
                     <div class="form-group row {{ $errors->has('nombre') ? ' has-error' : '' }}">
-                        <label for="nombre_edit" class="col-sm-4 col-form-label">Nombre del Procedimiento:</label>
+                        <label for="nombre_edit" class="col-sm-4 col-form-label">Nombre del Procedimiento:<font color="red">*</font></label>
                         <div class="col-sm-8">
                             <input id="nombre_edit" type="text" class="form-control" name= "nombre" value="{{ old('nombre') }}" required>
                             @if ($errors->has('nombre'))
@@ -123,7 +123,7 @@
                         </div>
                     </div>
                     <div class="form-group row {{ $errors->has('descripcion') ? ' has-error' : '' }}">
-                        <label for="descripcion_edit" class="col-sm-4 col-form-label">Descripción:</label>
+                        <label for="descripcion_edit" class="col-sm-4 col-form-label">Descripción:<font color="red">*</font></label>
                         <div class="col-sm-8">
                             <textarea id="descripcion_edit" name= "descripcion" class="form-control" rows="5" required>{{ old('descripcion') }}</textarea>
                             @if ($errors->has('descripcion'))
@@ -155,7 +155,7 @@
                 <div class="modal-body">
                     @csrf
                     <div class="form-group row {{ $errors->has('nombre') ? ' has-error' : '' }}">
-                        <label for="nombre" class="col-sm-4 col-form-label">Nombre del Procedimiento:</label>
+                        <label for="nombre" class="col-sm-4 col-form-label">Nombre del Procedimiento:<font color="red">*</font></label>
                         <div class="col-sm-8">
                             <input id="nombre" type="text" class="form-control" name= "nombre" value="{{ old('nombre') }}" required>
                             @if ($errors->has('nombre'))
@@ -166,7 +166,7 @@
                         </div>
                     </div>
                     <div class="form-group row {{ $errors->has('descripcion') ? ' has-error' : '' }}">
-                        <label for="descripcion" class="col-sm-4 col-form-label">Descripción:</label>
+                        <label for="descripcion" class="col-sm-4 col-form-label">Descripción:<font color="red">*</font></label>
                         <div class="col-sm-8">
                             <textarea id="descripcion" name= "descripcion" class="form-control" rows="5" required>{{ old('descripcion') }}</textarea>
                             @if ($errors->has('descripcion'))
@@ -179,7 +179,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
                 </div>
             </form>
         </div>
