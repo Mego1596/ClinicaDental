@@ -58,6 +58,7 @@ class HomeController extends Controller
                 }else{
                     $color  = '#000000';
                     $titulo = $cita->persona->expediente->numero_expediente." ".$cita->persona->primer_nombre." ".$cita->persona->primer_apellido;
+                    $ruta_receta        =   route('citas.recetas.index',['cita' => $cita->id]);
                 }
             }else{
                 if(is_null($cita->persona->expediente)){
@@ -163,6 +164,7 @@ class HomeController extends Controller
                     let numero_select   = [];
                     var count = Object.keys(calEvent.procedimiento).length
                     $("#form_editar #procedimientos_create").empty()
+
                     if(calEvent.procedimiento != ""){
                         $.each(calEvent.procedimiento, function(i,atributos){
                             html_code = html_code
@@ -238,21 +240,23 @@ class HomeController extends Controller
                     $("#btn_expediente").empty()
                     $("#btn_pago").empty()
                     $("#btn_receta").empty()
-                    if(calEvent.expedientes != ""){
-                        $("#btn_expediente").html(
-                            "<a id=1 class=\"btn btn-outline-primary\"><i class=\"fas fa-money-check-alt\"></i> Crear Expediente</a>"
-                        )
-                        $("#1").attr("href",calEvent.expedientes).css("margin","6px").css("border-radius","5px")
-                    }else{
-                        $("#btn_pago").html(
-                            "<a id=1 class=\"btn btn-outline-primary\"><i class=\"fas fa-money-check-alt\"></i> Gestionar Pago</a>"
-                            
-                        );
-                        $("#btn_receta").html(
-                            "<a id=2 class=\"btn btn-outline-primary\"><i class=\"fas fa-notes-medical\"></i> Gestionar Receta</a>"
-                        );
-                        $("#1").attr("href",calEvent.pagos).css("margin","6px").css("border-radius","5px")
-                        $("#2").attr("href",calEvent.recetas).css("margin","6px").css("border-radius","5px")
+                    if(calEvent.title != "Ocupado"){
+                        if(calEvent.expedientes != ""){
+                            $("#btn_expediente").html(
+                                "<a id=\"1\" class=\"btn btn-outline-primary\"><i class=\"fas fa-money-check-alt\"></i> Crear Expediente</a>"
+                            )
+                            $("#1").attr("href",calEvent.expedientes).css("margin","6px").css("border-radius","5px")
+                        }else{
+                            $("#btn_pago").html(
+                                "<a id=\"1\" class=\"btn btn-outline-primary\"><i class=\"fas fa-money-check-alt\"></i> Gestionar Pago</a>"
+                                
+                            );
+                            $("#btn_receta").html(
+                                "<a id=\"2\" class=\"btn btn-outline-primary\"><i class=\"fas fa-notes-medical\"></i> Gestionar Receta</a>"
+                            );
+                            $("#1").attr("href",calEvent.pagos).css("margin","6px").css("border-radius","5px")
+                            $("#2").attr("href",calEvent.recetas).css("margin","6px").css("border-radius","5px")
+                        }
                     }
                     $("#showCita").modal()
                 }',
