@@ -18,8 +18,6 @@ class CreateCitasTable extends Migration
             $table->datetime('fecha_hora_inicio');
             $table->datetime('fecha_hora_fin');
             $table->string('descripcion')->nullable();
-            $table->unsignedBigInteger('procedimiento_id')->nullable();
-            $table->foreign('procedimiento_id')->references('id')->on('procedimientos');
             $table->boolean('asistencia')->default(0);
             $table->boolean('reprogramado')->default(0);
             $table->unsignedBigInteger('persona_id');

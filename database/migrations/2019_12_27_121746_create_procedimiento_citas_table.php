@@ -16,7 +16,7 @@ class CreateProcedimientoCitasTable extends Migration
         Schema::create('procedimiento_citas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('cita_id')->nullable();
-            $table->foreign('cita_id')->references('id')->on('citas');
+            $table->foreign('cita_id')->references('id')->on('citas')->onDelete('cascade');
             $table->unsignedBigInteger('procedimiento_id')->nullable();
             $table->foreign('procedimiento_id')->references('id')->on('procedimientos');
             $table->timestamps();

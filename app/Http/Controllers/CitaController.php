@@ -9,6 +9,7 @@ use App\Expediente;
 use App\Procedimiento;
 use Calendar;
 use Carbon\Carbon;
+use DateTime;
 
 class CitaController extends Controller
 {
@@ -135,8 +136,25 @@ class CitaController extends Controller
      */
     public function destroy(Cita $cita)
     {
-        $now    =   date_create();
-        dd($now);
+        $actualidad = new DateTime('now');
+        $fecha_cita = new DateTime($cita->fecha_hora_inicio);
+
+        if($actualidad<$fecha_cita){
+            if($cita->delete()){
+                $msj_type = 'success';
+                $msj = 'Cita eliminada con éxito';
+            }else{
+                $msj_type = 'danger';
+                $msj = 'La cita no pudo eliminarse';
+            }
+
+        }else{
+            $msj_type = 'danger';
+            $msj = 'La cita ya no puede eliminarse';
+        }
+
+        return redirect()->route('home')->with($msj_type,$msj);
+
     }
 
     /**
@@ -145,7 +163,37 @@ class CitaController extends Controller
      * @param  \App\Cita  $cita
      * @return \Illuminate\Http\Response
      */
-    public function reprogramar(Cita $cita){
-        dd('hola soy reprogramar');
+    public function reprogramar(Request $request, Cita $cita){
+        $request->validate([
+            'fecha_hora_inicio'     => 'required|after:'.Carbon::now()->subDays(1)->format('d-m-Y'),
+            'fecha_hora_fin'        => 'required|after:fecha_hora_inicio',
+        ]);
+        
+        
+        $new_cita = new Cita();
+        $new_cita->fecha_hora_inicio = $request->fecha_hora_inicio;
+        $new_cita->fecha_hora_fin = $request->fecha_hora_fin;
+        $new_cita->descripcion = $cita->descripcion;
+        $new_cita->persona_id = $cita->persona_id;
+        
+        $msj_type = 'danger';
+        $msj = Cita::esValida($new_cita);
+
+        if($msj==null){
+            if($new_cita->save()){
+                $new_cita->procedimientos()->sync($cita->procedimientos);
+                $cita->reprogramado = 1;
+                if($cita->save()){
+                    $msj_type = 'success';
+                    $msj = 'La cita se reprogramó con éxito';
+                }else{
+                    $msj = 'Algo salió mal al registrar la reprogramación';
+                }
+            }else{
+                $msj = 'La nueva cita no pudo registrarse';
+            }
+        }
+
+        return redirect()->route('home')->with($msj_type,$msj);
     }
 }
