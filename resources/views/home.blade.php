@@ -228,8 +228,8 @@
 							<tr>
 								<td>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar Detalles</button>
-										<button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#editCita">Editar Cita</button>
+										<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" data-toggle="modal" onclick="$('#showCita').on('hidden.bs.modal',function(e){ $('#showCita').modal('hide');$('#page-top').removeClass('modal-open') });">Cerrar Detalles</button>
+										<button type="button" class="btn btn-outline-success"   onclick="$('#editCita').modal('show').on('shown.bs.modal',function(e){  });">Editar Cita</button>
 										<div id="botones" class="btn-group"></div>
 										<button type="button" class="btn btn-outline-danger" data-dismiss="modal">Eliminar Cita</button>
 									</div>	
@@ -286,7 +286,7 @@
 							<tr>
 								<td>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancelar</button>
+										<button type="button" class="btn btn-danger" onclick="$('#editCita').modal('hide').on('hidden.bs.modal',function(e){ $('#page-top').addClass('modal-open') });"><i class="far fa-times-circle"></i> Cancelar</button>
 										<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
 									</div>	
 								</td>		
@@ -294,8 +294,8 @@
 						</table>
 					</div>
 				</form>
-	    </div>
-	  </div>
+	   		 </div>
+	  	</div>
 	</div>
 
 @endsection
