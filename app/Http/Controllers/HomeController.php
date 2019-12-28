@@ -34,13 +34,13 @@ class HomeController extends Controller
         $citas                      =   Cita::where('reprogramado',false)->whereRaw("fecha_hora_inicio >= '$fecha_actual_completa' OR MONTH(fecha_hora_inicio) >= '$fecha_actual_mes' ")->get();
         $persona                    =   Auth::user()->persona;
         $es_paciente                =   Auth::user()->hasRole('paciente');
-        $ruta_pago                  =   "";
-        $ruta_receta                =   "";
-        $ruta_expediente            =   "";
         $botones                    =   !$es_paciente?"prev,next today paciente_nuevo paciente_antiguo":"prev,next today";
         $listado_procedimientos     =   Procedimiento::all();
         foreach($citas as $cita){
             $array_procedimientos       =   [];
+            $ruta_pago                  =   "";
+            $ruta_receta                =   "";
+            $ruta_expediente            =   "";
             $procedimientos             = $cita->procedimientos()->where('cita_id',$cita->id)->get();
             foreach ($procedimientos as $key => $procedimiento_parcial) {
                 $array_procedimientos[] = $procedimiento_parcial;
@@ -232,16 +232,18 @@ class HomeController extends Controller
                         $("#form_editar").attr("action",calEvent.edicion)
                         $("#div_procedimientos").html(html_code)
                     }
+
                     $("#form_eliminar").attr("action",calEvent.eliminar)
                     $("#form_reprogramar").attr("action",calEvent.reprogramar)
                     $("#botones").empty()                        
                     if(calEvent.expedientes != ""){
+                        alert("no tiene")
                         $("#botones").html(
                             "<a id=1 class=\"btn btn-outline-primary\"><i class=\"fas fa-money-check-alt\"></i> Crear Expediente</a>"
                         )
                         $("#1").attr("href",calEvent.expedientes).css("margin","6px").css("border-radius","5px")
-                        $("#2").attr("href",calEvent.recetas).css("margin","6px").css("border-radius","5px")
                     }else{
+                        alert("tiene")
                         $("#botones").html(
                             "<a id=1 class=\"btn btn-outline-primary\"><i class=\"fas fa-money-check-alt\"></i> Gestionar Pago</a>"+
                             "<a id=2 class=\"btn btn-outline-primary\"><i class=\"fas fa-notes-medical\"></i> Gestionar Receta</a>"
