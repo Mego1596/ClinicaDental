@@ -136,6 +136,6 @@
 	</div>
 @endif
 <div class="d-flex justify-content-center">
-	<a href="{{route('roles.index')}}" class="btn btn-sm btn-danger" style="">Regresar</a>
+	<a href="{{route('roles.index')}}" class="btn btn-sm btn-danger" style=""><i class="fas fa-arrow-circle-left"></i> Regresar</a>
 </div>
 @endsection

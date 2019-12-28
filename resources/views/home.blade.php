@@ -6,22 +6,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css"/>
 @endsection
 @section('content')
-@if (\Session::has('success'))
-    <div class="alert alert-success">
-        <ul>
-            <li>{!! \Session::get('success') !!}</li>
-        </ul>
-    </div>
-@endif
-@if (\Session::has('danger'))
-    <div class="alert alert-danger">
-        <ul>
-            <li>{!! \Session::get('danger') !!}</li>
-        </ul>
-    </div>
-@endif
-
-
+	@if (\Session::has('success'))
+	    <div class="alert alert-success">
+	        <ul>
+	            <li>{!! \Session::get('success') !!}</li>
+	        </ul>
+	    </div>
+	@endif
+	@if (\Session::has('danger'))
+	    <div class="alert alert-danger">
+	        <ul>
+	            <li>{!! \Session::get('danger') !!}</li>
+	        </ul>
+	    </div>
+	@endif
+	@if (count($errors) > 0)
+		<div class="alert alert-danger" role="alert">
+			<ul>
+				@foreach ($errors->all() as $error)
+				<li>{{ $error }}</li>
+				@endforeach
+			</ul>
+		</div>
+	@endif
     {!! $calendar->calendar() !!}
 
     @can('cita.create')
@@ -403,9 +410,13 @@
     <script type="text/javascript">
     	$(function(){
     		$('.fc-paciente_nuevo-button').click( function() {
+    			$('#fecha_hora_inicio_1').attr("value","");
+    			$('#fecha_hora_fin_1').attr("value","");
     			$('#nuevo_paciente').modal();
     		});
     		$('.fc-paciente_antiguo-button').click( function() {
+    			$('#fecha_hora_inicio_2').attr("value","");
+    			$('#fecha_hora_fin_2').attr("value","");
     			$('#antiguo_paciente').modal()
     		});
 			$('#telefono').mask('X000-0000',{ translation: { 'X': { pattern: /(2|7|6)/, optional: false } } })

@@ -36,7 +36,7 @@ class CitaController extends Controller
     {  
         $request->validate([
             'numero_expediente'     =>'required',
-            'fecha_hora_inicio'     => 'required|after:'.Carbon::now()->subDays(1)->format('d-m-Y'),
+            'fecha_hora_inicio'     => 'required|after:'.Carbon::now()->format('d-m-Y'),
             'fecha_hora_fin'        => 'required|after:fecha_hora_inicio',
         ]);
         

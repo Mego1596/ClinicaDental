@@ -140,8 +140,8 @@
    		</div>
    	@endif
 	<div class="d-flex justify-content-center">
-		<button class="btn btn-sm btn-success" style="margin-right: 1%">Guardar</button>
-		<a href="{{route('roles.index')}}" class="btn btn-sm btn-danger" style="">Regresar</a>
+		<button class="btn btn-sm btn-success" style="margin-right: 1%"><i class="fa fa-save"></i> Guardar</button>
+		<a href="{{route('roles.index')}}" class="btn btn-sm btn-danger" style=""><i class="fas fa-arrow-circle-left"></i> Regresar</a>
 	</div>
 </form>
 @endsection
