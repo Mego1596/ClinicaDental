@@ -240,7 +240,17 @@
 												<i class="fas fa-pencil-alt"></i> Editar Cita
 											</button>
 										@endcan
-										<div id="botones" class="btn-group"></div>
+										<div id="botones" class="btn-group">
+											@can('expediente.create')
+												<div id="btn_expediente"></div>
+											@endcan
+											@can('pago.index')
+												<div id="btn_pago"></div>
+											@endcan
+											@can('receta.index')
+												<div id="btn_receta"></div>
+											@endcan
+										</div>
 										@can('cita.edit')
 											<button type="button" class="btn btn-outline-info"   onclick="$('#reprogramarCita').modal('show').on('shown.bs.modal',function(e){  });">
 												<i class="fas fa-calendar-times"></i> Reprogramar Cita

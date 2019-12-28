@@ -235,17 +235,20 @@ class HomeController extends Controller
 
                     $("#form_eliminar").attr("action",calEvent.eliminar)
                     $("#form_reprogramar").attr("action",calEvent.reprogramar)
-                    $("#botones").empty()                        
+                    $("#btn_expediente").empty()
+                    $("#btn_pago").empty()
+                    $("#btn_receta").empty()
                     if(calEvent.expedientes != ""){
-                        alert("no tiene")
-                        $("#botones").html(
+                        $("#btn_expediente").html(
                             "<a id=1 class=\"btn btn-outline-primary\"><i class=\"fas fa-money-check-alt\"></i> Crear Expediente</a>"
                         )
                         $("#1").attr("href",calEvent.expedientes).css("margin","6px").css("border-radius","5px")
                     }else{
-                        alert("tiene")
-                        $("#botones").html(
-                            "<a id=1 class=\"btn btn-outline-primary\"><i class=\"fas fa-money-check-alt\"></i> Gestionar Pago</a>"+
+                        $("#btn_pago").html(
+                            "<a id=1 class=\"btn btn-outline-primary\"><i class=\"fas fa-money-check-alt\"></i> Gestionar Pago</a>"
+                            
+                        );
+                        $("#btn_receta").html(
                             "<a id=2 class=\"btn btn-outline-primary\"><i class=\"fas fa-notes-medical\"></i> Gestionar Receta</a>"
                         );
                         $("#1").attr("href",calEvent.pagos).css("margin","6px").css("border-radius","5px")
