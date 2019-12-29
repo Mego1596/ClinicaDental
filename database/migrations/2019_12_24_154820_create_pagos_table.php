@@ -18,6 +18,8 @@ class CreatePagosTable extends Migration
             $table->decimal('total_cita',5,2);
             $table->decimal('abono',5,2);
             $table->decimal('diferencia',5,2);
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('cita_id')->nullable();
             $table->foreign('cita_id')->references('id')->on('citas');
             $table->timestamps();

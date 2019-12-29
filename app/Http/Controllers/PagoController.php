@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Pago;
 use App\Cita;
 use Illuminate\Http\Request;
-
+use App\User;
 class PagoController extends Controller
 {
     /**
@@ -15,7 +15,11 @@ class PagoController extends Controller
      */
     public function index(Cita $cita)
     {
-        return view('pagos.index');
+        $users = User::join('role_user','role_user.user_id','=','users.id')->join('roles','roles.id','=','role_user.role_id')->join('personas','personas.user_id','=','users.id')->where(function($query){
+            $query->where('roles.slug','admin');
+            $query->orWhere('roles.slug','doctor');
+        })->get();
+        return view('pagos.index',compact('cita','users'));
     }
     /**
      * Show the form for creating a new resource.

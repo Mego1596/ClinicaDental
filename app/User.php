@@ -43,6 +43,11 @@ class User extends Authenticatable
         return $this->hasOne('App\Persona');
     }
 
+    public function pago()
+    {
+        return $this->hasOne('App\Pago');
+    }
+
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
