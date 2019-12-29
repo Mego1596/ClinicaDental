@@ -32,9 +32,11 @@
 					        <a class="btn btn-sm btn-danger" href="{{route('home')}}""><i class="fas fa-arrow-circle-left"></i> Regresar</a> 
 					</td>
 					<td width="40%" align="center">
-						<button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#crearRecetaDetalle">
-				        	<i class="fas fa-file-pdf"></i> Generar PDF
-				        </button>
+						@can('receta.show')
+							<a class="btn btn-sm btn-info" href="{{route('citas.recetas.show',['receta' => $cita->receta->id,'cita'=>$cita->id])}}" target="_blank">
+				        		<i class="fas fa-file-pdf"></i> Generar PDF
+				        	</a>
+				        @endcan
 					</td>
 					@if(sizeof($cita->receta->detalle_receta) < 2)
 						<td width="10%" align="right">

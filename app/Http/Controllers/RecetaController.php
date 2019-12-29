@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Receta;
 use App\Cita;
 use Illuminate\Http\Request;
-
+use PDF;
+use Carbon\Carbon;
+use App\DetalleReceta;
 class RecetaController extends Controller
 {
     /**
@@ -39,12 +41,25 @@ class RecetaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Receta  $receta
+     * @param  \App\Cita  $cita
      * @return \Illuminate\Http\Response
      */
-    public function show(Receta $receta)
+    public function show(Cita $cita,Receta $receta)
     {
-        //
+        if($cita->receta->id == $receta->id){
+            $edad= Carbon::parse($cita->persona->expediente->fecha_nacimiento)->age;
+            $fecha = substr($receta->created_at, 0,11);
+            $newDate = date("d/m/Y", strtotime($fecha));
+            $detalles = $receta->detalle_receta;
+            $pdf = PDF::loadView('recetas.show_receta',compact('cita','receta','newDate','detalles','edad'));
+            $pdf->setPaper('A4','Portrait');
+            return $pdf->stream();
+        }else{
+            $msj_type   = 'danger';
+            $msj        = 'Error, la receta no se asigno en esta cita';
+        }
+        return redirect()->back()->with($msj_type,$msj);
+        
     }
 
 
