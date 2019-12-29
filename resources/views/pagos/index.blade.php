@@ -66,7 +66,7 @@
 								<div class="form-group row">
 								    <label for="total_cita_edit" class="col-sm-6 col-form-label">Total a pagar:</label>
 								    <div class="col-sm-6">
-								      	<input type="number" step="0.01" min="0" name="total_cita" class="form-control" id="total_cita_edit" value="{{$cita->pago->total_cita}}" required>
+								      	<input type="number" step="0.01" min="0.01" name="total_cita" class="form-control" id="total_cita_edit" value="{{$cita->pago->total_cita}}" required>
 								    </div>
 								</div>
 								<div class="form-group row">
@@ -126,6 +126,20 @@
 				</div>
 			</div>
     	@endcan
+    	<div class="table-responsive">
+			<table class="display table-hovered table-striped" width="100%">
+				<tr>
+					<th>Fecha</th>
+					<th>Realizo el tratamiento</th>
+					<th>Abono</th>
+				</tr>
+				<tr>
+					<td width="25%">{{$cita->pago->created_at}}</td>
+					<td width="25%">Dr. {{$cita->pago->user->persona->primer_nombre." ".$cita->pago->user->persona->segundo_nombre." ".$cita->pago->user->persona->primer_apellido." ".$cita->pago->user->persona->segundo_apellido}}</td>
+					<td width="25%">{{$cita->pago->abono}}</td>
+				</tr>
+			</table>
+		</div>
 	@else
 		<div class="table-responsive">
 			<table width="100%">
@@ -160,7 +174,7 @@
 							<div class="form-group row">
 							    <label for="total_cita" class="col-sm-6 col-form-label">Total a pagar:</label>
 							    <div class="col-sm-6">
-							      	<input type="number" step="0.01" min="0" name="total_cita" class="form-control" id="total_cita" value="{{old('total_cita')}}" required>
+							      	<input type="number" step="0.01" min="0.01" name="total_cita" class="form-control" id="total_cita" value="{{old('total_cita')}}" required>
 							    </div>
 							</div>
 							<div class="form-group row">
@@ -182,7 +196,7 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Cerrar</button>
 							<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
 						</div>
 					</form>
@@ -195,9 +209,13 @@
 @section('JS')
 <script type="text/javascript">
 	$(function(){
-		$('#abono').attr('disabled',true)
 		$('#total_cita').change(function(){
-			$('#abono').attr('disabled',false).attr('max',$(this).val())
+			$('#abono').attr('max',$(this).val())
+		})
+
+		$('#crearPago').on('shown.bs.modal',function(e){
+			$('#total_cita').val('');
+			$('#abono').val('');
 		})
 	})
 </script>

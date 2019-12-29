@@ -16,11 +16,10 @@ function addProcedimiento(procedimientos,nuevo = 0){
 	}
 	let numero_select = $(form+'#procedimientos_create div.form-group.row').length+1
 	let html_code = ""
-			+"<div class='form-group row' id='procedimiento_select_antiguo_"+numero_select+"'>"
-        		+"<label for='procedimiento_select_antiguo_"+numero_select+"' class='col-sm-6 col-form-label'>Procedimiento:</label>" 
-        		+"<div class='col-sm-5'>"
-        			+"<select class='form-control' id='select_"+numero_select+"' name='procedimiento[]'>"
-        			+"<option value='' selected>Seleccione</option>"
+			+"<div class='form-group row' id='procedimiento_select_antiguo_"+numero_select+"'>" 
+        		+"<div class='col-sm-3'>"
+        			+"<select class='form-control' id='select_"+numero_select+"' name='procedimiento["+numero_select+"][id]' required>"
+        			+"<option value='' selected>Seleccione el procedimiento</option>"
     if ($(form+'#procedimientos_create').is(':empty')) {
         $.each(procedimientos,function(i,value)
         {
@@ -30,18 +29,27 @@ function addProcedimiento(procedimientos,nuevo = 0){
         html_code=html_code
         			+"</select>"
         		+"</div>"
+                +"<div class='col-sm-4'>"
+                    +"<input id='input_1_"+numero_select+"' type='number' step='1' min='1' max='32' name='procedimiento["+numero_select+"][numero_piezas]' class='form-control' placeholder='Numero de piezas' required />"
+                +"</div>"
+                +"<div class='col-sm-4'>"
+                    +"<input id='input_2_"+numero_select+"' type='number' step='0.01' min='0.01' name='procedimiento["+numero_select+"][honorarios]' class='form-control' placeholder='Honorarios' required />"
+                +"</div>"
         		+"<div class='col-sm-1' id='remove_div_"+numero_select+"'>"
         			+"<i class=' btn far fa-times-circle' style='color:red' onclick='removeProcedimiento("+numero_select+","+nuevo+")' id='remove_"+numero_select+"'></i>"
         		+"</div>"
         	+"</div>"
+
         $(form+'#procedimientos_create').html(html_code)
 		 
     }else{
-        if($('#select_'+(numero_select-1)).val() != ""){
+        if($('#select_'+(numero_select-1)).val() != "" && $('#input_1_'+(numero_select-1)).val() != "" && $('#input_2_'+(numero_select-1)).val() != ""){
             procedimientos_seleccionados = [];
             for(i=1; i <= numero_select; i++){
                 if( i < numero_select){
                     $(form+'#select_'+i).attr('disabled',true).attr('readonly',true)
+                    $(form+'#input_1_'+i).attr('disabled',true).attr('readonly',true)
+                    $(form+'#input_2_'+i).attr('disabled',true).attr('readonly',true)
                     $(form+'#remove_'+i).remove();
                 }
                 procedimientos_seleccionados.push(parseInt($(form+'#select_'+i).val()))
@@ -55,6 +63,12 @@ function addProcedimiento(procedimientos,nuevo = 0){
             });
             html_code=html_code
                         +"</select>"
+                    +"</div>"
+                    +"<div class='col-sm-4'>"
+                        +"<input id='input_1_"+numero_select+"' type='number' step='1' min='1' max='32' name='procedimiento["+numero_select+"][numero_piezas]' class='form-control' placeholder='Numero de piezas' required />"
+                    +"</div>"
+                    +"<div class='col-sm-4'>"
+                        +"<input id='input_2_"+numero_select+"' type='number' step='0.01' min='0.01' name='procedimiento["+numero_select+"][honorarios]' class='form-control' placeholder='Honorarios' required />"
                     +"</div>"
                     +"<div class='col-sm-1' id='remove_div_"+numero_select+"'>"
                         +"<i class=' btn far fa-times-circle' style='color:red' onclick='removeProcedimiento("+numero_select+","+nuevo+")' id='remove_"+numero_select+"'></i>"
@@ -91,6 +105,8 @@ function removeProcedimiento(select_tag, nuevo){
 			"<i class=' btn far fa-times-circle' style='color:red' onclick='removeProcedimiento("+(select_tag-1)+","+nuevo+")' id='remove_"+(select_tag-1)+"'></i>"
 		)
 		$(form+'#select_'+(select_tag-1)).attr('disabled',false).attr('readonly',false)
+        $(form+'#input_1_'+(select_tag-1)).attr('disabled',false).attr('readonly',false)
+        $(form+'#input_2_'+(select_tag-1)).attr('disabled',false).attr('readonly',false)
 		$(form+'#procedimiento_select_antiguo_'+select_tag).remove();
 	}
 }    
@@ -101,6 +117,8 @@ function enviarForm(form){
 		for(i=1; i <= numero_select; i++){
     		if( i < numero_select){
     			$(form+'#select_'+i).attr('disabled',false)
+                $(form+'#input_1_'+i).attr('disabled',false)
+                    $(form+'#input_2_'+i).attr('disabled',false)
     		}
     	}
 	});

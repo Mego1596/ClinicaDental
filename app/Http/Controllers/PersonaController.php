@@ -63,12 +63,13 @@ class PersonaController extends Controller
             if($persona->save()){
                 $cita->persona_id = $persona->id;
                 if($cita->save()){
-                    if(!is_null($cita->procedimiento)){
-                        foreach (array_unique($request->procedimiento) as $procedimiento) {
-                           $cita->procedimientos()->attach($procedimiento);
+                    if(!is_null($request->procedimiento)){
+                        foreach ($request->procedimiento as $procedimiento) {
+                           $cita->procedimientos()->attach($procedimiento['id'],[ 
+                            'numero_piezas' => $procedimiento['numero_piezas'], 
+                            'honorarios' => $procedimiento['honorarios'] 
+                        ]);
                         }
-                    }else{
-                        $cita->procedimientos()->where('cita_id',$cita->id)->sync($request->procedimiento); 
                     }
                     return redirect()->route('home')->with('success','La cita se registró exitosamente');
                 }else{

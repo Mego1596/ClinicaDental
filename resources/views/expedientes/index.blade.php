@@ -27,7 +27,7 @@
     <table width="100%">
         <tr>
             <td width="80%">
-                    <a class="btn btn-sm btn-danger" href="{{route('home')}}""><i class="fas fa-arrow-circle-left"></i> Regresar</a> 
+                    <a class="btn btn-sm btn-danger" href="{{route('home')}}"><i class="fas fa-arrow-circle-left"></i> Regresar</a> 
             </td>
             <td width="20%" align="right">
                 @can('expediente.create')
@@ -109,7 +109,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="antiguo_paciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Reservación de Cita</h5>

@@ -15,7 +15,6 @@ class CreatePagosTable extends Migration
     {
         Schema::create('pagos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->decimal('total_cita',5,2);
             $table->decimal('abono',5,2);
             $table->decimal('diferencia',5,2);
             $table->unsignedBigInteger('user_id')->nullable();

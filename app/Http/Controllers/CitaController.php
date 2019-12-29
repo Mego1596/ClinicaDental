@@ -10,7 +10,7 @@ use App\Procedimiento;
 use Calendar;
 use Carbon\Carbon;
 use DateTime;
-
+use DB;
 class CitaController extends Controller
 {
 
@@ -52,15 +52,15 @@ class CitaController extends Controller
             $cita->persona_id           = $persona->id;
 
             $msj = Cita::esValida($cita);
-            
             if($msj == null){
                 if ($cita->save()){
-                    if(!is_null($cita->procedimiento)){
-                        foreach (array_unique($request->procedimiento) as $procedimiento) {
-                           $cita->procedimientos()->attach($procedimiento);
-                        }
-                    }else{
-                        $cita->procedimientos()->where('cita_id',$cita->id)->sync($request->procedimiento); 
+                    if(!is_null($request->procedimiento)){
+                        foreach ($request->procedimiento as $procedimiento) {
+                            $cita->procedimientos()->attach($procedimiento['id'],[ 
+                                'numero_piezas' => $procedimiento['numero_piezas'], 
+                                'honorarios' => $procedimiento['honorarios'] 
+                            ]);
+                        } 
                     }
                     $msj_type   = 'success';
                     $msj        = 'La cita ha sido añadida exitosamente';
@@ -114,10 +114,26 @@ class CitaController extends Controller
     {
         $cita->descripcion          = $request->descripcion;
         if ($cita->save()){
-            if(!is_null($cita->procedimiento)){
-                $cita->procedimientos()->where('cita_id',$cita->id)->sync(array_unique($request->procedimiento)); 
+            if(isset($cita->procedimientos)){
+                $cita->procedimientos()->where('cita_id',$cita->id)->detach(); 
+                if(!is_null($request->procedimiento)){
+                    foreach ($request->procedimiento as $procedimiento) {
+                        $cita->procedimientos()->attach($procedimiento['id'],[ 
+                            'numero_piezas' => $procedimiento['numero_piezas'], 
+                            'honorarios' => $procedimiento['honorarios']
+                        ]);
+                    } 
+                }
+            }elseif(!is_null($request->procedimiento) ){
+                $cita->procedimientos()->where('cita_id',$cita->id)->detach();
+                foreach ($request->procedimiento as $procedimiento) {
+                    $cita->procedimientos()->attach($procedimiento['id'],[ 
+                        'numero_piezas' => $procedimiento['numero_piezas'], 
+                        'honorarios' => $procedimiento['honorarios'] 
+                    ]);
+                } 
             }else{
-                $cita->procedimientos()->where('cita_id',$cita->id)->sync($request->procedimiento); 
+                $cita->procedimientos()->where('cita_id',$cita->id)->detach(); 
             }
             $msj_type   = 'success';
             $msj        = 'La cita se actualizó exitosamente';
@@ -178,10 +194,23 @@ class CitaController extends Controller
         
         $msj_type = 'danger';
         $msj = Cita::esValida($new_cita);
-
         if($msj==null){
             if($new_cita->save()){
-                $new_cita->procedimientos()->sync($cita->procedimientos);
+                foreach ($cita->procedimientos as $key => $procedimiento_parcial) {
+                    $array_procedimientos[]                         =   $procedimiento_parcial;
+                    $stringSQL                                      =   "SELECT honorarios,numero_piezas FROM procedimiento_citas 
+                                                                        WHERE cita_id=".$procedimiento_parcial->pivot->cita_id.
+                                                                        " AND procedimiento_id =".$procedimiento_parcial->pivot->procedimiento_id;
+                    $resultado                                      =   DB::select(DB::raw($stringSQL));
+                    $array_procedimientos[$key]['numero_piezas']    =   $resultado[0]->numero_piezas;
+                    $array_procedimientos[$key]['honorarios']       =   $resultado[0]->honorarios;
+                }
+                foreach ($array_procedimientos as $procedimiento) {
+                    $new_cita->procedimientos()->attach($procedimiento['id'],[ 
+                        'numero_piezas' => $procedimiento['numero_piezas'], 
+                        'honorarios' => $procedimiento['honorarios'] 
+                    ]);
+                } 
                 $cita->reprogramado = 1;
                 if($cita->save()){
                     $msj_type = 'success';
@@ -217,12 +246,13 @@ class CitaController extends Controller
             
         if($msj == null){
             if ($new_cita->save()){
-                if(!is_null($new_cita->procedimiento)){
-                    foreach (array_unique($request->procedimiento) as $procedimiento) {
-                       $new_cita->procedimientos()->attach($procedimiento);
-                    }
-                }else{
-                    $new_cita->procedimientos()->where('cita_id',$new_cita->id)->sync($request->procedimiento); 
+                if(!is_null($request->procedimientos)){
+                    foreach ($request->procedimiento as $procedimiento) {
+                        $new_cita->procedimientos()->attach($procedimiento['id'],[ 
+                            'numero_piezas' => $procedimiento['numero_piezas'], 
+                            'honorarios' => $procedimiento['honorarios'] 
+                        ]);
+                    } 
                 }
                 $msj_type   = 'success';
                 $msj        = 'La cita ha sido añadida exitosamente';

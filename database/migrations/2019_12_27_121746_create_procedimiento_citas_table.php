@@ -18,6 +18,8 @@ class CreateProcedimientoCitasTable extends Migration
             $table->unsignedBigInteger('cita_id')->nullable();
             $table->foreign('cita_id')->references('id')->on('citas')->onDelete('cascade');
             $table->unsignedBigInteger('procedimiento_id')->nullable();
+            $table->decimal('honorarios',5,2)->default(0);
+            $table->integer('numero_piezas')->default(0);
             $table->foreign('procedimiento_id')->references('id')->on('procedimientos');
             $table->timestamps();
         });

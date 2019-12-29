@@ -8,6 +8,7 @@ use App\Procedimiento;
 use Datetime;
 use App\Cita;
 use Auth;
+use DB;
 class HomeController extends Controller
 {
     /**
@@ -42,8 +43,15 @@ class HomeController extends Controller
             $ruta_expediente            =   "";
             $ruta_seguimiento           =   "";
             $procedimientos             = $cita->procedimientos()->where('cita_id',$cita->id)->get();
+
             foreach ($procedimientos as $key => $procedimiento_parcial) {
-                $array_procedimientos[] = $procedimiento_parcial;
+                $array_procedimientos[]                         =   $procedimiento_parcial;
+                $stringSQL                                      =   "SELECT honorarios,numero_piezas FROM procedimiento_citas 
+                                                                    WHERE cita_id=".$procedimiento_parcial->pivot->cita_id.
+                                                                    " AND procedimiento_id =".$procedimiento_parcial->pivot->procedimiento_id;
+                $resultado                                      =   DB::select(DB::raw($stringSQL));
+                $array_procedimientos[$key]['numero_piezas']    =   $resultado[0]->numero_piezas;
+                $array_procedimientos[$key]['honorarios']       =   $resultado[0]->honorarios;
             }
             $nombre_completo            = $cita->persona->primer_nombre." ".$cita->persona->segundo_nombre." "
                                           .$cita->persona->primer_apellido." ".$cita->persona->segundo_apellido;
@@ -170,30 +178,44 @@ class HomeController extends Controller
                     let numero_select   = [];
                     var count = Object.keys(calEvent.procedimiento).length
                     $("#form_editar #procedimientos_create").empty()
-
                     if(calEvent.procedimiento != ""){
                         $.each(calEvent.procedimiento, function(i,atributos){
                             html_code = html_code
                             +"<div class=\"form-group row\">"
-                                +"<label for=\"procedimiento_"+(i+1)+"\" class=\"col-sm-6 col-form-label\">Procedimiento:</label>"
-                                +"<div class=\"col-sm-6\">"
+                                +"<div class=\"col-sm-4\">"
+                                    +"Procedimiento"
+                                +"</div>"
+                                +"<div class=\"col-sm-4\">"
+                                    +"Numero de piezas"
+                                +"</div>"
+                                +"<div class=\"col-sm-4\">"
+                                    +"Honorarios"
+                                +"</div>"
+                            +"</div>"
+                            +"<div class=\"form-group row\">"
+                                +"<div class=\"col-sm-4\">"
                                     +"<input id=\"procedimiento_"+(i+1)+"\" type=\"text\" class=\"form-control\" value=\""+atributos["nombre"]+"\" readonly disabled>"
+                                +"</div>"
+                                +"<div class=\"col-sm-4\">"
+                                    +"<input id=\"numero_piezas_"+(i+1)+"\" type=\"text\" class=\"form-control\" value=\""+atributos["numero_piezas"]+"\" readonly disabled>"
+                                +"</div>"
+                                +"<div class=\"col-sm-4\">"
+                                    +"<input id=\"honorarios_"+(i+1)+"\" type=\"text\" class=\"form-control\" value=\""+atributos["honorarios"]+"\" readonly disabled>"
                                 +"</div>"
                             +"</div>"
 
                             let html_code2      = ""
                             html_code2 = html_code2
-                                +"<div class=\"form-group row\" id=\"procedimiento_select_antiguo_"+(i+1)+"\">"
-                                    +"<label for=\"procedimiento_select_antiguo_"+(i+1)+"\" class=\"col-sm-6 col-form-label\">Procedimiento:</label>" 
-                                    +"<div class=\"col-sm-5\">"
+                                +"<div class=\"form-group row\" id=\"procedimiento_select_antiguo_"+(i+1)+"\">" 
+                                    +"<div class=\"col-sm-3\">"
                             if(i == count - 1){
                                 html_code2 = html_code2
-                                +"<select class=\"form-control\" id=\"select_"+(i+1)+"\" name=\"procedimiento[]\" >"
-                                            +"<option value=\"\" selected disabled>Seleccione</option>"
+                                +"<select class=\"form-control\" id=\"select_"+(i+1)+"\" name=\"procedimiento["+(i+1)+"][id]\" required>"
+                                            +"<option value=\"\" selected disabled>Seleccione el procedimiento</option>"
                             }else{
                                 html_code2 = html_code2
-                                +"<select class=\"form-control\" id=\"select_"+(i+1)+"\" name=\"procedimiento[]\" readonly disabled>"
-                                            +"<option value=\"\" selected disabled>Seleccione</option>"
+                                +"<select class=\"form-control\" id=\"select_"+(i+1)+"\" name=\"procedimiento["+(i+1)+"][id]\" readonly disabled required>"
+                                            +"<option value=\"\" selected disabled>Seleccione el procedimiento</option>"
                             }
                                         
                             $.each(calEvent.listado, function(iteration,value){
@@ -219,10 +241,17 @@ class HomeController extends Controller
                                 }
                                 
                             });
+                            
                             numero_select.push(atributos["pivot"]["procedimiento_id"])
                             if( i == count-1){
                                 html_code2 = html_code2
                                         +"</select>"
+                                    +"</div>"
+                                    +"<div class=\"col-sm-4\">"
+                                        +"<input id=\"input_1_"+(i+1)+"\" type=\"number\" step=\"1\" min=\"1\" max=\"32\" name=\"procedimiento["+(i+1)+"][numero_piezas]\" class=\"form-control\" placeholder=\"Numero de piezas\" value="+atributos["numero_piezas"]+" required />"
+                                    +"</div>"
+                                    +"<div class=\"col-sm-4\">"
+                                        +"<input id=\"input_2_"+(i+1)+"\" type=\"number\" step=\"0.01\" min=\"0.01\" name=\"procedimiento["+(i+1)+"][honorarios]\" class=\"form-control\" placeholder=\"Honorarios\" value="+atributos["honorarios"]+" required />"
                                     +"</div>"
                                     +"<div class=\"col-sm-1\" id=\"remove_div_"+(i+1)+"\">"
                                         +"<i class=\" btn far fa-times-circle\" style=\"color:red\" onclick=\"removeProcedimiento("+(i+1)+",2)\" id=\"remove_"+(i+1)+"\"></i>"
@@ -232,15 +261,20 @@ class HomeController extends Controller
                                 html_code2 = html_code2
                                         +"</select>"
                                     +"</div>"
+                                    +"<div class=\"col-sm-4\">"
+                                        +"<input id=\"input_1_"+(i+1)+"\" type=\"number\" step=1 min=1 max=32 name=\"procedimiento["+(i+1)+"][numero_piezas]\" class=\"form-control\" placeholder=\"Numero de piezas\" value="+atributos["numero_piezas"]+" required  readonly disabled/>"
+                                    +"</div>"
+                                    +"<div class=\"col-sm-4\">"
+                                        +"<input id=\"input_2_"+(i+1)+"\" type=\"number\" step=0.01 min=0.01 name=\"procedimiento["+(i+1)+"][honorarios]\" class=\"form-control\" placeholder=\"Honorarios\" value="+atributos["honorarios"]+" required readonly disabled />"
+                                    +"</div>"
                                     +"<div class=\"col-sm-1\" id=\"remove_div_"+(i+1)+"\"></div>"
                                 +"</div>"
                             }
                             $("#form_editar #procedimientos_create").append(html_code2)
-                        })
-                        $("#form_editar").attr("action",calEvent.edicion)
+                        });
                         $("#div_procedimientos").html(html_code)
                     }
-
+                    $("#form_editar").attr("action",calEvent.edicion)
                     $("#form_eliminar").attr("action",calEvent.eliminar)
                     $("#form_reprogramar").attr("action",calEvent.reprogramar)
                     $("#form_seguimiento").attr("action",calEvent.seguimiento)

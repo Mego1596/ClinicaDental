@@ -18,7 +18,7 @@ class PagoController extends Controller
         $users = User::join('role_user','role_user.user_id','=','users.id')->join('roles','roles.id','=','role_user.role_id')->join('personas','personas.user_id','=','users.id')->where(function($query){
             $query->where('roles.slug','admin');
             $query->orWhere('roles.slug','doctor');
-        })->get();
+        })->select('users.id','personas.primer_nombre','personas.segundo_nombre','personas.primer_apellido','personas.segundo_apellido')->get();
         return view('pagos.index',compact('cita','users'));
     }
     /**
@@ -39,12 +39,17 @@ class PagoController extends Controller
      */
     public function store(Request $request,Cita $cita)
     {
+        $request->validate([
+            'total_cita'        => 'required|numeric|min:0.01',
+            'abono'             => 'required|numeric|min:0|lte:total_cita',
+            'user'              => 'required'
+        ]);
         $pago = new Pago();
-        $pago->total_cita = $request->total_cita;
-        $pago->abono = $request->abono;
-        $pago->diferencia = $request->total_cita - $request->abono;
-        $pago->cita_id = $cita->id;
-
+        $pago->total_cita   = $request->total_cita;
+        $pago->abono        = $request->abono;
+        $pago->diferencia   = $request->total_cita - $request->abono;
+        $pago->cita_id      = $cita->id;
+        $pago->user_id      = $request->user;
         if ($pago->save()) {
             $msj_type = 'success';
             $msj = "pago registrado exitosamente";
@@ -52,7 +57,7 @@ class PagoController extends Controller
             $msj_type = 'danger';
             $msj = "el pago no pudo registrarse algo salió mal";            
         }
-        return redirect()->action('CitaController@show',['cita' => $request->cita])->with($msj_type,$msj);
+        return redirect()->back()->with($msj_type,$msj);
     }
 
     /**

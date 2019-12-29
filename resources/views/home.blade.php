@@ -34,7 +34,7 @@
     @can('cita.create')
 	<!-- Modal para crear citas a pacientes nuevos-->
 	<div class="modal fade" id="nuevo_paciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-dialog modal-xl" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Reservación de Cita</h5>
@@ -126,7 +126,7 @@
 	
 	<!-- Modal crear cita a pacientes antiguos-->
 	<div class="modal fade" id="antiguo_paciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-dialog modal-xl" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Reservación de Cita</h5>
@@ -326,7 +326,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- Modal para eliminar una cita -->
+		<!-- Modal para reprogramar una cita -->
 		<div class="modal fade" id="reprogramarCita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -406,7 +406,7 @@
 	@can('cita.create')
 		<!-- Modal crear cita a pacientes antiguos-->
 		<div class="modal fade" id="proximaCita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-dialog modal-xl" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">Reservación de proxima cita</h5>
