@@ -30,8 +30,7 @@ class HomeController extends Controller
         $event_list                 =   [];
         $fecha_actual               =   new Datetime('now');
         $fecha_actual_completa      =   $fecha_actual->format('Y-m-d');
-        $fecha_actual_mes           =   $fecha_actual->format('m');
-        $citas                      =   Cita::whereRaw("reprogramado = 0 AND fecha_hora_inicio >= '$fecha_actual_completa' OR MONTH(fecha_hora_inicio) >= '$fecha_actual_mes' ")->get();
+        $citas                      =   Cita::whereRaw("reprogramado = 0 AND fecha_hora_inicio >= '$fecha_actual_completa'")->get();
         $persona                    =   Auth::user()->persona;
         $es_paciente                =   Auth::user()->hasRole('paciente');
         $botones                    =   !$es_paciente?"prev,next today paciente_nuevo paciente_antiguo":"prev,next today";
@@ -41,6 +40,7 @@ class HomeController extends Controller
             $ruta_pago                  =   "";
             $ruta_receta                =   "";
             $ruta_expediente            =   "";
+            $ruta_seguimiento           =   "";
             $procedimientos             = $cita->procedimientos()->where('cita_id',$cita->id)->get();
             foreach ($procedimientos as $key => $procedimiento_parcial) {
                 $array_procedimientos[] = $procedimiento_parcial;
@@ -61,16 +61,17 @@ class HomeController extends Controller
                     $ruta_receta        =   route('citas.recetas.index',['cita' => $cita->id]);
                 }
             }else{
-                if(is_null($cita->persona->expediente)){
+                if(empty($cita->persona->expediente)){
                     $color              =   '#414FEF';
                     $titulo             =   $cita->persona->primer_nombre." ".$cita->persona->primer_apellido;
                     $ruta_expediente    =   route('expedientes.especial',['persona' => $cita->persona->id]);
                 }else{
-                    $color          =   '#000000';
-                    $titulo         =   $cita->persona->expediente->numero_expediente." ".
-                                        $cita->persona->primer_nombre." ".$cita->persona->primer_apellido;
-                    $ruta_pago      =   route('citas.pagos.index',['cita' => $cita->id]);
-                    $ruta_receta    =   route('citas.recetas.index',['cita' => $cita->id]);
+                    $color              =   '#000000';
+                    $titulo             =   $cita->persona->expediente->numero_expediente." ".
+                                            $cita->persona->primer_nombre." ".$cita->persona->primer_apellido;
+                    $ruta_pago          =   route('citas.pagos.index',['cita' => $cita->id]);
+                    $ruta_receta        =   route('citas.recetas.index',['cita' => $cita->id]);
+                    $ruta_seguimiento   =   route('citas.seguimiento',['cita'=>$cita->id]);
                 }
             }
             $event_list[] = Calendar::event(
@@ -91,10 +92,15 @@ class HomeController extends Controller
                     'listado'                   =>  $listado_procedimientos,
                     'edicion'                   =>  route('citas.update',['cita' => $cita->id] ),
                     'eliminar'                  =>  route('citas.destroy',['cita' => $cita->id]),
-                    'reprogramar'               =>  route('citas.reprogramar',['cita' => $cita->id])
+                    'reprogramar'               =>  route('citas.reprogramar',['cita' => $cita->id]),
+                    'seguimiento'               =>  $ruta_seguimiento
                 ]
             );            
             unset($array_procedimientos);
+            unset($ruta_pago);
+            unset($ruta_receta);
+            unset($ruta_expediente);
+            unset($ruta_seguimiento);
         }
         $calendar = Calendar::addEvents($event_list)->setOptions([
             'firstDay'      => 1,
@@ -237,9 +243,12 @@ class HomeController extends Controller
 
                     $("#form_eliminar").attr("action",calEvent.eliminar)
                     $("#form_reprogramar").attr("action",calEvent.reprogramar)
+                    $("#form_seguimiento").attr("action",calEvent.seguimiento)
+                    $("#cita_padre").val(calEvent.id)
                     $("#btn_expediente").empty()
                     $("#btn_pago").empty()
                     $("#btn_receta").empty()
+                    $("#btn_seguimiento").empty()
                     if(calEvent.title != "Ocupado"){
                         if(calEvent.expedientes != ""){
                             $("#btn_expediente").html(
@@ -256,6 +265,13 @@ class HomeController extends Controller
                             );
                             $("#1").attr("href",calEvent.pagos).css("margin","6px").css("border-radius","5px")
                             $("#2").attr("href",calEvent.recetas).css("margin","6px").css("border-radius","5px")
+                            if(calEvent.expedientes == ""){
+                                $("#btn_seguimiento").html(
+                                    "<a id=\"3\" class=\"btn btn-outline-info\" onclick=\"$(\'#proximaCita\').modal(\'show\').on(\'shown.bs.modal\',function(e){});$(\'#fecha_hora_inicio_4\').attr(\'value\',\'\');$(\'#fecha_hora_fin_4\').attr(\'value\',\'\'); \"><i class=\"fas fa-notes-medical\"></i> Proxima Cita</a>"
+                                    
+                                )
+                                $("#3").attr("href","#").css("margin","6px").css("border-radius","5px")
+                            }
                         }
                     }
                     $("#showCita").modal()
@@ -264,3 +280,6 @@ class HomeController extends Controller
         return view('home',compact('calendar','listado_procedimientos'));
     }
 }
+
+
+

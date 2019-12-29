@@ -196,4 +196,45 @@ class CitaController extends Controller
 
         return redirect()->route('home')->with($msj_type,$msj);
     }
+
+    public function seguimiento(Request $request,Cita $cita){
+        $request->validate([
+            'fecha_hora_inicio'     => 'required|after:'.Carbon::now()->format('d-m-Y'),
+            'fecha_hora_fin'        => 'required|after:fecha_hora_inicio',
+        ]);
+        $new_cita                       = new Cita();
+        $new_cita->fecha_hora_inicio    = $request->fecha_hora_inicio;
+        $new_cita->fecha_hora_fin       = $request->fecha_hora_fin;
+        $new_cita->descripcion          = $request->descripcion;
+        $new_cita->persona_id           = $cita->persona_id;
+        if(is_null($cita->cita_id)){
+            $new_cita->cita_id          = $cita->id;
+        }else{
+            $new_cita->cita_id          = $cita->cita_id;
+        }
+        
+        $msj = Cita::esValida($new_cita);
+            
+        if($msj == null){
+            if ($new_cita->save()){
+                if(!is_null($new_cita->procedimiento)){
+                    foreach (array_unique($request->procedimiento) as $procedimiento) {
+                       $new_cita->procedimientos()->attach($procedimiento);
+                    }
+                }else{
+                    $new_cita->procedimientos()->where('cita_id',$new_cita->id)->sync($request->procedimiento); 
+                }
+                $msj_type   = 'success';
+                $msj        = 'La cita ha sido añadida exitosamente';
+           
+            }else{ 
+                $msj_type   = 'danger';
+            }
+       
+        }else{
+            $msj_type   = 'danger';
+        }
+        
+        return redirect()->route('home')->with($msj_type,$msj);
+    }
 }

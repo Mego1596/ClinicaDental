@@ -197,7 +197,7 @@
 	@can('cita.show')
 	<!-- Modal Detalles de cita -->
 	<div class="modal fade" id="showCita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-dialog modal-xl" role="document" >
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Detalles de Cita</h5>
@@ -246,8 +246,14 @@
 											<button type="button" class="btn btn-outline-success"   onclick="$('#editCita').modal('show').on('shown.bs.modal',function(e){  });">
 												<i class="fas fa-pencil-alt"></i> Editar Cita
 											</button>
+											<button type="button" class="btn btn-outline-info"   onclick="$('#reprogramarCita').modal('show').on('shown.bs.modal',function(e){  });">
+												<i class="fas fa-calendar-times"></i> Reprogramar Cita
+											</button>
 										@endcan
 										<div id="botones" class="btn-group">
+											@can('cita.create')
+												<div id="btn_seguimiento"></div>
+											@endcan
 											@can('expediente.create')
 												<div id="btn_expediente"></div>
 											@endcan
@@ -258,11 +264,6 @@
 												<div id="btn_receta"></div>
 											@endcan
 										</div>
-										@can('cita.edit')
-											<button type="button" class="btn btn-outline-info"   onclick="$('#reprogramarCita').modal('show').on('shown.bs.modal',function(e){  });">
-												<i class="fas fa-calendar-times"></i> Reprogramar Cita
-											</button>
-										@endcan
 										@can('cita.destroy')
 											<button type="button" class="btn btn-outline-danger" onclick="$('#eliminarCita').modal('show').on('shown.bs.modal',function(e){  });">
 												<i class="fas fa-trash-alt"></i> Eliminar Cita
@@ -285,7 +286,7 @@
 			<div class="modal-dialog modal-xl" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+						<h5 class="modal-title" id="exampleModalLongTitle">Editar Cita</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -402,7 +403,70 @@
 			</div>
 		</div>
 	@endcan
-
+	@can('cita.create')
+		<!-- Modal crear cita a pacientes antiguos-->
+		<div class="modal fade" id="proximaCita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Reservación de proxima cita</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form id="form_seguimiento" autocomplete="off" method="POST" action="{{route('citas.store')}}" onsubmit="enviarForm('#form_seguimiento ')">
+						@csrf
+						<div class="modal-body">
+							<div class="form-group row">
+							    <label for="fecha_hora_inicio_4" class="col-sm-6 col-form-label">Fecha y hora de inicio:<font color="red">*</font></label>
+							    <div class="col-sm-6">
+						            <input id="fecha_hora_inicio_4" type='datetime-local' class="form-control" name="fecha_hora_inicio" value="" required />
+							      	@if ($errors->has('fecha_hora_inicio'))
+										<span class="help-block">
+											<strong>{{ $errors->first('fecha_hora_inicio') }}</strong>
+										</span>
+									@endif
+							    </div>
+							</div>
+							<div class="form-group row">
+							    <label for="fecha_hora_fin_4" class="col-sm-6 col-form-label">Fecha y hora de finalización:<font color="red">*</font></label>
+							    <div class="col-sm-6">
+							      	<input id="fecha_hora_fin_4" type="datetime-local" class="form-control" name="fecha_hora_fin" value="">
+							      	@if ($errors->has('fecha_hora_fin'))
+										<span class="help-block">
+											<strong>{{ $errors->first('fecha_hora_fin') }}</strong>
+										</span>
+									@endif
+							    </div>
+							</div>
+							
+							<div class="form-group row">
+								<div class="col-sm-12" align="center" style="display: block">
+									<button type="button" class="btn btn-outline-success" onclick="addProcedimiento({{$listado_procedimientos}},3)" style="width: 100%">Añadir procedimiento</button>
+								</div>
+							</div>
+							<div id="procedimientos_create"></div>
+							<div class="form-group row">
+							    <label for="descripcion_4" class="col-sm-6 col-form-label">Descripción:</label>
+							    <div class="col-sm-6">
+							      	<textarea id="descripcion_4"  class="form-control" name="descripcion">{{ old('descripcion') }}</textarea>
+									@if ($errors->has('descripcion'))
+										<span class="help-block">
+											<strong>{{ $errors->first('descripcion') }}</strong>
+										</span>
+									@endif
+							    </div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" onclick="$('#proximaCita').modal('hide').on('hidden.bs.modal',function(e){ $('#page-top').addClass('modal-open') });">Cerrar</button>
+							<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	@endcan
 @endsection
 @section('JS')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
@@ -437,6 +501,15 @@
 					$('#fecha_hora_fin_2').attr('disabled',false).attr('min',$(this).val()).val($(this).val());
 				}else{
 					$('#fecha_hora_fin_2').attr('disabled',true).attr('min',$(this).val()).val("")
+				}
+			});
+
+			$('#fecha_hora_fin_4').attr('disabled',true)
+			$('#fecha_hora_inicio_4').change(function(){
+				if($('#fecha_hora_inicio_4').val() != ""){
+					$('#fecha_hora_fin_4').attr('disabled',false).attr('min',$(this).val()).val($(this).val());
+				}else{
+					$('#fecha_hora_fin_4').attr('disabled',true).attr('min',$(this).val()).val("")
 				}
 			});
     	})
