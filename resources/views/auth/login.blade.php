@@ -13,6 +13,10 @@
             <center>
                 <div class="middle">
                     <div id="login">
+                        @if(session()->has('danger'))
+                        <div style="background-color: red;width: 100%;color: white">{{session('danger')}}</div>
+                        <br/>
+                        @endif
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="form-group row">

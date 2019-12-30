@@ -28,6 +28,10 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if(Auth::user()->hasRole('suspendido')){
+            Auth::logout();
+            return redirect()->route('login')->with('danger','Su cuenta ha sido suspendida');
+        }
         $event_list                 =   [];
         $fecha_actual               =   new Datetime('now');
         $fecha_actual_completa      =   $fecha_actual->format('Y-m-d');

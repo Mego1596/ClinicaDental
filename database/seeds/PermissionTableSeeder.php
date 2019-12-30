@@ -192,21 +192,10 @@ class PermissionTableSeeder extends Seeder
             'description'   => 'Crear nuevos pagos en el Sistema'
         ]);
         Permission::create([
-            'name'          => 'Permiso de Ver Pagos',
-            'slug'          => 'pago.show',
-            'description'   => 'Ver descripcion de pagos en el Sistema'
-        ]);
-        Permission::create([
             'name'          => 'Permiso de Editar Pagos',
             'slug'          => 'pago.edit',
             'description'   => 'Editar pagos del Sistema'
         ]);
-        Permission::create([
-            'name'          => 'Permiso de Eliminar Pagos',
-            'slug'          => 'pago.destroy',
-            'description'   => 'Eliminar pagos del Sistema'
-        ]);
-
         
     }
 }
