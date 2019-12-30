@@ -58,7 +58,7 @@
                         </form>
                         <div class="clearfix"></div>
                     </div> <!-- end login -->
-                    <div class="logo"><a href="/">SanaDental</a>
+                    <div class="logo"><a href="/">@include('layouts.nombreEmpresa')</a>
                       <div class="clearfix"></div>
                     </div> 
                 </div>

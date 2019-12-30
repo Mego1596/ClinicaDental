@@ -69,7 +69,7 @@
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('home')}}">
         <img src="{{asset('img/yekipaki2.jpg')}}" style="height: 300%">
-        <div class="sidebar-brand-text mx-3">SanaDental</div>
+        <div class="sidebar-brand-text mx-3">@include('layouts.nombreEmpresa')</div>
       </a>
 
       <!-- Divider -->
