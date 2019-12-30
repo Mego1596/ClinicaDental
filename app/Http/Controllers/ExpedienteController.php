@@ -8,9 +8,12 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
 use App\Persona;
+use App\Cita;
 use Caffeinated\Shinobi\Models\Role;
 use App\User;
+use App\Pago;
 use Mail;
+use PDF;
 class ExpedienteController extends Controller
 {
 
@@ -281,12 +284,69 @@ class ExpedienteController extends Controller
     public function destroy(Expediente $expediente)
     {
         /*FALTA VALIDACION DE COMPROBACION DE CITA PARA BORRAR POR COMPLETO*/
-        $expediente->persona->user->delete();
-        $expediente->persona->delete();
+        if(empty($expediente->persona->citas)){
+            $expediente->persona->user->delete();
+            $expediente->persona->delete();  
+        }
+        
         return back()->with('success','Paciente eliminado con exito');
     }
 
-    public function expediente_especial(Persona $persona){
+    public function expediente_especial(Persona $persona)
+    {
         return view('create_expediente_especial',compact('persona'));
+    }
+
+    public function planes(Persona $persona)
+    {
+        $citas  =   Cita::whereNull('cita_id')->where('reprogramado',0)->where('persona_id',$persona->id)->get();
+        return view('expedientes.planes_tratamiento',compact('citas'));
+    }
+
+    public function plan(Cita $cita)
+    {
+        $formato_fecha      =   date('d/m/Y', strtotime($cita->persona->expediente->created_at));
+        $edad               =   Carbon::parse($cita->persona->expediente->fecha_nacimiento)->age;
+        $procedimientos     =   [];
+        $citas_hijas        =   Cita::where('reprogramado',0)->where('cita_id', $cita->id)->get();
+        $bd_procedimientos  =   Procedimiento::all();
+        if(isset($cita->procedimientos)){
+            foreach ($cita->procedimientos as $key => $procedimiento_parcial) {
+                $procedimientos[]                       =   $procedimiento_parcial;
+                $stringSQL                              =   "SELECT honorarios,numero_piezas FROM procedimiento_citas 
+                                                            WHERE cita_id=".$procedimiento_parcial->pivot->cita_id.
+                                                            " AND procedimiento_id =".$procedimiento_parcial->pivot->procedimiento_id;
+                $resultado                              =   DB::select(DB::raw($stringSQL));
+                $procedimientos[$key]['numero_piezas']  =   $resultado[0]->numero_piezas;
+                $procedimientos[$key]['honorarios']     =   $resultado[0]->honorarios;
+            } 
+        }
+        foreach ($citas_hijas as $cita_actual) {
+            if(isset($cita_actual->procedimientos)){
+                foreach ($cita_actual->procedimientos as $key => $procedimiento_parcial) {
+                    $stringSQL                              =   "SELECT honorarios,numero_piezas FROM procedimiento_citas 
+                                                                WHERE cita_id=".$procedimiento_parcial->pivot->cita_id.
+                                                                " AND procedimiento_id =".$procedimiento_parcial->pivot->procedimiento_id;
+                    $resultado                              =   DB::select(DB::raw($stringSQL));
+                    foreach ($procedimientos as $key => $procedimiento_actual) {
+                        if($procedimiento_parcial->id == $procedimiento_actual->id){
+                            $procedimientos[$key]['numero_piezas'] +=   $resultado[0]->numero_piezas;
+                            $procedimientos[$key]['honorarios']    +=   $resultado[0]->honorarios;
+                        }else{
+                            if( $key == count( $procedimientos ) - 1) {  
+                                $procedimientos[]                         =   $procedimiento_parcial;
+                                $procedimientos[$key+1]['numero_piezas']  =   $resultado[0]->numero_piezas;
+                                $procedimientos[$key+1]['honorarios']     =   $resultado[0]->honorarios;
+                            }
+                        }
+                    }
+                } 
+            }
+        }
+        $citas_hijas    =   Cita::where('cita_id', $cita->id)->get();
+        $total          =   Pago::total_plan($cita,0);
+        $pdf            =   PDF::loadView('expedientes.plan_tratamiento',compact('formato_fecha','edad','cita','bd_procedimientos','total','procedimientos','citas_hijas'));
+        $pdf->setPaper('A4','Portrait');
+        return $pdf->stream();
     }
 }

@@ -51,4 +51,8 @@ Route::middleware(['auth'])->group(function(){
 	//DETALLE_RECETAS
 	Route::resource('recetas.detalles','DetalleRecetaController');
 
+	//PLAN DE TRATAMIENTO DE UNA PERSONA
+	Route::get('plan_tratamiento/{persona}', 'ExpedienteController@planes')->name('expedientes.planes');
+	Route::get('plan_tratamiento_actual/{cita}', 'ExpedienteController@plan')->name('expedientes.plan');
+
 });

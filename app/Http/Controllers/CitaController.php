@@ -14,7 +14,15 @@ use DB;
 class CitaController extends Controller
 {
 
-
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('citas.index');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -189,11 +197,15 @@ class CitaController extends Controller
         $fecha_cita = new DateTime($cita->fecha_hora_inicio);
         if($actualidad<$fecha_cita){
             $new_cita = new Cita();
-            $new_cita->fecha_hora_inicio = $request->fecha_hora_inicio;
-            $new_cita->fecha_hora_fin = $request->fecha_hora_fin;
-            $new_cita->descripcion = $cita->descripcion;
-            $new_cita->persona_id = $cita->persona_id;
-            
+            $new_cita->fecha_hora_inicio    = $request->fecha_hora_inicio;
+            $new_cita->fecha_hora_fin       = $request->fecha_hora_fin;
+            $new_cita->descripcion          = $cita->descripcion;
+            $new_cita->persona_id           = $cita->persona_id;
+            if(is_null($cita->cita_id)){
+                $new_cita->cita_id          = $cita->id;
+            }else{
+                $new_cita->cita_id          = $cita->cita_id;
+            }
             $msj_type = 'danger';
             $msj = Cita::esValida($new_cita);
             if($msj==null){
@@ -275,5 +287,6 @@ class CitaController extends Controller
         }
         
         return redirect()->route('home')->with($msj_type,$msj);
+
     }
 }

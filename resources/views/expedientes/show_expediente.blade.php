@@ -195,6 +195,7 @@
 	</div>
 	<div class="d-flex justify-content-center">
 		<a href="{{route('expedientes.index')}}" class="btn btn-danger"><i class="fas fa-arrow-circle-left"></i> Regresar</a>
+		
 	</div>
 </form>
 @endsection

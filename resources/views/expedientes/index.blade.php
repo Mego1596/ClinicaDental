@@ -61,6 +61,9 @@
                             <td></td>
                         @endif
 	                    <td>
+                            @can('cita.index')
+                                <a href="{{route('expedientes.planes',['persona'=>$datos->persona->id])}}" class="btn btn-sm btn-primary " style="color: white"><i class="fas fa-clipboard-list"></i> Planes de Tratamiento</a>
+                            @endcan
                             @can('cita.create')
                                 <button onclick="crearCita('{{$datos->numero_expediente}}')" id="modal_cita" type="button" class="btn btn-dark btn-circle" data-toggle="modal" data-target="#antiguo_paciente">
                                     <i class="fa fa-calendar"></i>
