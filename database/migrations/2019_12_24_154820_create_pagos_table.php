@@ -16,7 +16,6 @@ class CreatePagosTable extends Migration
         Schema::create('pagos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->decimal('abono',5,2);
-            $table->decimal('diferencia',5,2);
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('cita_id')->nullable();

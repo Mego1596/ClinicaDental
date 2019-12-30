@@ -404,7 +404,7 @@
 		</div>
 	@endcan
 	@can('cita.create')
-		<!-- Modal crear cita a pacientes antiguos-->
+		<!-- Modal crear proxima cita a pacientes antiguos-->
 		<div class="modal fade" id="proximaCita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-xl" role="document">
 				<div class="modal-content">

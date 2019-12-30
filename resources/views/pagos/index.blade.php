@@ -39,11 +39,6 @@
 					        	<i class="fa fa-pencil"></i> Editar 
 					        </button>
 				        @endcan
-				        @can('pago.destroy')
-				            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-default-eliminar-pago">
-					        	<i class="fas fa-trash-alt"></i> Eliminar 
-					        </button>
-				        @endcan
 					</td>
 				</tr>
 			</table>
@@ -64,12 +59,7 @@
 							{{method_field('PUT')}}
 							<div class="modal-body">
 								<div class="form-group row">
-								    <label for="total_cita_edit" class="col-sm-6 col-form-label">Total a pagar:</label>
-								    <div class="col-sm-6">
-								      	<input type="number" step="0.01" min="0.01" name="total_cita" class="form-control" id="total_cita_edit" value="{{$cita->pago->total_cita}}" required>
-								    </div>
-								</div>
-								<div class="form-group row">
+									<input type="hidden" name="total_plan" class="form-control" id="total_plan_edit" value="{{$total}}" required>
 								    <label for="abono_edit" class="col-sm-6 col-form-label">Abono:</label>
 								    <div class="col-sm-6">
 								      	<input type="number" step="0.01" min="0" name="abono" class="form-control" id="abono_edit" value="{{$cita->pago->abono}}" required>
@@ -100,32 +90,6 @@
 				</div>
 			</div>
         @endcan
-		@can('pago.destroy')
-	        <!-- Modal -->
-			<div class="modal fade bd-example-modal-md" id="modal-default-eliminar-pago" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-md" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Eliminar pago</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<form method="POST" autocomplete="off" action="{{ route('citas.pagos.destroy',['cita'=> $cita->id,'pago' => $cita->pago->id]) }}">
-							@csrf
-							{{method_field('DELETE')}}
-							<div class="modal-body">
-								Realmente desea eliminar el pago?
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-								<button type="submit" class="btn btn-danger"> Si</button>
-							</div>	
-						</form>
-					</div>
-				</div>
-			</div>
-    	@endcan
     	<div class="table-responsive">
 			<table class="display table-hovered table-striped" width="100%">
 				<tr>
@@ -171,12 +135,9 @@
 					<form autocomplete="off" method="POST" action="{{route('citas.pagos.store',['cita' => $cita->id])}}">
 						@csrf
 						<div class="modal-body">
-							<div class="form-group row">
-							    <label for="total_cita" class="col-sm-6 col-form-label">Total a pagar:</label>
-							    <div class="col-sm-6">
-							      	<input type="number" step="0.01" min="0.01" name="total_cita" class="form-control" id="total_cita" value="{{old('total_cita')}}" required>
-							    </div>
-							</div>
+
+							<input type="hidden" name="total_plan" class="form-control" id="total_plan" value="{{$total}}" required>
+	
 							<div class="form-group row">
 							    <label for="abono" class="col-sm-6 col-form-label">Abono:</label>
 							    <div class="col-sm-6">
@@ -204,17 +165,32 @@
 			</div>
 		</div>
 	@endif
+	<div class="d-flex justify-content-center">
+		<table>
+			<tr>
+				<td>
+					<h3>
+						Total a pagar: <strong>{{round($total,2)}}</strong>
+					</h3>
+				</td>
+			</tr>
+			<tr>
+				<td align="center">
+					@if($total == 0)
+						<p><h3>Solvente</h3></p>
+					@endif
+				</td>
+			</tr>
+		</table>
+	</div>
 @endsection
 
 @section('JS')
 <script type="text/javascript">
 	$(function(){
-		$('#total_cita').change(function(){
-			$('#abono').attr('max',$(this).val())
-		})
+		$('#abono').attr('max',$('#total_plan').val())
 
 		$('#crearPago').on('shown.bs.modal',function(e){
-			$('#total_cita').val('');
 			$('#abono').val('');
 		})
 	})

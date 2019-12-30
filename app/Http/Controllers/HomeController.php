@@ -148,7 +148,11 @@ class HomeController extends Controller
                     inicio_eliminar    +=  fecha_inicio.getMinutes() < 10? "0"+fecha_inicio.getMinutes():fecha_inicio.getMinutes()
 
                     //texto para setear el campo datetime en los detalles de la cita
-                    inicio_string       =  fecha_inicio.getFullYear()+"-"+(fecha_inicio.getMonth()+1)+"-"+fecha_inicio.getDate()+"T"
+                    inicio_string       =  fecha_inicio.getFullYear()+"-"
+                    inicio_string      +=  (fecha_inicio.getMonth()+1) < 10 ? "0"+(fecha_inicio.getMonth()+1):(fecha_inicio.getMonth()+1)
+                    inicio_string      +=  "-"
+                    inicio_string      +=  fecha_inicio.getDate() < 10 ? "0"+fecha_inicio.getDate():fecha_inicio.getDate()
+                    inicio_string      +=  "T"
                     inicio_string      +=  fecha_inicio.getHours() < 10? "0"+fecha_inicio.getHours()+":":fecha_inicio.getHours()+":"
                     inicio_string      +=  fecha_inicio.getMinutes() < 10? "0"+fecha_inicio.getMinutes():fecha_inicio.getMinutes()
 
@@ -160,10 +164,13 @@ class HomeController extends Controller
                     fin_eliminar       +=  fecha_fin.getMinutes() < 10? "0"+fecha_fin.getMinutes():fecha_fin.getMinutes()
 
                     //texto para setear el campo datetime en los detalles de la cita
-                    fin_string          =  fecha_fin.getFullYear()+"-"+(fecha_fin.getMonth()+1)+"-"+fecha_fin.getDate()+"T"
+                    fin_string          =  fecha_fin.getFullYear()+"-"
+                    fin_string         +=  (fecha_fin.getMonth()+1) < 10 ? "0"+(fecha_fin.getMonth()+1):(fecha_fin.getMonth()+1)
+                    fin_string         +=  "-"
+                    fin_string         +=  fecha_fin.getDate() < 10 ? "0"+fecha_fin.getDate():fecha_fin.getDate()
+                    fin_string         +=  "T"
                     fin_string         +=  fecha_fin.getHours() < 10? "0"+fecha_fin.getHours()+":":fecha_fin.getHours()+":"
                     fin_string         +=  fecha_fin.getMinutes() < 10? "0"+fecha_fin.getMinutes():fecha_fin.getMinutes()
-
                     $("#fecha_hora_inicio_3").val(inicio_string)
                     $("#fecha_hora_fin_3").val(fin_string)
                     $("#descripcion_3").val(calEvent.descripcion)
