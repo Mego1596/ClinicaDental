@@ -55,4 +55,7 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('plan_tratamiento/{persona}', 'ExpedienteController@planes')->name('expedientes.planes');
 	Route::get('plan_tratamiento_actual/{cita}', 'ExpedienteController@plan')->name('expedientes.plan');
 
+
+	//ODONTOGRAMAS
+	Route::resource('odontogramas','OdontogramaController');
 });
