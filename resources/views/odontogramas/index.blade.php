@@ -1,19 +1,11 @@
 
-<div class="table-responsive" align="center">
+<div align="center">
 	<canvas id="canvas_field" width="1500" height="600"></canvas>
 </div>
-
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.5.0/fabric.min.js"></script>
 	<script type="text/javascript">
 		var canvas = this.__canvas = new fabric.Canvas('canvas_field');
 		//CARA FRONTAL DEL DIENTE
-		var rect = new fabric.Rect({
-		    width: 33,
-		    height: 29,
-		    top: 50,
-		    left: 50,
-		    fill: 'rgba(255,0,0,0.5)'
-		  });
 		var rect = new fabric.Rect({
 		    width: 33,
 		    height: 29,
