@@ -1,48 +1,56 @@
-<br>
-<br>
-<br>
-<div>
-	<div align="center">
-		<table width="100%">
-			<tr>
-				<th>Frontal</th>
-				<th>Arriba</th>
-				<th>Abajo</th>
-				<th>Izquierda</th>
-				<th>Derecha</th>
-				<th>Cubierto</th>
-			</tr>
-			<tr>
-				<td align="center"><button style="width: 80px;height: 70px" id="frontal_1"><img src="{{asset('img/cuadrado.png')}}"></button></td>
-				<td align="center"><button style="width: 80px;height: 70px" id="arriba_1"><img src="{{asset('img/trapecio_arriba.png')}}"></button></td>
-				<td align="center"><button style="width: 80px;height: 70px" id="abajo_1"><img src="{{asset('img/trapecio_abajo.png')}}"></button></td>
-				<td align="center"><button style="width: 80px;height: 70px" id="izquierda_1"><img src="{{asset('img/trapecio_izquierda.png')}}"></button></td>
-				<td align="center"><button style="width: 80px;height: 70px" id="derecha_1"><img src="{{asset('img/trapecio_derecha.png')}}"></button></td>
-				<td align="center"><button style="width: 80px;height: 70px" id="todo_1"><img src="{{asset('img/cubierto.png')}}"></button></td>
-			</tr>
-			<tr>
-				<td align="center"><button style="width: 80px;height: 70px" id="frontal_2"><img src="{{asset('img/cuadrado_2.png')}}"></button></td>
-				<td align="center"><button style="width: 80px;height: 70px" id="arriba_2"><img src="{{asset('img/trapecio_arriba_2.png')}}"></button></td>
-				<td align="center"><button style="width: 80px;height: 70px" id="abajo_2"><img src="{{asset('img/trapecio_abajo_2.png')}}"></button></td>
-				<td align="center"><button style="width: 80px;height: 70px" id="izquierda_2"><img src="{{asset('img/trapecio_izquierda_2.png')}}"></button></td>
-				<td align="center"><button style="width: 80px;height: 70px" id="derecha_2"><img src="{{asset('img/trapecio_derecha_2.png')}}"></button></td>
-				<td align="center"><button style="width: 80px;height: 70px" id="todo_2"><img src="{{asset('img/cubierto_2.png')}}"></button></td>
-			</tr>
-			<tr>
-				<td align="center"><button style="width: 80px;height: 70px" id="no_diente"><img src="{{asset('img/no_diente.png')}}" width="60px" height="60px"></button></td>
-				<td align="center"><button style="width: 80px;height: 70px" id="puente"><img src="{{asset('img/puente.png')}}"></button></td>
-				<td align="center"><button style="width: 80px;height: 70px" id="undo"><img src="{{asset('img/borrador.png')}}"></button></td>
-			</tr>
-		</table>
-	</div>
-	<div align="center">
-		<h1 id="mensaje"></h1>
-		<canvas id="canvas_field" width="1200" height="600" style="border:solid;"></canvas>
-	</div>
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
 	<br>
 	<br>
-	
-</div>
+	<br>
+	<div>
+		<div align="center">
+			<table width="100%">
+				<tr>
+					<th>Frontal</th>
+					<th>Arriba</th>
+					<th>Abajo</th>
+					<th>Izquierda</th>
+					<th>Derecha</th>
+					<th>Cubierto</th>
+				</tr>
+				<tr>
+					<td align="center"><button style="width: 80px;height: 70px" id="frontal_1"><img src="{{asset('img/cuadrado.png')}}"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="arriba_1"><img src="{{asset('img/trapecio_arriba.png')}}"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="abajo_1"><img src="{{asset('img/trapecio_abajo.png')}}"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="izquierda_1"><img src="{{asset('img/trapecio_izquierda.png')}}"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="derecha_1"><img src="{{asset('img/trapecio_derecha.png')}}"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="todo_1"><img src="{{asset('img/cubierto.png')}}"></button></td>
+				</tr>
+				<tr>
+					<td align="center"><button style="width: 80px;height: 70px" id="frontal_2"><img src="{{asset('img/cuadrado_2.png')}}"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="arriba_2"><img src="{{asset('img/trapecio_arriba_2.png')}}"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="abajo_2"><img src="{{asset('img/trapecio_abajo_2.png')}}"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="izquierda_2"><img src="{{asset('img/trapecio_izquierda_2.png')}}"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="derecha_2"><img src="{{asset('img/trapecio_derecha_2.png')}}"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="todo_2"><img src="{{asset('img/cubierto_2.png')}}"></button></td>
+				</tr>
+				<tr>
+					<td align="center"><button style="width: 80px;height: 70px" id="no_diente"><img src="{{asset('img/no_diente.png')}}" width="60px" height="60px"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="puente"><img src="{{asset('img/puente.png')}}"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="texto"><img src="{{asset('img/texto.png')}}"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="undo"><img src="{{asset('img/borrador.png')}}"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="save"><img src="{{asset('img/save.png')}}"></button></td>
+				</tr>
+			</table>
+		</div>
+		<div align="center">
+			<h1 id="mensaje"></h1>
+			<canvas id="canvas_field" width="1200" height="600" style="border:solid;"></canvas>
+		</div>
+		<br>
+		<br>
+	</div>
+</body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.5.0/fabric.min.js"></script>
 <script type="text/javascript">
 	/*COLOR ROJO TRANSPARENTE #FF000080*/
@@ -65,13 +73,8 @@
 	var no_diente = document.querySelector('#no_diente')
 	var puenta = document.querySelector('#puente')
 	var mensaje = document.querySelector('#mensaje')
-	function getMouse(e) {
-	  console.log(e.pointer);
-	}
-
-	canvas.on('mouse:down',function(e){
-		getMouse(e)
-	})
+	var texto = document.querySelector('#texto')
+	var guardar = document.querySelector('#save')
 
 	canvas.on('mouse:up', function(e){ canvas.__eventListeners["mouse:down"]=[]; });
 
@@ -328,12 +331,36 @@
 		});
 		return polygon
 	}
+
+	
+	function cuadro_texto(){
+		return textbox = new fabric.Textbox('Digite el texto', {
+		  left: 540,
+		  top: 300,
+		  width: 150,
+		  fontSize: 20
+		});
+	}
 	undo.addEventListener('click', remove);
 	no_diente.addEventListener('click', function(){
 		fabric.Image.fromURL('{{asset("img/no_diente.png")}}', function(img) {
-		    var oImg = img.set({top: 60,left: 21,hasControls:false}).scale(0.15);
+		    var oImg = img.set({top: 0,left: 0,hasControls:false}).scale(0.15);
 		    canvas.add(oImg);
 		});
+	})
+	texto.addEventListener('click',function(){
+			textbox = cuadro_texto();
+			textbox.setControlsVisibility({
+		    mt: true,
+		    mb: false,
+		    ml: true,
+		    mr: false,
+		    tr: false,
+		    tl: false,
+		    br: true,
+		    bl: false
+		});
+		  	canvas.add(textbox)
 	})
 	puente.addEventListener('click',function(){
 		let line = new fabric.Line([250, 0, 0, 0], {
@@ -493,6 +520,9 @@
         });
     });
 
+    guardar.addEventListener('click',function(){
+		    	
+    })
+
 </script>
-
-
+</html>
