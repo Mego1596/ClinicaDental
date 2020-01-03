@@ -58,7 +58,6 @@
 					<td align="center">
 						<form method="POST" action="{{route('odontogramas.store')}}">
 							@csrf
-							<input type="hidden" name="procedencia" value="Tratamiento">
 							<input type="hidden" name="parametro" value="{{$cita->id}}">
 							<input type="hidden" value="" id="data_odontograma" name="data_odontograma">
 							<button type="submit" style="width: 80px;height: 70px" id="save"><img src="{{asset('img/save.png')}}"></button>

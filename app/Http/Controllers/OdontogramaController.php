@@ -66,7 +66,6 @@ class OdontogramaController extends Controller
             if(isset($cita)){
                 $odontograma->odontograma   =   $request->data_odontograma;
                 $odontograma->cita_id       =   $cita->id;
-                $odontograma->tipo          =   $request->procedencia;
                 $odontograma->activo        =   1;
                 $odontograma->save();
                 return redirect()->route('expedientes.planes',['persona' => $cita->persona->id])->with('success','Odontograma creado con exito');
