@@ -276,30 +276,38 @@
             </tr>
             <tbody>
                 @foreach($bd_procedimientos as $key => $procedimiento)
-                    @foreach($procedimientos as $key => $procedimiento_plan)
-                        @if($procedimiento_plan->id == $procedimiento->id)
-                            <tr>
-                                <td class="td-proc fuente">{{$procedimiento_plan->nombre}}</td>
-                                @if($procedimiento_plan->numero_piezas !=0 && $procedimiento_plan->honorarios !=0 )
-                                    <td class="td-proc fuente" align="center">{{$procedimiento_plan->numero_piezas}}</td>
-                                    <td class="td-proc fuente" align="center">${{number_format($procedimiento_plan->honorarios, 2)}}</td>
-                                @else
-                                    <td class="td-proc fuente"></td>
-                                    <td class="td-proc fuente"></td>
-                                @endif
-                                
-                            </tr>
-                            @break
-                        @else
-                            @if($loop->last)
+                    @if(sizeof($procedimientos) != 0)
+                        @foreach($procedimientos as $key => $procedimiento_plan)
+                            @if($procedimiento_plan->id == $procedimiento->id)
                                 <tr>
-                                    <td class="td-proc fuente">{{$procedimiento->nombre}}</td>
-                                    <td class="td-proc fuente"></td>
-                                    <td class="td-proc fuente"></td>
+                                    <td class="td-proc fuente">{{$procedimiento_plan->nombre}}</td>
+                                    @if($procedimiento_plan->numero_piezas !=0 && $procedimiento_plan->honorarios !=0 )
+                                        <td class="td-proc fuente" align="center">{{$procedimiento_plan->numero_piezas}}</td>
+                                        <td class="td-proc fuente" align="center">${{number_format($procedimiento_plan->honorarios, 2)}}</td>
+                                    @else
+                                        <td class="td-proc fuente"></td>
+                                        <td class="td-proc fuente"></td>
+                                    @endif
+                                    
                                 </tr>
+                                @break
+                            @else
+                                @if($loop->last)
+                                    <tr>
+                                        <td class="td-proc fuente">{{$procedimiento->nombre}}</td>
+                                        <td class="td-proc fuente"></td>
+                                        <td class="td-proc fuente"></td>
+                                    </tr>
+                                @endif
                             @endif
-                        @endif
-                    @endforeach
+                        @endforeach
+                    @else
+                        <tr>
+                            <td class="td-proc fuente">{{$procedimiento->nombre}}</td>
+                            <td class="td-proc fuente"></td>
+                            <td class="td-proc fuente"></td>
+                        </tr>
+                    @endif
                 @endforeach
             </tbody>
             <tr>

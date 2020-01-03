@@ -55,7 +55,6 @@
 					<td align="center"><button style="width: 80px;height: 70px" id="puente"><img src="{{asset('img/puente.png')}}"></button></td>
 					<td align="center"><button style="width: 80px;height: 70px" id="texto"><img src="{{asset('img/texto.png')}}"></button></td>
 					<td align="center"><button style="width: 80px;height: 70px" id="undo"><img src="{{asset('img/borrador.png')}}"></button></td>
-						
 					<td align="center">
 						<form method="POST" action="{{route('odontogramas.store')}}">
 							@csrf
@@ -65,6 +64,7 @@
 							<button type="submit" style="width: 80px;height: 70px" id="save"><img src="{{asset('img/save.png')}}"></button>
 						</form>
 					</td>
+					<td align="center"><a href="{{route('expedientes.planes',['persona' => $cita->persona->id])}}"><button style="width: 80px;height: 70px"><i class="fas fa-arrow-circle-left"></i> Regresar</button> </a></td>
 				</tr>
 			</table>
 		</div>
