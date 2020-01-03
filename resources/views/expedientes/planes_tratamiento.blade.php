@@ -53,7 +53,7 @@
                 <tr>
                     <td align="center">
                         @php
-                            $date=date_create($cita->created_at);
+                            $date=date_create($cita->fecha_hora_inicio);
                             echo date_format($date,"d/m/Y");
                         @endphp
                     </td>
