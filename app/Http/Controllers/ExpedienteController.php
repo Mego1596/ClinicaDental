@@ -14,7 +14,6 @@ use App\User;
 use App\Pago;
 use Mail;
 use PDF;
-use Illuminate\Support\Facades\Storage;
 class ExpedienteController extends Controller
 {
 
@@ -168,8 +167,8 @@ class ExpedienteController extends Controller
      */
     public function show(Expediente $expediente)
     {
-        $planes_tratamiento =   sizeof(Cita::where('reprogramado',0)->whereNull('cita_id')->where('persona_id',$expediente->persona->id)->get());
-        return view('expedientes.show_expediente',compact('expediente','planes_tratamiento'));
+        
+        return view('expedientes.show_expediente',compact('expediente'));
     }
 
     /**
@@ -311,7 +310,7 @@ class ExpedienteController extends Controller
         $procedimientos     =   [];
         $citas_hijas        =   Cita::where('reprogramado',0)->where('cita_id', $cita->id)->get();
         $bd_procedimientos  =   Procedimiento::all();
-        $planes_tratamiento =   Cita::where('reprogramado',0)->whereNull('cita_id')->where('persona_id',$cita->persona_id)->get();
+        $ultimo_odontograma =   Cita::join('odontogramas as o','o.cita_id','=','citas.id')->where('citas.reprogramado',0)->whereNull('citas.cita_id')->where('o.cita_id','<=',$cita->id)->where('citas.persona_id',$cita->persona_id)->select('o.*')->latest()->take(2)->get();
         if(isset($cita->procedimientos)){
             foreach ($cita->procedimientos as $key => $procedimiento_parcial) {
                 $procedimientos[]                       =   $procedimiento_parcial;
@@ -347,7 +346,7 @@ class ExpedienteController extends Controller
         }
         $citas_hijas    =   Cita::where('cita_id', $cita->id)->get();
         $total          =   Pago::total_plan($cita,0);
-        $pdf            =   PDF::loadView('expedientes.plan_tratamiento',compact('formato_fecha','edad','cita','bd_procedimientos','total','procedimientos','citas_hijas','planes_tratamiento'));
+        $pdf            =   PDF::loadView('expedientes.plan_tratamiento',compact('formato_fecha','edad','cita','bd_procedimientos','total','procedimientos','citas_hijas','ultimo_odontograma'));
         $pdf->setPaper('A4','Portrait');
         return $pdf->stream();
     }
