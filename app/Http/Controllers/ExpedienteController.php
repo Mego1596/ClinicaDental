@@ -14,6 +14,7 @@ use App\User;
 use App\Pago;
 use Mail;
 use PDF;
+use Illuminate\Support\Facades\Storage;
 class ExpedienteController extends Controller
 {
 
@@ -155,7 +156,6 @@ class ExpedienteController extends Controller
         $expediente->historia_medica        =   $request->historia_medica;
         $expediente->persona_id             =   $persona->id;
         $expediente->save();
-
         return redirect()->route($ruta)->with('success','Paciente añadido con exito');
         
     }
@@ -168,7 +168,8 @@ class ExpedienteController extends Controller
      */
     public function show(Expediente $expediente)
     {
-        return view('expedientes.show_expediente',compact('expediente'));
+        $planes_tratamiento =   sizeof(Cita::where('reprogramado',0)->whereNull('cita_id')->where('persona_id',$expediente->persona->id)->get());
+        return view('expedientes.show_expediente',compact('expediente','planes_tratamiento'));
     }
 
     /**
@@ -310,6 +311,7 @@ class ExpedienteController extends Controller
         $procedimientos     =   [];
         $citas_hijas        =   Cita::where('reprogramado',0)->where('cita_id', $cita->id)->get();
         $bd_procedimientos  =   Procedimiento::all();
+        $planes_tratamiento =   Cita::where('reprogramado',0)->whereNull('cita_id')->where('persona_id',$cita->persona_id)->get();
         if(isset($cita->procedimientos)){
             foreach ($cita->procedimientos as $key => $procedimiento_parcial) {
                 $procedimientos[]                       =   $procedimiento_parcial;
@@ -345,7 +347,7 @@ class ExpedienteController extends Controller
         }
         $citas_hijas    =   Cita::where('cita_id', $cita->id)->get();
         $total          =   Pago::total_plan($cita,0);
-        $pdf            =   PDF::loadView('expedientes.plan_tratamiento',compact('formato_fecha','edad','cita','bd_procedimientos','total','procedimientos','citas_hijas'));
+        $pdf            =   PDF::loadView('expedientes.plan_tratamiento',compact('formato_fecha','edad','cita','bd_procedimientos','total','procedimientos','citas_hijas','planes_tratamiento'));
         $pdf->setPaper('A4','Portrait');
         return $pdf->stream();
     }

@@ -27,6 +27,11 @@ class Cita extends Model
         return $this->hasOne('App\Receta');
     }
 
+    public function odontogramas()
+    {
+        return $this->hasMany('App\Odontograma');
+    }
+
     public static function esValida (Cita $cita){
         $mensaje = "La cita ha presentado los siguientes problemas: \n";
 

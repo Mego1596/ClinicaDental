@@ -10,4 +10,9 @@ class Expediente extends Model
     {
         return $this->belongsTo('App\Persona','persona_id');
     }
+
+    public function odontogramas()
+    {
+        return $this->hasMany('App\Odontograma');
+    }
 }

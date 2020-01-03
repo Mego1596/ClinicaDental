@@ -252,6 +252,47 @@
                 @endif
             </tr>
         </table>
+        <div align="center">
+            @foreach($planes_tratamiento as $key => $plan_actual)
+                @foreach($cita->odontogramas as $odontograma_plan)
+                    @if($loop->parent->first)
+                        @if($plan_actual->id == $cita->id)
+                            @if(isset($cita->persona->expediente->odontogramas))
+                                @foreach($cita->persona->expediente->odontogramas as $key => $odontograma)
+                                    @if($odontograma->activo == 1 && $odontograma_plan->activo == 1)
+                                        <h3>Inicial</h3>
+                                        <br/>
+                                        <br/>
+                                        <img src="{{$odontograma->odontograma}}" width="500px" height="200px">
+                                        <br/>
+                                        <h3>Actual</h3>
+                                        <img src="{{$odontograma_plan->odontograma}}" width="500px" height="200px">
+                                        @break
+                                        @break
+                                    @endif
+                                @endforeach
+                            @endif
+                        @endif
+                    @else
+                        @if($cita->id == $plan_actual->id)
+                            @foreach($planes_tratamiento[$key-1]->odontogramas as $odontograma_plan_anterior)
+                                @if($odontograma_plan_anterior->activo == 1 && $odontograma_plan->activo == 1)
+                                    <h3>Inicial</h3>
+                                    <br/>
+                                    <br/>
+                                    <img src="{{$odontograma_plan_anterior->odontograma}}" width="500px" height="200px">
+                                    <br/>
+                                    <h3>Actual</h3>
+                                    <img src="{{$odontograma_plan->odontograma}}" width="500px" height="200px">
+                                    @break
+                                    @break
+                                @endif
+                            @endforeach
+                        @endif
+                    @endif
+                @endforeach
+            @endforeach
+        </div>
     </div>
     <div class="page_break">
         <p class="titulo" style="font-weight:bold">PLANES DE TRATAMIENTO</p>

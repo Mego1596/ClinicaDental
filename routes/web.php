@@ -57,5 +57,8 @@ Route::middleware(['auth'])->group(function(){
 
 
 	//ODONTOGRAMAS
-	Route::resource('odontogramas','OdontogramaController');
+	Route::get('odontograma/inicial/{expediente}','OdontogramaController@inicial')->name('odontogramas.inicial');
+	Route::get('odontograma/tratamiento/{cita}','OdontogramaController@tratamiento')->name('odontogramas.tratamiento');
+	Route::post('odontogramas','OdontogramaController@store')->name('odontogramas.store');
+	Route::delete('odontogramas/{odontograma}','OdontogramaController@destroy')->name('odontogramas.destroy');
 });

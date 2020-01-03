@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Clinica @include('layouts.nombreEmpresa') - Odontograma</title>
 </head>
+<style type="text/css">
+	#barra_inicial{
+		width: 100%;
+		background-color: black;
+		height: 100%;
+		color: white;
+		font-size:60px;
+	}
+	@media only screen and (max-width: 1279px) {
+	  #barra_inicial{
+	  	width: 1200px
+	  }
+	}
+
+</style>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
 <body>
-	<br>
-	<br>
-	<br>
 	<div>
+		<div id="barra_inicial" align="center">
+			<i class="fas fa-tooth" style="color: white;margin-top: 0.5%;font-size: 40px"></i> Odontograma de:{{$expediente->persona->primer_nombre." ".$expediente->persona->segundo_nombre." ".$expediente->persona->primer_apellido." ".$expediente->segundo_apellido}}
+		</div>
 		<div align="center">
 			<table width="100%">
 				<tr>
@@ -39,7 +55,16 @@
 					<td align="center"><button style="width: 80px;height: 70px" id="puente"><img src="{{asset('img/puente.png')}}"></button></td>
 					<td align="center"><button style="width: 80px;height: 70px" id="texto"><img src="{{asset('img/texto.png')}}"></button></td>
 					<td align="center"><button style="width: 80px;height: 70px" id="undo"><img src="{{asset('img/borrador.png')}}"></button></td>
-					<td align="center"><button style="width: 80px;height: 70px" id="save"><img src="{{asset('img/save.png')}}"></button></td>
+						
+					<td align="center">
+						<form method="POST" action="{{route('odontogramas.store')}}">
+							@csrf
+							<input type="hidden" name="procedencia" value="Inicial">
+							<input type="hidden" name="parametro" value="{{$expediente->id}}">
+							<input type="hidden" value="" id="data_odontograma" name="data_odontograma">
+							<button type="submit" style="width: 80px;height: 70px" id="save"><img src="{{asset('img/save.png')}}"></button>
+						</form>
+					</td>
 				</tr>
 			</table>
 		</div>
@@ -50,6 +75,7 @@
 		<br>
 		<br>
 	</div>
+	
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.5.0/fabric.min.js"></script>
 <script type="text/javascript">
@@ -74,7 +100,7 @@
 	var puenta = document.querySelector('#puente')
 	var mensaje = document.querySelector('#mensaje')
 	var texto = document.querySelector('#texto')
-	var guardar = document.querySelector('#save')
+	var form = document.querySelector('form')
 
 	canvas.on('mouse:up', function(e){ canvas.__eventListeners["mouse:down"]=[]; });
 
@@ -520,9 +546,12 @@
         });
     });
 
-    guardar.addEventListener('click',function(){
-		    	
+    form.addEventListener('submit',function(){
+    	let img = canvas.toDataURL({
+    		format: 'jpeg',
+    		quality: 1
+    	})
+    	document.querySelector('#data_odontograma').value = img
     })
-
 </script>
 </html>

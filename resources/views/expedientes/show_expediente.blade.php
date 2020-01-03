@@ -5,8 +5,21 @@
 @endsection
 
 @section('content')
+@if (\Session::has('success'))
+    <div class="alert alert-success">
+        <ul>
+            <li>{!! \Session::get('success') !!}</li>
+        </ul>
+    </div>
+@endif
+@if (\Session::has('danger'))
+    <div class="alert alert-danger">
+        <ul>
+            <li>{!! \Session::get('danger') !!}</li>
+        </ul>
+    </div>
+@endif
 <h1 style="text-align: center;"><strong>Detalles del Paciente</strong></h1>
-<form>
 	<div class="form-group row col-sm-12">
 	    <label for="primer_nombre" class="col-sm-2 col-form-label">Primer nombre:<font color="red">*</font></label>
 	    <div class="col-sm-4">
@@ -193,9 +206,72 @@
 			@endif
 	    </div>
 	</div>
+	@can('odontograma.show')
+		@if(isset($expediente->odontogramas))
+			@foreach($expediente->odontogramas as $odontograma)
+				@if($odontograma->activo == 1)
+					<div class="d-flex justify-content-center" style="color: black">
+						<h1>Odontograma</h1>
+					</div>
+					<div class="form-group row col-sm-12 table-responsive" align="center">
+					    <div class="col-sm-12">
+			      			<img src="{{$odontograma->odontograma}}">
+					    </div>
+					</div>
+				@endif
+			@endforeach
+		@endif
+	@endcan
 	<div class="d-flex justify-content-center">
 		<a href="{{route('expedientes.index')}}" class="btn btn-danger"><i class="fas fa-arrow-circle-left"></i> Regresar</a>
-		
+		@can('odontograma.destroy')
+            @if($planes_tratamiento == 0)
+            	@if(sizeof($expediente->odontogramas))
+		            @foreach($expediente->odontogramas as $odontograma)
+		                @if($odontograma->activo == 1)
+		                    <!-- Button trigger modal -->
+		                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#eliminarOdontograma">
+		                        <i class="fas fa-trash-alt"></i> Eliminar
+		                    </button>
+		                    <!-- Modal -->
+		                    <div class="modal fade" id="eliminarOdontograma" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		                        <div class="modal-dialog" role="document">
+		                            <div class="modal-content">
+		                                <div class="modal-header">
+		                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar odontograma</h5>
+		                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                                        <span aria-hidden="true">&times;</span>
+		                                    </button>
+		                                </div>
+		                                <div class="modal-body">
+		                                    <h3>Esta seguro que desea eliminar este odontograma?</h3>
+		                                </div>
+		                                <div class="modal-footer">
+		                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+		                                    <form method="POST" action="{{route('odontogramas.destroy',['odontograma' => $odontograma->id])}}">
+		                                        @csrf
+		                                        {{method_field('DELETE')}}
+		                                        <button type="submit" class="btn btn-danger">Si</button>
+		                                    </form>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    @break
+		                @endif
+		                @if($loop->last)
+		                	@can('odontograma.create')
+	                            <a href="{{route('odontogramas.inicial',['expediente'=>$expediente->id])}}" class="btn btn-primary " style="color: white;margin-left: 0.3%"><i class="fas fa-tooth"></i> Odontograma</a>
+	                        @endcan
+		                @endif
+		            @endforeach
+		        @else
+		        	@can('odontograma.create')
+                        <a href="{{route('odontogramas.inicial',['expediente'=>$expediente->id])}}" class="btn btn-primary " style="color: white;margin-left: 0.3%"><i class="fas fa-tooth"></i> Odontograma</a>
+                    @endcan
+		        @endif
+	        @endif
+        @endcan
 	</div>
-</form>
+
 @endsection

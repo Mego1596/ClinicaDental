@@ -15,6 +15,13 @@ class CreateOdontogramasTable extends Migration
     {
         Schema::create('odontogramas', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->longText('odontograma');
+            $table->enum('tipo',array('Inicial','Tratamiento'));
+            $table->boolean('activo');
+            $table->unsignedBigInteger('cita_id')->nullable();
+            $table->foreign('cita_id')->references('id')->on('citas')->onDelete('cascade');
+            $table->unsignedBigInteger('expediente_id')->nullable();
+            $table->foreign('expediente_id')->references('id')->on('expedientes')->onDelete('cascade');
             $table->timestamps();
         });
     }
