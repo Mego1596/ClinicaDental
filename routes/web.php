@@ -19,6 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/perfil', 'HomeController@perfil')->name('perfil');
+Route::post('/cambioContrasena', 'HomeController@changePassword')->name('cambio_contrasena');
 Route::middleware(['auth'])->group(function(){
 	
 	//USUARIOS

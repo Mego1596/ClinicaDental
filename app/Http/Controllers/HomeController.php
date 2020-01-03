@@ -10,6 +10,8 @@ use App\Cita;
 use Caffeinated\Shinobi\Models\Role;
 use Auth;
 use DB;
+use Hash;
+use App\User;
 class HomeController extends Controller
 {
     /**
@@ -328,6 +330,22 @@ class HomeController extends Controller
 
     public function perfil(){
         return view('perfil');
+    }
+
+    public function changePassword(Request $request){
+        $this->validate($request,[
+            'old_password'  => 'required|string',
+            'password'      => 'required_with:password-confirm|same:password_confirmation|string|min:6',
+        ]);
+
+        if(!Hash::check($request->old_password, Auth::user()->password, [])){
+            return redirect()->back()->with('danger','La contraseña actual es incorrecta');
+        }else{
+            $user               =   User::find(Auth::user()->id);
+            $user->password     =   bcrypt($request->password);
+            $user->save();
+            return redirect()->back()->with('success','La contraseña se actualizo con exito');
+        }
     }
 }
 

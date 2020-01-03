@@ -5,8 +5,30 @@
 @endsection
 
 @section('content')
+	@if (\Session::has('success'))
+	    <div class="alert alert-success">
+	        <ul>
+	            <li>{!! \Session::get('success') !!}</li>
+	        </ul>
+	    </div>
+	@endif
+	@if (\Session::has('danger'))
+	    <div class="alert alert-danger">
+	        <ul>
+	            <li>{!! \Session::get('danger') !!}</li>
+	        </ul>
+	    </div>
+	@endif
+	@if (count($errors) > 0)
+		<div class="alert alert-danger" role="alert">
+			<ul>
+				@foreach ($errors->all() as $error)
+				<li>{{ $error }}</li>
+				@endforeach
+			</ul>
+		</div>
+	@endif
 	<h1 style="text-align: center;"><strong>Perfíl de Usuario</strong></h1>
-<form>
 	<div class="form-group row col-sm-12">
 	    <label for="primer_nombre" class="col-sm-2 col-form-label">Primer nombre:</label>
 	    <div class="col-sm-4">
@@ -73,6 +95,49 @@
 	</div>
 	<div class="d-flex justify-content-center">
 		<a href="{{route('home')}}" class="btn btn-danger"><i class="fas fa-arrow-circle-left"></i> Regresar</a>
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cambioContrasena" style="margin-left: 0.7%">
+		  <i class="fas fa-fw fa-lock"></i> Cambiar Contraseña
+		</button>
 	</div>
-</form>
+
+	<div class="modal fade" id="cambioContrasena" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      	<div class="modal-dialog modal-md" role="document">
+        	<div class="modal-content">
+         		<div class="modal-header">
+            		<h5 class="modal-title" id="exampleModalLabel">Cambiar contraseña</h5>
+            		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              			<span aria-hidden="true">&times;</span>
+            		</button>
+          		</div>
+          		<form method="POST" action="{{route('cambio_contrasena')}}">
+          			@csrf
+	          		<div class="modal-body">
+	          			<div class="form-group row col-sm-12">
+                            <label for="password" class="col-sm-6 col-form-label">{{ __('Password') }} Actual:</label>
+                            <div class="col-sm-6">
+                                <input id="password" type="password" class="form-control" name="old_password" required>
+                            </div>
+                        </div>
+						<div class="form-group row col-sm-12">
+                            <label for="password" class="col-sm-6 col-form-label">Nueva {{ __('Password') }}:</label>
+                            <div class="col-sm-6">
+                                <input id="password" type="password" class="form-control" name="password" required>
+                            </div>
+                        </div>
+                        <div class="form-group row col-sm-12">
+                            <label for="password-confirm" class="col-sm-6 col-form-label">{{ __('Confirm Password') }}:</label>
+                            <div class="col-sm-6">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                            </div>
+                        </div>
+	          		</div>
+	          		<div class="modal-footer">
+	            		<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+	            		<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+	          		</div>
+      			</form>
+        	</div>
+      	</div>
+    </div>
 @endsection
