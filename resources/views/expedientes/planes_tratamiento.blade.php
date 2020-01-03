@@ -135,7 +135,7 @@
             responsive:true,
             pagingType: "simple",
             "columnDefs": [
-                { "orderable": false, "targets": [1,2] }
+                { "orderable": false, "targets": [2,3] }
             ]
         });
         
