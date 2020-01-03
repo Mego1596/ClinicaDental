@@ -97,7 +97,7 @@
               </a>
             </li>
           @endcan
-          @can('rol.index')
+          @can('role.index')
             <li class="nav-item">
               <a class="nav-link collapsed" href="{{route('roles.index')}}">
                 <i class="fas fa-list-alt"></i>
@@ -179,6 +179,10 @@
                   <i class="fas fa-fw fa-lock fa-sm mr-2 text-gray-400 "></i>
                   Cambiar Contraseña
                 </a>
+                <a class="dropdown-item" href="{{route('perfil')}}">
+                  <i class="fas fa-fw fa-address-card fa-sm mr-2 text-gray-400"></i>
+                  Perfil de Usuario
+                </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fa fa-sign-out fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -209,7 +213,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>&copy; Clínica SanaDental 2019</span>
+            <span>&copy; 2019</span>
           </div>
         </div>
       </footer>

@@ -7,6 +7,7 @@ use Calendar;
 use App\Procedimiento;
 use Datetime;
 use App\Cita;
+use Caffeinated\Shinobi\Models\Role;
 use Auth;
 use DB;
 class HomeController extends Controller
@@ -323,6 +324,10 @@ class HomeController extends Controller
                 }',
             ]);
         return view('home',compact('calendar','listado_procedimientos'));
+    }
+
+    public function perfil(){
+        return view('perfil');
     }
 }
 

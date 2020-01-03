@@ -253,16 +253,21 @@
             </tr>
         </table>
         <div align="center">
-            @if(sizeof($ultimo_odontograma) < 2)
+            @if(sizeof($ultimo_odontograma) == 1)
                 <div><h3>Inicial</h3></div>
                 <div><img src="{{public_path('img/odontograma.png')}}" width="700px" height="235px"></div>
                 <div><h3>Actual</h3></div>
                 <div><img src="{{$ultimo_odontograma[0]->odontograma}}"width="700px" height="235px"></div>
             @else
-                <div><h3>Inicial</h3></div>
-                <div><img src="{{$ultimo_odontograma[1]->odontograma}}"width="700px" height="235px"></div>
-                <div><h3>Actual</h3></div>
-                <div><img src="{{$ultimo_odontograma[0]->odontograma}}"width="700px" height="235px"></div>
+                @if(sizeof($ultimo_odontograma) == 2)
+                    <div><h3>Inicial</h3></div>
+                    <div><img src="{{$ultimo_odontograma[1]->odontograma}}"width="700px" height="235px"></div>
+                    <div><h3>Actual</h3></div>
+                    <div><img src="{{$ultimo_odontograma[0]->odontograma}}"width="700px" height="235px"></div>
+                @else
+                    <div><h3>Inicial</h3></div>
+                    <div><img src="{{public_path('img/odontograma.png')}}" width="700px" height="235px"></div>
+                @endif
             @endif
         </div>
     </div>

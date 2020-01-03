@@ -19,7 +19,7 @@ class PermissionTableSeeder extends Seeder
         ]);
         Permission::create([
             'name'          => 'Permiso de Creacion de Usuarios',
-            'slug'          => 'usuario.store',
+            'slug'          => 'usuario.create',
             'description'   => 'Crear nuevos usuarios en el Sistema'
         ]);
         Permission::create([
@@ -47,7 +47,7 @@ class PermissionTableSeeder extends Seeder
         
         Permission::create([
             'name'          => 'Permiso de Creacion de Roles',
-            'slug'          => 'role.store',
+            'slug'          => 'role.create',
             'description'   => 'Crear nuevos roles en el Sistema'
         ]);
         Permission::create([
@@ -75,7 +75,7 @@ class PermissionTableSeeder extends Seeder
         
         Permission::create([
             'name'          => 'Permiso de Creacion de Procedimiento',
-            'slug'          => 'procedimiento.store',
+            'slug'          => 'procedimiento.create',
             'description'   => 'Crear nuevos procedimientos en el Sistema'
         ]);
         Permission::create([
@@ -103,7 +103,7 @@ class PermissionTableSeeder extends Seeder
         
         Permission::create([
             'name'          => 'Permiso de Creacion de Expedientes',
-            'slug'          => 'expediente.store',
+            'slug'          => 'expediente.create',
             'description'   => 'Crear nuevos expedientes en el Sistema'
         ]);
         Permission::create([
@@ -132,7 +132,7 @@ class PermissionTableSeeder extends Seeder
         
         Permission::create([
             'name'          => 'Permiso de Creacion de Citas',
-            'slug'          => 'cita.store',
+            'slug'          => 'cita.create',
             'description'   => 'Crear nuevos citas en el Sistema'
         ]);
         Permission::create([
@@ -160,7 +160,7 @@ class PermissionTableSeeder extends Seeder
         
         Permission::create([
             'name'          => 'Permiso de Creacion de Recetas',
-            'slug'          => 'receta.store',
+            'slug'          => 'receta.create',
             'description'   => 'Crear nuevos recetas en el Sistema'
         ]);
         Permission::create([
@@ -188,12 +188,24 @@ class PermissionTableSeeder extends Seeder
         
         Permission::create([
             'name'          => 'Permiso de Creacion de Pagos',
-            'slug'          => 'pago.store',
+            'slug'          => 'pago.create',
             'description'   => 'Crear nuevos pagos en el Sistema'
         ]);
         Permission::create([
             'name'          => 'Permiso de Editar Pagos',
             'slug'          => 'pago.edit',
+            'description'   => 'Editar pagos del Sistema'
+        ]);
+
+        //TABLA Odontograma        
+        Permission::create([
+            'name'          => 'Permiso de Creacion de Pagos',
+            'slug'          => 'odontograma.create',
+            'description'   => 'Crear nuevos pagos en el Sistema'
+        ]);
+        Permission::create([
+            'name'          => 'Permiso de Editar Pagos',
+            'slug'          => 'odontograma.destroy',
             'description'   => 'Editar pagos del Sistema'
         ]);
         

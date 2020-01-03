@@ -49,7 +49,7 @@
                 $x=0;
             @endphp
             @foreach($citas as $cita)
-                @can('pacientes.trabajo')
+                @can('cita.index')
                 <tr>
                     <td align="center">
                         @php
