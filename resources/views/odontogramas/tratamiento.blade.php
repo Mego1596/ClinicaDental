@@ -36,7 +36,7 @@
 				</tr>
 				<tr>
 					<td align="center"><button style="width: 80px;height: 70px" id="frontal_1"><img src="{{asset('img/cuadrado.png')}}"></button></td>
-					<td align="center"><button style="width: 80px;height: 70px" id="arriba_1"><img src="{{asset('img/trapecio_arriba.png')}}"></button></td>
+					<td align="center"><button style="width: 80px;height: 70px" id="arriba_1"><img src="{{asset('img/trapecio_arriba.PNG')}}"></button></td>
 					<td align="center"><button style="width: 80px;height: 70px" id="abajo_1"><img src="{{asset('img/trapecio_abajo.png')}}"></button></td>
 					<td align="center"><button style="width: 80px;height: 70px" id="izquierda_1"><img src="{{asset('img/trapecio_izquierda.png')}}"></button></td>
 					<td align="center"><button style="width: 80px;height: 70px" id="derecha_1"><img src="{{asset('img/trapecio_derecha.png')}}"></button></td>
