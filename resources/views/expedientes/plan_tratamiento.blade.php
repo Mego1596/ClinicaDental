@@ -433,7 +433,7 @@
                             </td>
                        </tr>
                     @else
-                        @if($cita->reprogramado == 1)
+                        @if($cita->reprogramado == true)
                             <tr>
                                 <td class="td-proc fuente" align="center">
                                     @php

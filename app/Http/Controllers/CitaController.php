@@ -229,7 +229,7 @@ class CitaController extends Controller
                         }  
                     }
                      
-                    $cita->reprogramado = 1;
+                    $cita->reprogramado = true;
                     if($cita->save()){
                         $msj_type = 'success';
                         $msj = 'La cita se reprogramó con éxito';

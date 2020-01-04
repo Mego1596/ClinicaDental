@@ -299,7 +299,7 @@ class ExpedienteController extends Controller
 
     public function planes(Persona $persona)
     {
-        $citas  =   Cita::whereNull('cita_id')->where('reprogramado',0)->where('persona_id',$persona->id)->get();
+        $citas  =   Cita::whereNull('cita_id')->where('reprogramado',false)->where('persona_id',$persona->id)->get();
         return view('expedientes.planes_tratamiento',compact('citas'));
     }
 
@@ -308,9 +308,9 @@ class ExpedienteController extends Controller
         $formato_fecha      =   date('d/m/Y', strtotime($cita->persona->expediente->created_at));
         $edad               =   Carbon::parse($cita->persona->expediente->fecha_nacimiento)->age;
         $procedimientos     =   [];
-        $citas_hijas        =   Cita::where('reprogramado',0)->where('cita_id', $cita->id)->get();
+        $citas_hijas        =   Cita::where('reprogramado',false)->where('cita_id', $cita->id)->get();
         $bd_procedimientos  =   Procedimiento::all();
-        $ultimo_odontograma =   Cita::join('odontogramas as o','o.cita_id','=','citas.id')->where('citas.reprogramado',0)->whereNull('citas.cita_id')->where('o.cita_id','<=',$cita->id)->where('citas.persona_id',$cita->persona_id)->select('o.*')->latest()->take(2)->get();
+        $ultimo_odontograma =   Cita::join('odontogramas as o','o.cita_id','=','citas.id')->where('citas.reprogramado',false)->whereNull('citas.cita_id')->where('o.cita_id','<=',$cita->id)->where('citas.persona_id',$cita->persona_id)->select('o.*')->latest()->take(2)->get();
         if(isset($cita->procedimientos)){
             foreach ($cita->procedimientos as $key => $procedimiento_parcial) {
                 $procedimientos[]                       =   $procedimiento_parcial;

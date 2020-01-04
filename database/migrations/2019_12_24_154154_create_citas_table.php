@@ -18,8 +18,8 @@ class CreateCitasTable extends Migration
             $table->datetime('fecha_hora_inicio');
             $table->datetime('fecha_hora_fin');
             $table->string('descripcion')->nullable();
-            $table->boolean('asistencia')->default(0);
-            $table->boolean('reprogramado')->default(0);
+            $table->boolean('asistencia')->default(false);
+            $table->boolean('reprogramado')->default(false);
             $table->unsignedBigInteger('persona_id');
             $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
             $table->unsignedBigInteger('cita_id')->nullable();

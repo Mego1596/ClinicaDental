@@ -38,7 +38,7 @@ class HomeController extends Controller
         $event_list                 =   [];
         $fecha_actual               =   new Datetime('now');
         $fecha_actual_completa      =   $fecha_actual->format('Y-m-d');
-        $citas                      =   Cita::whereRaw("reprogramado = 0 AND fecha_hora_inicio >= '$fecha_actual_completa'")->get();
+        $citas                      =   Cita::whereRaw("reprogramado = false AND fecha_hora_inicio >= '$fecha_actual_completa'")->get();
         $persona                    =   Auth::user()->persona;
         $es_paciente                =   Auth::user()->hasRole('paciente');
         $botones                    =   !$es_paciente?"prev,next today paciente_nuevo paciente_antiguo":"prev,next today";

@@ -16,7 +16,7 @@ class OdontogramaController extends Controller
      */
     public function tratamiento(Cita $cita)
     {
-        $ultimo_odontograma = Cita::join('odontogramas as o','o.cita_id','=','citas.id')->where('citas.reprogramado',0)->whereNull('citas.cita_id')->where('o.cita_id','<',$cita->id)->where('citas.persona_id',$cita->persona_id)->select('o.*')->latest()->take(1)->get();
+        $ultimo_odontograma = Cita::join('odontogramas as o','o.cita_id','=','citas.id')->where('citas.reprogramado',false)->whereNull('citas.cita_id')->where('o.cita_id','<',$cita->id)->where('citas.persona_id',$cita->persona_id)->select('o.*')->latest()->take(1)->get();
         if(sizeof($ultimo_odontograma) == 0){
             $img = asset('img/odontograma.png');    
         }else{        
@@ -60,9 +60,9 @@ class OdontogramaController extends Controller
     {
         $odontograma    =   new Odontograma();
         $cita           =   Cita::find($request->parametro);
-        $ultimo_plan    =   Cita::where('reprogramado',0)->whereNull('cita_id')->where('persona_id',$cita->persona_id)->latest()->first();
+        $ultimo_plan    =   Cita::where('reprogramado',false)->whereNull('cita_id')->where('persona_id',$cita->persona_id)->latest()->first();
         if($ultimo_plan->id == $request->parametro){
-            $planes_tratamiento     =   Cita::where('reprogramado',0)->whereNull('cita_id')->where('persona_id',$cita->persona_id)->latest()->get();
+            $planes_tratamiento     =   Cita::where('reprogramado',false)->whereNull('cita_id')->where('persona_id',$cita->persona_id)->latest()->get();
             if(isset($cita)){
                 $odontograma->odontograma   =   $request->data_odontograma;
                 $odontograma->cita_id       =   $cita->id;
