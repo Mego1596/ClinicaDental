@@ -66,7 +66,7 @@
                             @endcan
                             @can('cita.create')
                                 <button onclick="crearCita('{{$datos->numero_expediente}}')" id="modal_cita" type="button" class="btn btn-dark btn-circle" data-toggle="modal" data-target="#antiguo_paciente">
-                                    <i class="fa fa-calendar"></i>
+                                    <i class="fas fa-calendar-alt"></i>
                                 </button>
                             @endcan
 	                        @can('expediente.show')
@@ -170,7 +170,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+                        <button type="submit" class="btn btn-success"><i class="far fa-save"></i> Guardar</button>
                     </div>
                 </form>
             </div>

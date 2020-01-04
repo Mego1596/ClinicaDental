@@ -300,7 +300,7 @@ class HomeController extends Controller
                     if(calEvent.title != "Ocupado"){
                         if(calEvent.expedientes != ""){
                             $("#btn_expediente").html(
-                                "<a id=\"1\" class=\"btn btn-outline-primary\"><i class=\"fas fa-money-check-alt\"></i> Crear Expediente</a>"
+                                "<a id=\"1\" class=\"btn btn-outline-primary\"><i class=\"fas fa-address-card\"></i> Crear Expediente</a>"
                             )
                             $("#1").attr("href",calEvent.expedientes).css("margin","6px").css("border-radius","5px")
                         }else{

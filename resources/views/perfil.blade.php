@@ -134,7 +134,7 @@
 	          		</div>
 	          		<div class="modal-footer">
 	            		<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-	            		<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+	            		<button type="submit" class="btn btn-success"><i class="far fa-save"></i> Guardar</button>
 	          		</div>
       			</form>
         	</div>

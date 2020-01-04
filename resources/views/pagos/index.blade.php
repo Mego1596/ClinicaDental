@@ -36,7 +36,7 @@
 					<td width="30%" align="right">
 						@can('pago.edit')
 				            <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default-editar-pago">
-					        	<i class="fa fa-pencil"></i> Editar 
+					        	<i class="fas fa-pencil-alt"></i> Editar 
 					        </button>
 				        @endcan
 					</td>
@@ -83,7 +83,7 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-								<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+								<button type="submit" class="btn btn-success"><i class="far fa-save"></i> Guardar</button>
 							</div>	
 						</form>
 					</div>
@@ -158,7 +158,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Cerrar</button>
-							<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+							<button type="submit" class="btn btn-success"><i class="far fa-save"></i> Guardar</button>
 						</div>
 					</form>
 				</div>

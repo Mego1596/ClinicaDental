@@ -78,7 +78,7 @@
 												</div>
 												<div class="modal-footer">
 													<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-													<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+													<button type="submit" class="btn btn-success"><i class="far fa-save"></i> Guardar</button>
 												</div>	
 											</form>
 										</div>
@@ -89,7 +89,7 @@
 						<td width="10%" align="right">
 							@can('receta.edit')
 								<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editarReceta">
-						        	<i class="fa fa-pencil"></i> Editar Receta
+						        	<i class="fas fa-pencil-alt"></i> Editar Receta
 						        </button>
 						    @endcan
 					    </td>
@@ -104,7 +104,7 @@
 						<td width="21%" align="right">
 							@can('receta.edit')
 								<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editarReceta">
-						        	<i class="fa fa-pencil"></i> Editar Receta
+						        	<i class="fas fa-pencil"></i> Editar Receta
 						        </button>
 						    @endcan
 					    </td>
@@ -167,7 +167,7 @@
 						                </div>
 						                <div class="modal-footer">
 						                	<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-						                	<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+						                	<button type="submit" class="btn btn-success"><i class="far fa-save"></i> Guardar</button>
 						                </div>
 						            </form>
 						        </div>
@@ -196,7 +196,7 @@
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-											<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+											<button type="submit" class="btn btn-success"><i class="far fa-save"></i> Guardar</button>
 										</div>	
 									</form>
 								</div>
@@ -266,7 +266,7 @@
 									<td width="25%">{{$detalle->cantidad}}</td>
 									<td width="25%">
 										@can('receta.edit')
-											<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modalEditDetalle" onclick="selectDetalle({{$cita->receta->id}},{{ $detalle->id }},'{{ $detalle->medicamento }}','{{ $detalle->dosis }}','{{ $detalle->cantidad }}');" title="Detalles de la receta"><i class="fa fa-pencil"></i> Editar</button>
+											<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modalEditDetalle" onclick="selectDetalle({{$cita->receta->id}},{{ $detalle->id }},'{{ $detalle->medicamento }}','{{ $detalle->dosis }}','{{ $detalle->cantidad }}');" title="Detalles de la receta"><i class="fas fa-pencil-alt"></i> Editar</button>
 										@endcan
 										@can('receta.destroy')
 		    	                            <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#modal-default-{{$detalle->id}}">
@@ -345,7 +345,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-							<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+							<button type="submit" class="btn btn-success"><i class="far fa-save"></i> Guardar</button>
 						</div>	
 					</form>
 				</div>

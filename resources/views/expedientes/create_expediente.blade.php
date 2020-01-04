@@ -169,7 +169,7 @@
 	    </div>
 	</div>
 	<div class="d-flex justify-content-center">
-		<button class="btn btn-success" style="margin-right: 1%"><i class="fa fa-save"></i> Guardar</button>
+		<button class="btn btn-success" style="margin-right: 1%"><i class="far fa-save"></i> Guardar</button>
 		<a href="{{route('expedientes.index')}}" class="btn btn-danger"><i class="fas fa-arrow-circle-left"></i> Cancelar</a>
 	</div>
 </form>

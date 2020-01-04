@@ -21,10 +21,10 @@
 
 
     <link href="{{asset('index/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{asset('index/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link href="{{asset('index/magnific-popup/magnific-popup.css')}}" rel="stylesheet">
     <link href="{{asset('css/estilo.css')}}" rel="stylesheet">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
   </head>
 
   <body id="page-top">
@@ -282,13 +282,13 @@
 
 
  
-    <script src="index/jquery/jquery.min.js"></script>
-    <script src="index/bootstrap/js/bootstrap.bundle.min.js"></script>   
-    <script src="index/jquery-easing/jquery.easing.min.js"></script>
-    <script src="index/scrollreveal/scrollreveal.min.js"></script>
-    <script src="index/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="{{asset('index/scrollreveal/scrollreveal.min.js')}}"></script>
+    <script src="{{asset('index/magnific-popup/jquery.magnific-popup.min.js')}}"></script>
 
-    <script src="js/index.js"></script>
+    <script src="{{asset('js/index.js')}}"></script>
   </body>
 </html>
 
