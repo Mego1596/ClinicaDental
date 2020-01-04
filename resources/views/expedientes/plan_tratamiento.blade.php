@@ -252,6 +252,232 @@
                 @endif
             </tr>
         </table>
-        
+        <div align="center">
+            @if(sizeof($ultimo_odontograma) == 1)
+                <div><h3>Inicial</h3></div>
+                <div><img src="{{public_path('img/odontograma.png')}}" width="700px" height="235px"></div>
+                <div><h3>Actual</h3></div>
+                <div><img src="{{$ultimo_odontograma[0]->odontograma}}"width="700px" height="235px"></div>
+            @else
+                @if(sizeof($ultimo_odontograma) == 2)
+                    <div><h3>Inicial</h3></div>
+                    <div><img src="{{$ultimo_odontograma[1]->odontograma}}"width="700px" height="235px"></div>
+                    <div><h3>Actual</h3></div>
+                    <div><img src="{{$ultimo_odontograma[0]->odontograma}}"width="700px" height="235px"></div>
+                @else
+                    <div><h3>Inicial</h3></div>
+                    <div><img src="{{public_path('img/odontograma.png')}}" width="700px" height="235px"></div>
+                @endif
+            @endif
+        </div>
+    </div>
+    <div class="page_break">
+        <p class="titulo" style="font-weight:bold">PLANES DE TRATAMIENTO</p>
+        <table border="solid" class="tabla-tra">
+            <tr>
+                <th width="350px" class="td-proc alig">Clase de Tratamiento</th>
+                <th width="160px" class="td-proc alig">No. de Piezas</th>
+                <th width="100px" class="td-proc alig">Honorarios</th>
+            </tr>
+            <tbody>
+                @foreach($bd_procedimientos as $key => $procedimiento)
+                    @if(sizeof($procedimientos) != 0)
+                        @foreach($procedimientos as $key => $procedimiento_plan)
+                            @if($procedimiento_plan->id == $procedimiento->id)
+                                <tr>
+                                    <td class="td-proc fuente">{{$procedimiento_plan->nombre}}</td>
+                                    @if($procedimiento_plan->numero_piezas !=0 && $procedimiento_plan->honorarios !=0 )
+                                        <td class="td-proc fuente" align="center">{{$procedimiento_plan->numero_piezas}}</td>
+                                        <td class="td-proc fuente" align="center">${{number_format($procedimiento_plan->honorarios, 2)}}</td>
+                                    @else
+                                        <td class="td-proc fuente"></td>
+                                        <td class="td-proc fuente"></td>
+                                    @endif
+                                    
+                                </tr>
+                                @break
+                            @else
+                                @if($loop->last)
+                                    <tr>
+                                        <td class="td-proc fuente">{{$procedimiento->nombre}}</td>
+                                        <td class="td-proc fuente"></td>
+                                        <td class="td-proc fuente"></td>
+                                    </tr>
+                                @endif
+                            @endif
+                        @endforeach
+                    @else
+                        <tr>
+                            <td class="td-proc fuente">{{$procedimiento->nombre}}</td>
+                            <td class="td-proc fuente"></td>
+                            <td class="td-proc fuente"></td>
+                        </tr>
+                    @endif
+                @endforeach
+            </tbody>
+            <tr>
+                <td class="bordesB fuente" style="font-weight:bold">Costo total del presupuesto ($):</td>
+                <td class="bordesA"></td>
+                <td class="separador td-proc fuente">
+                    $ {{$total}}
+                </td>
+            </tr>
+        </table>
+        <p></p>
+        <p></p>
+        <p></p>
+        <table class="tabla-tra">
+            <tr>
+                <td width="325px" class="firmas">F: ____________________________</td>
+                <td class="firmas">F: ____________________________</td>
+            </tr>
+            <tr>
+                <td width="325px" class="firmas pac">Paciente</td>
+                <td class="firmas" style="text-align:center">Medico</td>
+            </tr>              
+        </table>
+    </div>
+    <div class="page_break">
+        <table border="solid">
+            <tr align="center">
+                <th width="120px" class="td-proc alig">Fecha</th>
+                <th width="200px" class="td-proc alig">Tratamiento Realizado</th>
+                <th width="150px" class="td-proc alig">Realizo el Tto.</th>
+                <th width="60px" class="td-proc alig">Abono</th>
+                <th width="60px" class="td-proc alig">Saldo</th>
+                <th width="120px" class="td-proc alig">Proxima Cita</th>
+            </tr>
+            <tbody>
+
+                <tr>
+                    @if(isset($cita->pago))
+                        @php
+                            $total -= $cita->pago->abono
+                        @endphp
+                        <td class="td-proc fuente" align="center">
+                            @php
+                                $date           = date_create($cita->pago->fecha_hora_inicio);
+                                $formato_fecha  = date_format($date,"d-m-Y");
+                            @endphp
+                            {{$formato_fecha}}
+                        </td>
+                        <td class="td-proc fuente" align="center">
+                            @if($total == 0)
+                                <strong>Solvente</strong>
+                            @endif
+                            @foreach($cita->procedimientos as $procedimientos)
+                                {{$procedimientos->nombre}}
+                            @endforeach
+                            <br/>
+                            {{$cita->descripcion}}
+                        </td>
+                        <td class="td-proc fuente" align="center">
+                            Dr. {{$cita->pago->user->persona->primer_nombre." ".$cita->pago->user->persona->segundo_nombre." ".$cita->pago->user->persona->primer_apellido." ".$cita->pago->user->persona->segundo_apellido}}
+                        </td>
+                        <td class="td-proc fuente" align="center">
+                            $ {{$cita->pago->abono}}
+                        </td>
+                        <td class="td-proc fuente" align="center">
+                            $ {{number_format($total, 2)}}
+                        </td>
+                        <td class="td-proc fuente" align="center">
+                            @php
+                                $date           = date_create($citas_hijas[0]->fecha_hora_inicio);
+                                $formato_fecha  = date_format($date,"d-m-Y");
+                            @endphp
+                            {{$formato_fecha}}
+                        </td>
+                    @endif
+                </tr>
+                @foreach($citas_hijas as $key => $cita)
+                    @if(isset($cita->pago))
+                        @php
+                            $total -= $cita->pago->abono
+                        @endphp
+                        <tr>
+                            <td class="td-proc fuente" align="center">
+                                @php
+                                    $date           = date_create($cita->fecha_hora_inicio);
+                                    $formato_fecha  = date_format($date,"d-m-Y");
+                                @endphp
+                                {{$formato_fecha}}
+                            </td>
+                            <td class="td-proc fuente" align="center">
+                                @if($total == 0)
+                                    <strong>Solvente</strong>
+                                @endif
+                                @foreach($cita->procedimientos as $procedimientos)
+                                    {{$procedimientos->nombre}}
+                                @endforeach
+                                <br/>
+                                {{$cita->descripcion}}
+                            </td>
+                            <td class="td-proc fuente" align="center">
+                                Dr. {{$cita->pago->user->persona->primer_nombre." ".$cita->pago->user->persona->segundo_nombre." ".$cita->pago->user->persona->primer_apellido." ".$cita->pago->user->persona->segundo_apellido}}
+                            </td>
+                            <td class="td-proc fuente" align="center">
+                                
+                                $ {{$cita->pago->abono}}
+                            </td>
+                            <td class="td-proc fuente" align="center">
+                                $ {{number_format($total, 2)}}
+                            </td>
+                            <td class="td-proc fuente" align="center">
+                                @if(!$loop->last)
+                                    @php
+                                        $date           = date_create($citas_hijas[$key+1]->fecha_hora_inicio);
+                                        $formato_fecha  = date_format($date,"d-m-Y");
+                                    @endphp
+                                    {{$formato_fecha}}
+                                @endif
+                            </td>
+                       </tr>
+                    @else
+                        @if($cita->reprogramado == true)
+                            <tr>
+                                <td class="td-proc fuente" align="center">
+                                    @php
+                                        $date           = date_create($cita->fecha_hora_inicio);
+                                        $formato_fecha  = date_format($date,"d-m-Y");
+                                    @endphp
+                                    {{$formato_fecha}}
+                                </td>
+                                <td class="td-proc fuente" align="center">
+                                    @if($total == 0)
+                                        <strong>Solvente</strong>
+                                    @endif
+                                    <br/>
+                                    <strong>Cita Reprogramada</strong><br/>
+                                    @foreach($cita->procedimientos as $procedimientos)
+                                        {{$procedimientos->nombre}}
+                                    @endforeach
+                                    <br/>
+                                    {{$cita->descripcion}}
+                                </td>
+                                <td class="td-proc fuente" align="center">
+                                    Cita Reprogramada
+                                </td>
+                                <td class="td-proc fuente" align="center">
+                                    $ 0.00
+                                </td>
+                                <td class="td-proc fuente" align="center">
+                                    $ {{number_format($total, 2)}}
+                                </td>
+                                <td class="td-proc fuente" align="center">
+                                    @if(!$loop->last)
+                                        @php
+                                            $date           = date_create($citas_hijas[$key+1]->fecha_hora_inicio);
+                                            $formato_fecha  = date_format($date,"d-m-Y");
+                                        @endphp
+                                        {{$formato_fecha}}
+                                    @endif
+                                </td>
+                            </tr>
+                        @endif
+                    @endif
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
