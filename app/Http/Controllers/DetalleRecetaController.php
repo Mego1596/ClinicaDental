@@ -57,6 +57,7 @@ class DetalleRecetaController extends Controller
             $detalle->dosis         =   $request->dosis;
             $detalle->cantidad      =   $request->cantidad;
             $detalle->save(); 
+            return back()->with('success','El detalle de la receta se actualizo correctamente');
         }else{
             return back()->with('danger','Error, El detalle de la receta no pertenece a la receta actual');
         }
