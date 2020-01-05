@@ -21,6 +21,9 @@
                 "shasum": ""
             },
             "require": {
+                "ext-dom": "*",
+                "ext-gd": "*",
+                "ext-mbstring": "*",
                 "dompdf/dompdf": "^0.8",
                 "illuminate/support": "^5.5|^6",
                 "php": ">=7"
