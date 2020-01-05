@@ -310,7 +310,7 @@ class ExpedienteController extends Controller
         $procedimientos     =   [];
         $citas_hijas        =   Cita::where('reprogramado',false)->where('cita_id', $cita->id)->get();
         $bd_procedimientos  =   Procedimiento::all();
-        $ultimo_odontograma =   Cita::join('odontogramas as o','o.cita_id','=','citas.id')->where('citas.reprogramado',false)->whereNull('citas.cita_id')->where('o.cita_id','<=',$cita->id)->where('citas.persona_id',$cita->persona_id)->select('o.*')->latest()->take(2)->get();
+        $ultimo_odontograma =   Cita::join('odontogramas as o','o.cita_id','=','citas.id')->where('citas.reprogramado',false)->whereNull('citas.cita_id')->where('o.cita_id','<=',$cita->id)->where('citas.persona_id',$cita->persona_id)->where('o.activo',true)->select('o.*')->latest()->take(2)->get();
         if(isset($cita->procedimientos)){
             foreach ($cita->procedimientos as $key => $procedimiento_parcial) {
                 $procedimientos[]                       =   $procedimiento_parcial;

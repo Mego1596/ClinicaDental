@@ -16,7 +16,7 @@ class OdontogramaController extends Controller
      */
     public function tratamiento(Cita $cita)
     {
-        $ultimo_odontograma = Cita::join('odontogramas as o','o.cita_id','=','citas.id')->where('citas.reprogramado',false)->whereNull('citas.cita_id')->where('o.cita_id','<',$cita->id)->where('citas.persona_id',$cita->persona_id)->select('o.*')->latest()->take(1)->get();
+        $ultimo_odontograma = Cita::join('odontogramas as o','o.cita_id','=','citas.id')->where('citas.reprogramado',false)->whereNull('citas.cita_id')->where('o.cita_id','<',$cita->id)->where('citas.persona_id',$cita->persona_id)->where('o.activo',true)->select('o.*')->latest()->take(1)->get();
         if(sizeof($ultimo_odontograma) == 0){
             $img = asset('img/odontograma.jpg');    
         }else{        

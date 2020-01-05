@@ -160,10 +160,13 @@ class CitaController extends Controller
      */
     public function destroy(Cita $cita)
     {
+        if(isset($cita->pago)){
+            return redirect()->back()->with('danger','Error, la cita se encuentra pagada, no se puede reprogramar');
+        }
         $actualidad = new DateTime('now');
         $fecha_cita = new DateTime($cita->fecha_hora_inicio);
-
         if($actualidad<$fecha_cita){
+
             if($cita->delete()){
                 $msj_type = 'success';
                 $msj = 'Cita eliminada con éxito';
@@ -192,7 +195,9 @@ class CitaController extends Controller
             'fecha_hora_inicio'     => 'required|after:'.Carbon::now()->format('d-m-Y'),
             'fecha_hora_fin'        => 'required|after:fecha_hora_inicio',
         ]);
-        
+        if(isset($cita->pago)){
+            return redirect()->back()->with('danger','Error, la cita se encuentra pagada, no se puede reprogramar');
+        }
         $actualidad = new DateTime('now');
         $fecha_cita = new DateTime($cita->fecha_hora_inicio);
         if($actualidad<$fecha_cita){
