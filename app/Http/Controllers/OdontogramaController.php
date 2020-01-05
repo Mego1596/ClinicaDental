@@ -18,7 +18,7 @@ class OdontogramaController extends Controller
     {
         $ultimo_odontograma = Cita::join('odontogramas as o','o.cita_id','=','citas.id')->where('citas.reprogramado',false)->whereNull('citas.cita_id')->where('o.cita_id','<',$cita->id)->where('citas.persona_id',$cita->persona_id)->select('o.*')->latest()->take(1)->get();
         if(sizeof($ultimo_odontograma) == 0){
-            $img = asset('img/odontograma.png');    
+            $img = asset('img/odontograma.jpg');    
         }else{        
             $img = $ultimo_odontograma[0]->odontograma;
         }
