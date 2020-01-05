@@ -161,7 +161,7 @@ class CitaController extends Controller
     public function destroy(Cita $cita)
     {
         if(isset($cita->pago)){
-            return redirect()->back()->with('danger','Error, la cita se encuentra pagada, no se puede reprogramar');
+            return redirect()->back()->with('danger','Error, la cita se encuentra pagada, no se puede eliminar');
         }
         $actualidad = new DateTime('now');
         $fecha_cita = new DateTime($cita->fecha_hora_inicio);
