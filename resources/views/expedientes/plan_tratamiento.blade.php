@@ -175,7 +175,7 @@
     <div>   
         <table class="tg2">
             <tr>
-                <th class="tg-401l2" rowspan="2"><img src="img/titulo-yekixpaki.png" width="365" height="95"></th>
+                <th class="tg-401l2" rowspan="2"><img src="{{asset('img/titulo-yekixpaki.jpg')}}" width="365" height="95"></th>
                 <th class="tg-y9452"><span style="font-weight:bold">FICHA ODONTOLÓGICA</span></th>
             </tr>
             <tr>
