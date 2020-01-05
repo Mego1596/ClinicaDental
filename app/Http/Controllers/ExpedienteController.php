@@ -344,7 +344,7 @@ class ExpedienteController extends Controller
                 } 
             }
         }
-        $citas_hijas    =   Cita::where('cita_id', $cita->id)->get();
+        $citas_hijas    =   Cita::where('cita_id', $cita->id)->orderBy('fecha_hora_inicio','ASC')->get();
         $total          =   Pago::total_plan($cita,0);
         $pdf            =   PDF::loadView('expedientes.plan_tratamiento',compact('formato_fecha','edad','cita','bd_procedimientos','total','procedimientos','citas_hijas','ultimo_odontograma'));
         $pdf->setPaper('A4','Portrait');
