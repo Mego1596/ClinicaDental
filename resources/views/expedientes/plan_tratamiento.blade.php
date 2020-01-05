@@ -511,13 +511,7 @@
                                 $ {{number_format($total, 2)}}
                             </td>
                             <td class="td-proc fuente" align="center">
-                                @if(!$loop->last)
-                                    @php
-                                        $date           = date_create($citas_hijas[$key+1]->fecha_hora_inicio);
-                                        $formato_fecha  = date_format($date,"d-m-Y");
-                                    @endphp
-                                    {{$formato_fecha}}
-                                @endif
+                                <br>
                             </td>
                        </tr>
                     @endif
