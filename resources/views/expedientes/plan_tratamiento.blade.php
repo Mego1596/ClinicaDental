@@ -389,7 +389,95 @@
                         </td>
                     @endif
                 </tr>
-                @foreach($citas_hijas as $key => $cita)
+                @if(sizeof($citas_hijas) != 0)
+                    @foreach($citas_hijas as $key => $cita)
+                        @if(isset($cita->pago))
+                            @php
+                                $total -= $cita->pago->abono
+                            @endphp
+                            <tr>
+                                <td class="td-proc fuente" align="center">
+                                    @php
+                                        $date           = date_create($cita->fecha_hora_inicio);
+                                        $formato_fecha  = date_format($date,"d-m-Y");
+                                    @endphp
+                                    {{$formato_fecha}}
+                                </td>
+                                <td class="td-proc fuente" align="center">
+                                    @if($total == 0)
+                                        <strong>Solvente</strong>
+                                    @endif
+                                    @foreach($cita->procedimientos as $procedimientos)
+                                        {{$procedimientos->nombre}}
+                                    @endforeach
+                                    <br/>
+                                    {{$cita->descripcion}}
+                                </td>
+                                <td class="td-proc fuente" align="center">
+                                    Dr. {{$cita->pago->user->persona->primer_nombre." ".$cita->pago->user->persona->segundo_nombre." ".$cita->pago->user->persona->primer_apellido." ".$cita->pago->user->persona->segundo_apellido}}
+                                </td>
+                                <td class="td-proc fuente" align="center">
+                                    
+                                    $ {{$cita->pago->abono}}
+                                </td>
+                                <td class="td-proc fuente" align="center">
+                                    $ {{number_format($total, 2)}}
+                                </td>
+                                <td class="td-proc fuente" align="center">
+                                    @if(!$loop->last)
+                                        @php
+                                            $date           = date_create($citas_hijas[$key+1]->fecha_hora_inicio);
+                                            $formato_fecha  = date_format($date,"d-m-Y");
+                                        @endphp
+                                        {{$formato_fecha}}
+                                    @endif
+                                </td>
+                           </tr>
+                        @else
+                            @if($cita->reprogramado == true)
+                                <tr>
+                                    <td class="td-proc fuente" align="center">
+                                        @php
+                                            $date           = date_create($cita->fecha_hora_inicio);
+                                            $formato_fecha  = date_format($date,"d-m-Y");
+                                        @endphp
+                                        {{$formato_fecha}}
+                                    </td>
+                                    <td class="td-proc fuente" align="center">
+                                        @if($total == 0)
+                                            <strong>Solvente</strong>
+                                        @endif
+                                        <br/>
+                                        <strong>Cita Reprogramada</strong><br/>
+                                        @foreach($cita->procedimientos as $procedimientos)
+                                            {{$procedimientos->nombre}}
+                                        @endforeach
+                                        <br/>
+                                        {{$cita->descripcion}}
+                                    </td>
+                                    <td class="td-proc fuente" align="center">
+                                        Cita Reprogramada
+                                    </td>
+                                    <td class="td-proc fuente" align="center">
+                                        $ 0.00
+                                    </td>
+                                    <td class="td-proc fuente" align="center">
+                                        $ {{number_format($total, 2)}}
+                                    </td>
+                                    <td class="td-proc fuente" align="center">
+                                        @if(!$loop->last)
+                                            @php
+                                                $date           = date_create($citas_hijas[$key+1]->fecha_hora_inicio);
+                                                $formato_fecha  = date_format($date,"d-m-Y");
+                                            @endphp
+                                            {{$formato_fecha}}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
+                        @endif
+                    @endforeach
+                @else
                     @if(isset($cita->pago))
                         @php
                             $total -= $cita->pago->abono
@@ -432,50 +520,8 @@
                                 @endif
                             </td>
                        </tr>
-                    @else
-                        @if($cita->reprogramado == true)
-                            <tr>
-                                <td class="td-proc fuente" align="center">
-                                    @php
-                                        $date           = date_create($cita->fecha_hora_inicio);
-                                        $formato_fecha  = date_format($date,"d-m-Y");
-                                    @endphp
-                                    {{$formato_fecha}}
-                                </td>
-                                <td class="td-proc fuente" align="center">
-                                    @if($total == 0)
-                                        <strong>Solvente</strong>
-                                    @endif
-                                    <br/>
-                                    <strong>Cita Reprogramada</strong><br/>
-                                    @foreach($cita->procedimientos as $procedimientos)
-                                        {{$procedimientos->nombre}}
-                                    @endforeach
-                                    <br/>
-                                    {{$cita->descripcion}}
-                                </td>
-                                <td class="td-proc fuente" align="center">
-                                    Cita Reprogramada
-                                </td>
-                                <td class="td-proc fuente" align="center">
-                                    $ 0.00
-                                </td>
-                                <td class="td-proc fuente" align="center">
-                                    $ {{number_format($total, 2)}}
-                                </td>
-                                <td class="td-proc fuente" align="center">
-                                    @if(!$loop->last)
-                                        @php
-                                            $date           = date_create($citas_hijas[$key+1]->fecha_hora_inicio);
-                                            $formato_fecha  = date_format($date,"d-m-Y");
-                                        @endphp
-                                        {{$formato_fecha}}
-                                    @endif
-                                </td>
-                            </tr>
-                        @endif
                     @endif
-                @endforeach
+                @endif
             </tbody>
         </table>
     </div>
